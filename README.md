@@ -1,4 +1,11 @@
-## Spring Boot Starter
+<!--
+*** It takes a beautiful community with great minds to create a useful template.
+*** Please help us to make it better by contributing to this project.
+*** We welcome all suggestions through forks or issue.
+*** Happy Coding!
+-->
+
+# Spring Boot Starter
 
 A highly opinionated and complete starter for Spring Boot projects ready to production
 
@@ -25,6 +32,59 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 * [Validation](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-validation)
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#using-boot-devtools)
+
+## Features
+
+- [Fully Covered Equals, HashCode, ToString Testing](documents/TESTS.md)
+- [Unit and Integration Tests](documents/TESTS.md)
+- [Production Ready Folder Structure](README.md#production-ready-folder-structure)
+- [Authentication and Authorization with JWT](documents/AUTHENTICATION.MD)
+- [User Profiles](documents/USER_PROFILES.MD)
+- [User Roles](documents/USER_ROLES.MD)
+- [API](documents/API.md)
+- [Internationalization (i18n)](documents/INTERNATIONALIZATION.MD)
+- [Email Service with HTML and attachment support](documents/EMAIL_SERVICE.md)
+- [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
+
+
+## Production Ready Folder Structure
+
+```
+.
+|-- documents
+|-- gradle
+|   `-- wrapper
+`-- src
+    |-- integration
+    |   |-- java
+    |   |   `-- com
+    |   |       `-- developersboard
+    |   |           |-- backend
+    |   |           `-- web
+    |   `-- resources
+    |-- main
+    |   |-- java
+    |   |   `-- com
+    |   |       `-- developersboard
+    |   |           |-- annotation  # All custom annotations used in the application
+    |   |           |-- backend     # Business Logic and Data Access implementation
+    |   |           |-- config      # Configuration classes and properties
+    |   |           |-- constant    # Constants used in the application
+    |   |           |-- enums       # Enums used in the application
+    |   |           |-- exception   # Custom exceptions used in the application
+    |   |           |-- shared      # Resources like dto, utils, etc. used in the application
+    |   |           `-- web         # Web layer implementation
+    |   `-- resources
+    |       `-- i18n                # I18n property files, comes with 'en', 'fr', 'es' and 'zn_CN'
+    `-- test
+        |-- java
+        |   `-- com
+        |       `-- developersboard
+        |           |-- backend
+        |           `-- web
+        `-- resources
+
+```
 
 ## Running Instance on AWS
 
@@ -65,7 +125,7 @@ TBD
         ENCRYPTION_SECRET_PASSWORD=password
         JWT_SECRET=salt
 
-* Default profile for the application is **dev** and **prod** to test out production
+* Default profile for the application is **dev**, **test** and **prod** to test out production
   functionalities.
     - Datasource must be provided for production profile for the application to run.
 
