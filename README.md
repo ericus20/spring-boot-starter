@@ -138,4 +138,7 @@ TBD
 
 
 * Start Spring Boot application using - **./gradlew bootRun**
+* Run unit tests using - **./gradlew test**
+* Run integration tests using - **./gradlew integrationTest**
+* Run all tests using - **./gradlew testAll**
 * Access in-memory database on *http://localhost:8080/console*

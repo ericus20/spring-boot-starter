@@ -9,12 +9,10 @@ package com.developersboard.constant;
  */
 public final class AdminConstants {
 
-    /**
-     * Admin Controller URI Mappings.
-     */
-    public static final String API_V1_USERS_ROOT_URL = "/api/v1/users";
+  /** Admin Controller URI Mappings. */
+  public static final String API_V1_USERS_ROOT_URL = "/api/v1/users";
 
-    private AdminConstants() {
-        throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
-    }
+  private AdminConstants() {
+    throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
+  }
 }
