@@ -87,8 +87,9 @@ tasks.withType(Test) {
 jacocoTestReport {
     executionData(fileTree(project.buildDir).include("jacoco/*.exec"))
     reports {
-        xml.enabled = true
-        html.enabled = true
+        xml.required = true
+        html.required = true
+        csv.required = true
     }
 
     afterEvaluate {
@@ -104,8 +105,6 @@ jacocoTestReport {
 }
 
 spotless {
-    // optional: limit format enforcement to just the files changed by this branch
-    ratchetFrom 'origin/develop'
 
     format 'misc', {
         // define the files to apply `misc` to

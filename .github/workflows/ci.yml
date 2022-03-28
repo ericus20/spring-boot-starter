@@ -23,12 +23,13 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
       with:
-        arguments: build
+        arguments: clean build
+        build-root-directory: .
     - name: Add coverage to PR
       id: jacoco
       uses: madrapps/jacoco-report@v1.2
       with:
-        paths: ${{github.workspace}}/api/build/reports/jacoco/test/jacocoTestReport.xml
+        paths: ${{github.workspace}}/build/reports/jacoco/test/jacocoTestReport.xml
         token: ${{secrets.GITHUB_TOKEN}}
         min-coverage-overall: 60
         min-coverage-changed-files: 50
@@ -36,7 +37,7 @@ jobs:
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
-        jacoco-csv-file: api/build/reports/jacoco/test/jacocoTestReport.csv
+        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
     - name: Log coverage percentage
       run: |
         echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
@@ -68,5 +69,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: "{{defaultContext}}:api"
-          tags: ericus20/e-commerce-api:latest
+          context: "{{defaultContext}}:."
+          tags: ericus20/spring-boot-starter:latest
