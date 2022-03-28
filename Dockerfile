@@ -35,4 +35,4 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib ./lib
 COPY --from=build ${DEPENDENCY}/META-INF ./META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes .
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-cp",".:lib/*","com.developersboard.CentralizedBlogApplication"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-cp",".:lib/*","com.developersboard.SpringBootStarterApplication"]
