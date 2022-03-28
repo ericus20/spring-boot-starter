@@ -13,6 +13,7 @@ import com.developersboard.web.payload.response.UserResponse;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import org.apache.commons.lang3.Validate;
@@ -233,7 +234,9 @@ public final class UserUtils {
     List<String> roles = new ArrayList<>();
 
     for (UserRole userRole : userRoles) {
-      roles.add(userRole.getRole().getName());
+      if (Objects.nonNull(userRole.getRole())) {
+        roles.add(userRole.getRole().getName());
+      }
     }
     return roles;
   }

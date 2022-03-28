@@ -1,11 +1,11 @@
 package com.developersboard.backend.service.user.impl;
 
-import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.persistent.domain.user.UserHistory;
 import com.developersboard.backend.persistent.domain.user.UserRole;
 import com.developersboard.backend.persistent.repository.UserRepository;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
+import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.CacheConstants;
 import com.developersboard.constant.UserConstants;
@@ -41,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
+  private final RoleService roleService;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -267,10 +268,15 @@ public class UserServiceImpl implements UserService {
     Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
-    storedUser.setEnabled(true);
-    UserDto userDto = UserUtils.convertToUserDto(storedUser);
+    LOG.debug("Enabling user {}", storedUser);
 
-    return persistUser(userDto, Collections.emptySet(), UserHistoryType.ACCOUNT_ENABLED, true);
+    if (Objects.nonNull(storedUser)) {
+      storedUser.setEnabled(true);
+      UserDto userDto = UserUtils.convertToUserDto(storedUser);
+
+      return persistUser(userDto, Collections.emptySet(), UserHistoryType.ACCOUNT_ENABLED, true);
+    }
+    return null;
   }
 
   /**
@@ -291,10 +297,13 @@ public class UserServiceImpl implements UserService {
     Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
-    storedUser.setEnabled(false);
-    UserDto userDto = UserUtils.convertToUserDto(storedUser);
+    if (Objects.nonNull(storedUser)) {
+      storedUser.setEnabled(false);
+      UserDto userDto = UserUtils.convertToUserDto(storedUser);
 
-    return persistUser(userDto, Collections.emptySet(), UserHistoryType.ACCOUNT_DISABLED, true);
+      return persistUser(userDto, Collections.emptySet(), UserHistoryType.ACCOUNT_DISABLED, true);
+    }
+    return null;
   }
 
   /**
@@ -311,9 +320,11 @@ public class UserServiceImpl implements UserService {
 
     var user = UserUtils.convertToUser(userDto);
     for (RoleType roleType : roles) {
-      user.addUserRole(new UserRole(user, new Role(roleType)));
+      var role = roleService.getRoleByName(roleType.getRole());
+      if (Objects.nonNull(role)) {
+        user.addUserRole(new UserRole(user, role));
+      }
     }
-    historyType = Objects.isNull(historyType) ? UserHistoryType.PROFILE_UPDATE : historyType;
     user.addUserHistory(new UserHistory(UUID.randomUUID().toString(), user, historyType));
 
     return saveOrUpdate(user, isUpdate);

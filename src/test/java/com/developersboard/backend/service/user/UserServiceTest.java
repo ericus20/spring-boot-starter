@@ -1,8 +1,10 @@
 package com.developersboard.backend.service.user;
 
+import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.persistent.repository.UserRepository;
 import com.developersboard.backend.service.user.impl.UserServiceImpl;
+import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class UserServiceTest {
 
   @InjectMocks private transient UserServiceImpl userService;
+
+  @Mock private transient RoleService roleService;
 
   @Mock private transient UserRepository userRepository;
 
@@ -37,6 +41,8 @@ class UserServiceTest {
   @Test
   void createUserNotExistingWithDefaultRoleAsClient() {
 
+    var role = new Role(RoleType.ROLE_USER);
+    Mockito.when(roleService.getRoleByName(ArgumentMatchers.anyString())).thenReturn(role);
     Mockito.when(userRepository.findByEmail(userDto.getEmail())).thenReturn(null);
     Mockito.when(userRepository.save(ArgumentMatchers.any(User.class))).thenReturn(user);
     Mockito.when(passwordEncoder.encode(userDto.getPassword())).thenReturn(userDto.getPassword());

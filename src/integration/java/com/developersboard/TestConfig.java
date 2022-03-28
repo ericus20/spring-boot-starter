@@ -23,19 +23,19 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 public class TestConfig {
 
   @Value("${spring.mail.username}")
-  private String mailUsername;
+  private transient String mailUsername;
 
   @Value("${spring.mail.password}")
-  private String mailPassword;
+  private transient String mailPassword;
 
   @Value("${spring.mail.host}")
-  private String mailHost;
+  private transient String mailHost;
 
   @Value("${spring.mail.port}")
-  private int mailPort;
+  private transient int mailPort;
 
   @Value("${spring.mail.protocol}")
-  private String mailProtocol;
+  private transient String mailProtocol;
 
   /**
    * Creates a JavaMailSender bean.

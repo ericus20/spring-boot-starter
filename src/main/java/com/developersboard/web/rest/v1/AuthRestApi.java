@@ -99,6 +99,7 @@ public class AuthRestApi {
     }
     String username = jwtService.getUsernameFromToken(decryptedRefreshToken);
     var userDetails = userDetailsService.loadUserByUsername(username);
+    // Authenticate to ensure the user is valid.
     SecurityUtils.authenticateUser(authenticationManager, userDetails);
 
     var expiration = DateUtils.addMinutes(new Date(), NUMBER_OF_MINUTES_TO_EXPIRE);

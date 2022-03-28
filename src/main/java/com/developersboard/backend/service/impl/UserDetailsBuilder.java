@@ -5,6 +5,7 @@ import com.developersboard.constant.UserConstants;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
@@ -68,7 +69,11 @@ public final class UserDetailsBuilder implements UserDetails {
     Set<GrantedAuthority> authorities = new HashSet<>();
     user.getUserRoles()
         .forEach(
-            userRole -> authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName())));
+            userRole -> {
+              if (Objects.nonNull(userRole.getRole())) {
+                authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
+              }
+            });
 
     return UserDetailsBuilder.builder()
         .id(user.getId())

@@ -14,9 +14,9 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration
 class EmailServiceIntegrationTest extends IntegrationTestUtils {
 
-  @Autowired private EmailService emailService;
+  @Autowired private transient EmailService emailService;
 
-  @Autowired private GreenMail greenMail;
+  @Autowired private transient GreenMail greenMail;
 
   @Test
   void sendEmail() throws MessagingException {

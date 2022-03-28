@@ -1,11 +1,19 @@
 package com.developersboard;
 
+import com.developersboard.backend.service.impl.UserDetailsBuilder;
+import com.developersboard.shared.util.UserUtils;
 import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 /**
  * This class holds common test functionalities to be used with other Test.
@@ -22,6 +30,10 @@ public class TestUtils {
   private static final String[] BASE_EQUALS_AND_HASH_CODE_FIELDS = {"version", "publicId"};
   private static final String[] USER_EQUALS_FIELDS = {"publicId", "username", "email"};
 
+  public static final String ANONYMOUS_USER = "anonymousUser";
+  public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
+  public static final String ROLE_USER = "ROLE_USER";
+
   public static Collection<String> getBaseEqualsAndHashCodeFields() {
     return Collections.unmodifiableCollection(List.of(BASE_EQUALS_AND_HASH_CODE_FIELDS));
   }
@@ -37,6 +49,29 @@ public class TestUtils {
   public static Collection<String> getUserEqualsFields() {
     var userEquals = ArrayUtils.addAll(BASE_EQUALS_AND_HASH_CODE_FIELDS, USER_EQUALS_FIELDS);
     return List.of(userEquals);
+  }
+
+  /**
+   * Sets the authentication object for unit testing purposes.
+   *
+   * @param username the user to authenticate
+   * @param role the role to be assigned
+   */
+  public static void setAuthentication(final String username, final String role) {
+    var authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
+    Authentication auth;
+    if (username.equals(ANONYMOUS_USER)) {
+      var user =
+          User.builder().username(username).password(username).authorities(authorities).build();
+
+      auth = new AnonymousAuthenticationToken(username, user, authorities);
+    } else {
+      var user = UserUtils.createUser(username);
+      var principal = UserDetailsBuilder.buildUserDetails(user);
+
+      auth = new UsernamePasswordAuthenticationToken(principal, null, authorities);
+    }
+    SecurityContextHolder.getContext().setAuthentication(auth);
   }
 
   /**

@@ -16,6 +16,7 @@ import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
@@ -50,8 +51,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   private transient Duration refreshTokenDuration;
 
   @BeforeEach
-  void setUp() {
-    var userDto = UserUtils.createUserDto(true);
+  void setUp(TestInfo testInfo) {
+    var userDto = UserUtils.createUserDto(testInfo.getDisplayName(), true);
     storedUser = createAndAssertUser(userService, userDto);
 
     var loginRequest = new LoginRequest(storedUser.getUsername(), userDto.getPassword());
@@ -67,37 +68,42 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void testLoginPathPreflightReturnsOk() throws Exception {
+  void loginPathPreflightReturnsOk() throws Exception {
     performRequest(MockMvcRequestBuilders.options(loginUri))
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
-  void testRefreshPathPreflightReturnsOk() throws Exception {
+  void refreshPathPreflightReturnsOk() throws Exception {
     performRequest(MockMvcRequestBuilders.options(refreshUri))
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
-  void testLoginPathWithValidCredentialsReturnsAccessToken() throws Exception {
+  void loginPathWithValidCredentialsReturnsAccessToken() throws Exception {
     MvcResult mvcResult =
         performRequest(MockMvcRequestBuilders.post(loginUri))
             .andExpectAll(expectedResponseDetails(storedUser))
             .andReturn();
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
-    JwtResponseBuilder jwtResponseBuilder =
-        TestUtils.parse(contentAsString, JwtResponseBuilder.class);
+    JwtResponseBuilder jwtResponse = TestUtils.parse(contentAsString, JwtResponseBuilder.class);
 
-    String encryptedAccessToken = jwtResponseBuilder.getAccessToken();
+    String encryptedAccessToken = jwtResponse.getAccessToken();
     Assertions.assertFalse(jwtService.isValidJwtToken(encryptedAccessToken));
 
     String originalAccessToken = encryptionService.decrypt(encryptedAccessToken);
     Assertions.assertTrue(jwtService.isValidJwtToken(originalAccessToken));
   }
 
+  /**
+   * Refreshing with a valid refresh token returns a new access token.
+   *
+   * @throws Exception if an error occurs
+   */
   @Test
-  void testRefreshPathWithValidRefreshTokenReturnsNewAccessToken() throws Exception {
+  void validRefreshTokenReturnsNewAccessToken() throws Exception {
+
     var jwtToken = jwtService.generateJwtToken(storedUser.getUsername());
     var cookie = cookieService.createTokenCookie(jwtToken, TokenType.REFRESH);
 
@@ -108,10 +114,9 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
             .andReturn();
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
-    JwtResponseBuilder jwtResponseBuilder =
-        TestUtils.parse(contentAsString, JwtResponseBuilder.class);
+    JwtResponseBuilder jwtResponse = TestUtils.parse(contentAsString, JwtResponseBuilder.class);
 
-    String encryptedAccessToken = jwtResponseBuilder.getAccessToken();
+    String encryptedAccessToken = jwtResponse.getAccessToken();
     // Assert that the access token returned by the refresh token is valid
     Assertions.assertFalse(jwtService.isValidJwtToken(encryptedAccessToken));
 

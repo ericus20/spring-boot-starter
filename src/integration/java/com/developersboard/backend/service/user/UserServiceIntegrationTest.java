@@ -7,6 +7,7 @@ import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.util.StringUtils;
 import com.developersboard.shared.util.UserUtils;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +37,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
           // assert that the user now has a new USER role assigned after creation.
           Assertions.assertFalse(
               persistedUserDto.getUserRoles().stream()
+                  .filter(userRole -> Objects.nonNull(userRole.getRole()))
                   .filter(userRole -> userRole.getRole().equals(new Role(RoleType.ROLE_USER)))
                   .collect(Collectors.toSet())
                   .isEmpty());
@@ -136,6 +138,25 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
+  void existsByUsername(TestInfo testInfo) {
+    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+
+    var existsByUsername = userService.existsByUsername(userDto.getUsername());
+    Assertions.assertTrue(existsByUsername);
+  }
+
+  @Test
+  void existsByUsernameWithNullThrowsException() {
+    Assertions.assertThrows(NullPointerException.class, () -> userService.existsByUsername(null));
+  }
+
+  @Test
+  void existsByUsernameNotExisting(TestInfo testInfo) {
+    var existsByUsername = userService.existsByUsername(testInfo.getDisplayName());
+    Assertions.assertFalse(existsByUsername);
+  }
+
+  @Test
   void existsByUsernameOrEmailNotEnabled(TestInfo testInfo) {
     var user = createAndAssertUser(userService, testInfo.getDisplayName(), false);
 
@@ -164,5 +185,59 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
     Assertions.assertTrue(updatedUserDto.getVersion() > userDto.getVersion());
     Assertions.assertTrue(updatedUserDto.getUpdatedAt().isAfter(updatedUserDto.getCreatedAt()));
+  }
+
+  @Test
+  void enableUser(TestInfo testInfo) {
+    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+
+    // User should not be enabled after creation.
+    Assertions.assertFalse(userDto.isEnabled());
+
+    // Enable the user.
+    var updatedUserDto = userService.enableUser(userDto.getPublicId());
+    Assertions.assertNotNull(updatedUserDto.getId());
+    Assertions.assertTrue(updatedUserDto.isEnabled());
+    Assertions.assertEquals(updatedUserDto.getId(), userDto.getId());
+
+    Assertions.assertTrue(updatedUserDto.getVersion() > userDto.getVersion());
+    Assertions.assertTrue(updatedUserDto.getUpdatedAt().isAfter(updatedUserDto.getCreatedAt()));
+  }
+
+  @Test
+  void enableUserNotWithNullPublicId() {
+    Assertions.assertThrows(NullPointerException.class, () -> userService.enableUser(null));
+  }
+
+  @Test
+  void enableUserNotExistingDoesNothing(TestInfo testInfo) {
+    Assertions.assertNull(userService.enableUser(testInfo.getDisplayName()));
+  }
+
+  @Test
+  void disableUser(TestInfo testInfo) {
+    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), true);
+
+    // User should be enabled after creation.
+    Assertions.assertTrue(userDto.isEnabled());
+
+    // Disable the user.
+    var updatedUserDto = userService.disableUser(userDto.getPublicId());
+    Assertions.assertNotNull(updatedUserDto.getId());
+    Assertions.assertFalse(updatedUserDto.isEnabled());
+    Assertions.assertEquals(updatedUserDto.getId(), userDto.getId());
+
+    Assertions.assertTrue(updatedUserDto.getVersion() > userDto.getVersion());
+    Assertions.assertTrue(updatedUserDto.getUpdatedAt().isAfter(updatedUserDto.getCreatedAt()));
+  }
+
+  @Test
+  void disableUserNotWithNullPublicId() {
+    Assertions.assertThrows(NullPointerException.class, () -> userService.disableUser(null));
+  }
+
+  @Test
+  void disableUserNotExistingDoesNothing(TestInfo testInfo) {
+    Assertions.assertNull(userService.disableUser(testInfo.getDisplayName()));
   }
 }

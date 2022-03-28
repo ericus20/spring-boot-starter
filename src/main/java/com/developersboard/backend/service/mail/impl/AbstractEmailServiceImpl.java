@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import javax.mail.internet.InternetAddress;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.mail.SimpleMailMessage;
 import org.thymeleaf.context.Context;
@@ -133,16 +134,12 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
   private HtmlEmailRequest prepareHtmlEmailRequest(
       UserDto userDto, String token, String path, String template, String subject) {
 
-    String link = null;
-    if (Objects.nonNull(token)) {
-      link = WebUtils.getGenericUri(path, token);
-    } else if (Objects.nonNull(path)) {
-      link = WebUtils.getGenericUri(path);
-    }
     // get the links used in the email
     Map<String, String> links = WebUtils.getDefaultEmailUrls();
-    if (Objects.nonNull(link)) {
-      links.put(EmailConstants.EMAIL_LINK, link);
+    if (StringUtils.isNotBlank(path) && StringUtils.isNotBlank(token)) {
+      links.put(EmailConstants.EMAIL_LINK, WebUtils.getGenericUri(path, token));
+    } else if (StringUtils.isNotBlank(path)) {
+      links.put(EmailConstants.EMAIL_LINK, WebUtils.getGenericUri(path));
     }
 
     HtmlEmailRequest emailRequest = new HtmlEmailRequest();

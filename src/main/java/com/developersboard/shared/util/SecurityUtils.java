@@ -97,11 +97,12 @@ public final class SecurityUtils {
    * @param userDetails the userDetails
    */
   public static void authenticateUser(AuthenticationManager authManager, UserDetails userDetails) {
-    var authenticationToken =
-        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-    var authentication = authManager.authenticate(authenticationToken);
+    if (Objects.nonNull(authManager) && Objects.nonNull(userDetails)) {
+      var authentication =
+          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-    setAuthentication(authentication);
+      setAuthentication(authentication);
+    }
   }
 
   /**

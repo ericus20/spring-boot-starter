@@ -32,8 +32,8 @@ import org.thymeleaf.TemplateEngine;
 @Profile({ProfileTypeConstants.PROD, ProfileTypeConstants.TEST})
 public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
 
-  private final JavaMailSender mailSender;
-  private final TemplateEngine templateEngine;
+  private final transient JavaMailSender mailSender;
+  private final transient TemplateEngine templateEngine;
 
   /**
    * Controller to inject dependencies.
