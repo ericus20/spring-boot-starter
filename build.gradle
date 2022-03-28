@@ -62,6 +62,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+     implementation 'org.liquibase:liquibase-core'
 
     // MapStruct for Object Mapping
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
