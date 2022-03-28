@@ -3,6 +3,7 @@ package com.developersboard.web.payload.request.mail;
 import com.developersboard.shared.dto.UserDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.thymeleaf.context.Context;
 
 /**
@@ -13,8 +14,9 @@ import org.thymeleaf.context.Context;
  * @since 1.0
  */
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class HtmlEmailRequest extends EmailRequest {
+public final class HtmlEmailRequest extends EmailRequest {
   private String template;
   private UserDto sender;
   private UserDto receiver;

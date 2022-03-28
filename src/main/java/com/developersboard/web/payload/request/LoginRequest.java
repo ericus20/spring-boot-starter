@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
+public final class LoginRequest {
 
   @NotBlank(message = UserConstants.BLANK_USERNAME)
   @Size(min = 3, max = 50, message = UserConstants.USERNAME_SIZE)

@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * This class models the format of the signUp request allowed through the controller endpoints.
@@ -16,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SignUpRequest {
+public final class SignUpRequest {
 
   @EqualsAndHashCode.Include
   @NotBlank(message = UserConstants.BLANK_USERNAME)
@@ -29,6 +30,7 @@ public class SignUpRequest {
   @NotBlank(message = UserConstants.BLANK_EMAIL)
   private String email;
 
+  @ToString.Exclude
   @NotBlank(message = UserConstants.BLANK_PASSWORD)
   @Size(min = 4, max = 15, message = UserConstants.PASSWORD_SIZE)
   private String password;
