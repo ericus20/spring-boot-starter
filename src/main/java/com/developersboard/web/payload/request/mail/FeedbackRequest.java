@@ -2,6 +2,7 @@ package com.developersboard.web.payload.request.mail;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,8 +14,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Data
 @Slf4j
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class FeedbackRequest extends EmailRequest {
+public final class FeedbackRequest extends EmailRequest {
   private String name;
   private String email;
   private String phone;
