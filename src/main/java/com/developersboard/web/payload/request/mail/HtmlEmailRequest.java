@@ -1,6 +1,8 @@
 package com.developersboard.web.payload.request.mail;
 
 import com.developersboard.shared.dto.UserDto;
+import java.io.File;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -21,4 +23,6 @@ public final class HtmlEmailRequest extends EmailRequest {
   private UserDto sender;
   private UserDto receiver;
   private Context context;
+
+  private Set<File> attachments;
 }

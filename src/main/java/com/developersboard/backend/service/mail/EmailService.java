@@ -31,6 +31,13 @@ public interface EmailService {
   void sendHtmlEmail(HtmlEmailRequest emailRequest);
 
   /**
+   * Sends an email with the provided details and template for html with an attachment.
+   *
+   * @param emailRequest the email format
+   */
+  void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest);
+
+  /**
    * Sends an email given a feedback Pojo.
    *
    * @param feedbackRequestBuilder the feedback pojo.

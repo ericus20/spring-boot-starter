@@ -7,15 +7,18 @@ import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.context.Context;
 
 /**
@@ -223,6 +226,35 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
       mailMessage.setFrom(String.valueOf(address));
     } catch (UnsupportedEncodingException e) {
       LOG.error("Could not create an internet address for the feedback {}", feedback, e);
+    }
+  }
+
+  /**
+   * Embed all files in the emailRequest as attachments in the email.
+   *
+   * @param emailRequest the emailRequest
+   * @param mimeMessageHelper the message helper
+   */
+  void addAttachments(HtmlEmailRequest emailRequest, MimeMessageHelper mimeMessageHelper) {
+    emailRequest.getAttachments().forEach(file -> addAttachment(file, mimeMessageHelper));
+  }
+
+  /**
+   * Embed an attachment to an email.
+   *
+   * @param file the file
+   * @param mimeMessageHelper the message helper
+   */
+  private void addAttachment(File file, MimeMessageHelper mimeMessageHelper) {
+    String fileName = file.getName();
+    try {
+      if (!file.exists()) {
+        LOG.error("File does not exist: {}", file);
+      }
+      mimeMessageHelper.addAttachment(fileName, file);
+      LOG.debug("Added a file attachment: {}", fileName);
+    } catch (MessagingException ex) {
+      LOG.error("Failed to add a file attachment: {}", fileName, ex);
     }
   }
 }

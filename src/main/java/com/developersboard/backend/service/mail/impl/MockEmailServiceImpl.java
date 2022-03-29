@@ -45,4 +45,16 @@ public class MockEmailServiceImpl extends AbstractEmailServiceImpl {
     LOG.info("Email request details include: {}", emailRequest);
     LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
   }
+
+  /**
+   * Sends an email with the provided details and template for html with an attachment.
+   *
+   * @param emailRequest the email format
+   */
+  @Override
+  public void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest) {
+    LOG.info(EmailConstants.SIMULATING_SENDING_AN_EMAIL);
+    LOG.info("attachments to be emailed are {}", emailRequest.getAttachments());
+    LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
+  }
 }

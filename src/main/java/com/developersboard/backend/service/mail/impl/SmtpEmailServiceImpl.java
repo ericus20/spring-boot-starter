@@ -18,6 +18,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 /**
  * SmtpEmailServiceImpl Class has the operation of email sending in a real time.
@@ -69,8 +70,22 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
     LOG.info("Template used is {}", templateEngine);
     LOG.debug("Sending html email with details {}", emailRequest);
     try {
-      mailSender.send(prepareMimeMessage(emailRequest));
+      mailSender.send(prepareMimeMessage(emailRequest, false));
       LOG.debug(EmailConstants.MAIL_SUCCESS_MESSAGE);
+    } catch (MessagingException | UnsupportedEncodingException e) {
+      LOG.error("Unexpected exception sending an html email", e);
+    }
+  }
+
+  /**
+   * Sends an email with the provided details and template for html with an attachment.
+   *
+   * @param emailRequest the email format
+   */
+  @Override
+  public void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest) {
+    try {
+      mailSender.send(prepareMimeMessage(emailRequest, true));
     } catch (MessagingException | UnsupportedEncodingException e) {
       LOG.error("Unexpected exception sending an html email", e);
     }
@@ -80,14 +95,19 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
    * Prepares a MimeMessage with provided EmailFormat.
    *
    * @param emailFormat the emailFormat
+   * @param withAttachment true if attachment is required
    * @return MimeMessage the MimeMessage
    */
-  private MimeMessage prepareMimeMessage(HtmlEmailRequest emailFormat)
+  private MimeMessage prepareMimeMessage(HtmlEmailRequest emailFormat, boolean withAttachment)
       throws MessagingException, UnsupportedEncodingException {
+
+    Context context = new Context();
+    context.setVariable(EmailConstants.URLS, emailFormat.getUrls());
+    emailFormat.setContext(context);
 
     MimeMessage mimeMessage = mailSender.createMimeMessage();
     MimeMessageHelper helper =
-        new MimeMessageHelper(mimeMessage, false, StandardCharsets.UTF_8.name());
+        new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
     helper.setTo(emailFormat.getTo());
     helper.setSentDate(new Date());
     // Set multiple recipients and cc them as needed
@@ -99,6 +119,10 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
     helper.setSubject(emailFormat.getSubject());
     // set up the senders address with the given name
     setFromAndReplyTo(emailFormat, helper);
+
+    if (withAttachment && Objects.nonNull(emailFormat.getAttachments())) {
+      addAttachments(emailFormat, helper);
+    }
     return mimeMessage;
   }
 

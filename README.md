@@ -29,6 +29,7 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 * [MySQL](https://www.mysql.com/) - Open-source relational database management system
 * [AWS](https://aws.amazon.com/) - On-demand cloud computing platforms
 * [H2](http://www.h2database.com/) - In-Memory Database for development
+* [Liquibase](https://liquibase.org/) - Rapidly manage database schema changes.
 * [Spotless](https://github.com/diffplug/spotless/) - Spotless is a general-purpose formatting
   plugin.
 * [Spring Security](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-security)
