@@ -142,3 +142,4 @@ TBD
 * Run integration tests using - **./gradlew integrationTest**
 * Run all tests using - **./gradlew testAll**
 * Access in-memory database on *http://localhost:8080/console*
+* Run owasp dependency check - **./gradlew  dependencyCheckAnalyze --info**

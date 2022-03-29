@@ -8,6 +8,7 @@ plugins {
     id 'idea'
     id 'java'
     id 'pmd'
+    id 'org.owasp.dependencycheck' version '7.0.1'
 }
 
 group = 'com.developersboard'
@@ -52,13 +53,14 @@ dependencies {
 
     // Utilities
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'commons-io:commons-io'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'commons-validator:commons-validator:1.7'
     implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
 
     // Database Tools
-    implementation 'com.h2database:h2'
+    implementation 'com.h2database:h2:2.1.210'
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
@@ -77,6 +79,12 @@ dependencies {
     testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.10'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    constraints {
+        implementation('commons-io:commons-io:2.11.0') {
+            because 'previous versions contain a vulernability'
+        }
+    }
 }
 
 tasks.withType(Test) {
