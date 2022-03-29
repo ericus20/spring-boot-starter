@@ -1,5 +1,5 @@
 /**
- * This is package holds core configuration classes. Core configuration class may include default,
+ * This package holds core configuration classes. Core configuration classes may include default,
  * development or production environment.
  */
 package com.developersboard.config.core;
