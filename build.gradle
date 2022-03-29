@@ -2,13 +2,17 @@ plugins {
     id 'org.springframework.boot' version '2.6.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.coditory.integration-test' version '1.3.0'
+    id 'org.owasp.dependencycheck' version '7.0.1'
     id 'com.diffplug.spotless' version '6.3.0'
     id 'eclipse'
     id 'jacoco'
     id 'idea'
     id 'java'
     id 'pmd'
-    id 'org.owasp.dependencycheck' version '7.0.1'
+}
+
+configurations.all {
+    resolutionStrategy.force 'commons-io:commons-io:2.11.0'
 }
 
 group = 'com.developersboard'
@@ -52,19 +56,24 @@ dependencies {
     implementation 'org.ehcache:ehcache-transactions'
 
     // Utilities
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'commons-io:commons-io'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.google.code.gson:gson:2.9.0'
-    implementation 'commons-validator:commons-validator:1.7'
     implementation 'com.github.javafaker:javafaker:1.0.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'commons-validator:commons-validator:1.7'
+    implementation 'com.fasterxml.jackson:jackson-bom:2.13.2'
+    implementation('com.fasterxml.jackson.core:jackson-databind') {
+        version {
+            strictly '2.13.2.1'
+        }
+    }
 
     // Database Tools
     implementation 'com.h2database:h2:2.1.210'
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
-    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.liquibase:liquibase-core:4.9.0'
 
     // MapStruct for Object Mapping
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
@@ -80,12 +89,6 @@ dependencies {
     testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.10'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-
-    constraints {
-        implementation('commons-io:commons-io:2.11.0') {
-            because 'previous versions contain a vulernability'
-        }
-    }
 }
 
 tasks.withType(Test) {
