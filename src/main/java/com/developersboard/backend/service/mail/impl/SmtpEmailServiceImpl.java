@@ -107,7 +107,7 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
 
     MimeMessage mimeMessage = mailSender.createMimeMessage();
     MimeMessageHelper helper =
-        new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
+        new MimeMessageHelper(mimeMessage, withAttachment, StandardCharsets.UTF_8.name());
     helper.setTo(emailFormat.getTo());
     helper.setSentDate(new Date());
     // Set multiple recipients and cc them as needed
