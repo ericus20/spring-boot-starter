@@ -1,493 +1,125 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
-
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="common-head (title)">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <!-- Webjars makes it easier to declare your static resources without hardcoded versions. -->
+  <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap-datetimepicker/css/datetimepicker.css}"
+        type="text/css">
 
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, user-scalable=no,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-          name="viewport">
-    <meta content="Tax Tracker" name="title">
-    <meta content="A web application to help clients track tax returns processing." name="description">
-    <meta content="MSLC" name="author">
-    <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <meta content="Master Service Learning Club VITA, MSLC VITA, Terp Tax TerpTax, UMD VITA, SMITH VITA, VITA, MSLC,
-                   mslc-vita, Tax, tax tracker, tracker, Terp-Tax" name="keywords">
-    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" th:if="${_csrf}"/>
-    <meta id="_csrf_header" th:content="${_csrf.headerName}" th:if="${_csrf}" th:name="_csrf_header"/>
+  <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}"
+        type="text/css">
 
-    <th:block th:if="${taxTemplate}">
-        <!--/*@thymesVar id="taxStartUpdateRedirect" type=""*/-->
-        <meta http-equiv="Refresh" th:content="|2; url=@{/tax/start}|" th:if="${taxStartUpdateRedirect}"/>
-        <!--/*@thymesVar id="appointmentUpdateRedirect" type=""*/-->
-        <meta http-equiv="Refresh" th:content="|2; url=@{/appointment}|" th:if="${appointmentUpdateRedirect}"/>
-    </th:block>
+  <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
+  <link rel="stylesheet" th:if="${formValidation}" th:href="@{/css/formValidation.min.css}"
+        type="text/css">
 
-    <!-- Favicon icon -->
-    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/vendor/assets/images/favicon/apple-touch-icon.png}">
-    <link rel="icon" sizes="32x32" th:href="@{/vendor/assets/images/favicon/favicon-32x32.png}" type="image/png">
-    <link rel="icon" sizes="16x16" th:href="@{/vendor/assets/images/favicon/favicon-16x16.png}" type="image/png">
-    <link rel="manifest" th:href="@{/vendor/assets/images/favicon/site.webmanifest}">
-    <link rel="shortcut icon" th:href="@{/vendor/assets/images/favicon/favicon.ico}">
-    <meta content="#da532c" name="msapplication-TileColor">
-    <meta name="msapplication-config" th:content="@{/vendor/assets/images/favicon/browserconfig.xml}">
-    <meta content="#ffffff" name="theme-color">
+  <!--/*@thymesVar id="togglePassword" type="java.lang.Boolean"*/-->
+  <link rel="stylesheet" th:if="${togglePassword}" th:href="@{/css/show-password-toggle.min.css}"
+        type="text/css">
+  <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
 
-    <!--Fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,600,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" th:href="@{/vendor/dist/fonts/css/all.min.css}" type="text/css">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
-    <!--Form Validation-->
-    <link rel="stylesheet" th:href="@{/vendor/form-validation/css/formValidation.min.css}" type="text/css">
-
-    <!--/*@thymesVar id="isLoginSignUp" type="java.lang.Boolean"*/-->
-    <th:block th:unless="${(isLoginSignUp != null && isLoginSignUp) or (taxTemplate != null && taxTemplate)}">
-        <!--Custom CSS-->
-        <link rel="stylesheet" th:href="@{/css/plugins.css}" type="text/css">
-        <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
-        <link rel="stylesheet" th:href="@{/css/custom.css}" type="text/css">
-        <style>
-            @media (min-width: 768px) {
-                .d-md-block {
-                    display: block !important;
-                }
-            }
-        </style>
-    </th:block>
-
-    <!--/*@thymesVar id="taxTemplate" type="java.lang.Boolean"*/-->
-    <th:block th:if="${(isLoginSignUp != null && isLoginSignUp) or (taxTemplate != null && taxTemplate)}">
-
-        <th:block th:if="${isLoginSignUp}">
-            <!-- page css -->
-            <link rel="stylesheet" th:href="@{/vendor/dist/css/pages/login-register-lock.css}">
-        </th:block>
-
-        <th:block th:if="${taxTemplate}">
-
-            <!-- jQuery UI -->
-            <link rel="stylesheet" th:href="@{/vendor/dist/css/jquery-ui-1-12-1.css}" type="text/css">
-
-            <!--Data Tables CSS-->
-            <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}" type="text/css">
-            <link rel="stylesheet" th:href="@{/webjars/datatables/css/dataTables.bootstrap.min.css}" type="text/css">
-        </th:block>
-
-        <!-- Custom CSS -->
-        <link rel="stylesheet" th:href="@{/vendor/dist/css/style.min.css}" type="text/css">
-    </th:block>
-
-    <!-- Modernizer js -->
-    <script th:href="@{/js/vendor/modernizr-3.5.0.min.js}"></script>
-    <!--/*@thymesVar id="title" type="java.lang.String"*/-->
-    <title th:text="${title} ? ${title} : _">..:: Tax Tracker ::..</title>
+  <title th:text="${title} ? '..:: Spring Boot Starter | ' + ${title} + ' ::..' : _">..:: Spring
+    Boot Starter ::..</title>
 </head>
 
 
-<body>
+<!-- Navigation -->
+<div th:fragment="common-navbar">
+  <img alt="banner" class="img-fluid" src="#" th:src="@{/images/banner.png}"/>
 
-<th:block th:fragment="common-ie-check">
-    <!--[if lte IE 9]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
-            href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and
-        security.</p>
-    <![endif]-->
-</th:block>
-
-
-<!-- Header -->
-<header class="header sticky--header" id="header" th:fragment="common-header">
-
-    <!-- Header Top Area -->
-    <div class="header__top bg--theme">
-        <div class="container">
-            <div class="header__top__inner">
-                <ul class="header__top__info">
-
-                    <li>
-                        <a target="_blank" th:href="'mailto://' + #{home.info.email}">
-                            <i class="flaticon-black-back-closed-envelope-shape"></i>
-                            <span th:text="#{home.info.email}"></span></a>
-                    </li>
-                </ul>
-                <div class="header__top__button">
-                    <a class="cr-btn cr-btn--lg" th:href="@{/appointment}">
-                        <span th:text="#{home.make.appointment}"></span>
-                    </a>
-                </div>
-            </div>
-        </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand ms-8" th:href="@{/account-overview}" th:text="#{navbar.home.text}"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item dropdown mx-3">
+            <a class="nav-link dropdown-toggle" href="#" id="accountsDropdownMenuLink" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <span th:text="#{navbar.account.text}"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accountsDropdownMenuLink">
+              <li><a class="dropdown-item" href="#" th:text="#{navbar.checking.text}"></a></li>
+              <li><a class="dropdown-item" href="#" th:text="#{navbar.savings.text}"></a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown mx-3">
+            <a class="nav-link dropdown-toggle" href="#" id="transferDropdownMenuLink" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <span th:text="#{navbar.transfer.text}"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="transferDropdownMenuLink">
+              <li><a class="dropdown-item" href="#" th:text="#{navbar.transfer.between.text}"></a>
+              </li>
+              <li><a class="dropdown-item" href="#" th:text="#{navbar.transfer.another.text}"></a>
+              </li>
+              <li role="separator" class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" th:text="#{navbar.add.edit.recipient.text}"></a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown mx-3">
+            <a class="nav-link dropdown-toggle" href="#" id="appointmentDropdownMenuLink"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span th:text="#{navbar.appointment.text}"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="appointmentDropdownMenuLink">
+              <li><a class="dropdown-item" href="#"
+                     th:text="#{navbar.appointment.schedule.text}"></a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav me-8">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <span th:text="#{navbar.me.text}"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" th:href="@{/profile}"
+                     th:text="#{navbar.profile.text}"></a></li>
+              <li role="separator" class="dropdown-divider"></li>
+              <li><a class="dropdown-item" th:href="@{/logout}" th:text="#{navbar.logout.text}"></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-    <!--// Header Top Area -->
-
-    <!-- Header Bottom Area -->
-    <div class="header__bottom bg--theme-secondary">
-        <div class="container d-none d-md-block">
-            <div class="header__bottom__inner">
-                <div class="header__logo">
-                    <a th:href="@{/}">
-                        <span class="lead" th:utext="#{project.short.name}"></span>
-                    </a>
-                </div>
-
-                <!-- Main Navigation -->
-                <nav class="header__menu main-navigation" id="main-navigation">
-                    <ul>
-                        <li>
-                            <a th:href="@{/}" th:text="#{navbar.home.text}"></a>
-                        </li>
-                        <li>
-                            <a th:href="@{/copy/about-us}" th:text="#{navbar.about.text}"></a>
-                        </li>
-                        <li>
-                            <a th:href="@{/what-to-bring}" th:text="#{navbar.what.to.bring.text}"></a>
-                        </li>
-                        <li>
-                            <a th:href="@{/more-on-taxes}" th:text="#{navbar.more.on.taxes.text}"></a>
-                        </li>
-                        <li>
-                            <a th:href="@{/contact}" th:text="#{navbar.contact.text}"></a>
-                        </li>
-                        <li sec:authorize="!isFullyAuthenticated()">
-                            <a th:href="@{/login}" th:text="#{navbar.login.signup.text}"></a>
-                        </li>
-                        <li class="cr-dropdown" sec:authorize="isFullyAuthenticated()">
-                            <a sec:authentication="name"></a>
-                            <ul class="cr-dropdown-menu">
-                                <li><a th:href="@{/profile}"><i class="ti-user"></i> My Profile</a></li>
-                                <li><a th:href="@{/tax/dashboard}"><i class="icon-speedometer"></i> Dashboard</a>
-                                <li><a sec:authorize="hasRole('ROLE_CLIENT')" th:href="@{/appointment/user}"><i
-                                        class="ti-user"></i> My Appointments</a></li>
-                                <li><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/appointment}"><i
-                                        class="ti-user"></i> All Appointments</a></li>
-                                <li><a th:href="@{/logout}"><i class="fa fa-power-off"></i> Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <!--// Main Navigation -->
-
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div class="container d-block d-lg-none">
-            <div class="mobile-menu clearfix d-md-block d-lg-none">
-                <a class="mobile-logo" th:href="@{/}">
-                    <span class="lead" th:utext="#{project.short.name}"></span>
-                </a>
-            </div>
-        </div>
-        <!-- //Mobile Menu -->
-
-    </div>
-    <!--// Header Bottom Area -->
-
-</header>
-<!-- //Header -->
-
-
-<!-- Breadcrumb Area -->
-<div class="cr-breadcrumb-area section-padding--xxs" id="cr-breadcrumb-area"
-     th:fragment="common-breadcrumb(section, lead)">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-5 col-lg-6 col-md-8">
-                <div class="cr-breadcrumb">
-                    <h1 th:text="${section}"></h1>
-                    <p th:text="${lead}"></p>
-                </div>
-            </div>
-        </div>
-    </div>
+  </nav>
 </div>
-<!--// Breadcrumb Area -->
-
-
-<!-- Features Area -->
-<section class="cr-section features-area" id="features-area" th:fragment="common-features">
-    <div class="row no-gutters">
-
-        <!-- Single Feature -->
-        <div class="col-lg-4">
-            <div class="feature">
-                <div class="feature__icon">
-								<span>
-									<i class="flaticon-shield"></i>
-								</span>
-                    <span>
-									<i class="flaticon-shield"></i>
-								</span>
-                </div>
-                <div class="feature__content">
-                    <!-- fadeInUp lets the icon animate -->
-                    <h4 class="wow fadeInUp">
-                        <a th:href="@{/features}">ENSURE SECURITY</a>
-                    </h4>
-                    <p class="wow fadeInUp" data-wow-delay="0.15s">We will work through
-                        the process to identify your needs, goals and strategy, and put
-                        your security first </p>
-                </div>
-            </div>
-        </div>
-        <!--// Single Feature -->
-
-        <!-- Single Feature -->
-        <div class="col-lg-4">
-            <div class="feature active">
-                <div class="feature__icon">
-								<span>
-									<i class="flaticon-team"></i>
-								</span>
-                    <span>
-									<i class="flaticon-team"></i>
-								</span>
-                </div>
-                <div class="feature__content">
-                    <h4 class="wow fadeInUp">
-                        <a th:href="@{/features#expert-team-section}">EXPERT TEAM</a>
-                    </h4>
-                    <p class="wow fadeInUp" data-wow-delay="0.15s">We will give you
-                        independent advice and help you get to your goal with our Expert
-                        Advisors
-                    </p>
-                </div>
-            </div>
-        </div>
-        <!--// Single Feature -->
-
-        <!-- Single Feature -->
-        <div class="col-lg-4">
-            <div class="feature">
-                <div class="feature__icon">
-								<span>
-									<i class="flaticon-right-quote"></i>
-								</span>
-                    <span>
-									<i class="flaticon-right-quote"></i>
-								</span>
-                </div>
-                <div class="feature__content">
-                    <h4 class="wow fadeInUp">
-                        <a th:href="@{/contact}">SUPPORT</a>
-                    </h4>
-                    <p class="wow fadeInUp" data-wow-delay="0.15s">Contact our customer support taxGroup if you have any
-                        further questions.
-                        We are here to help you out </p>
-                </div>
-            </div>
-        </div>
-        <!--// Single Feature -->
-
-    </div>
-</section>
-<!--// Features Area -->
-
-
-<!-- Call To Action Area -->
-<section class="cta-area section-padding--xxs bg--grey--light bg--abstruct-mask" id="cta-area"
-         th:fragment="common-call-to-action">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 offset-lg-1 col-md-12 offset-0">
-                <div class="calltoaction text-center">
-                    <h3>NEED ANY HELP WITH
-                        <span class="color--theme"> YOUR TAX RETURNS?</span>
-                    </h3>
-                    <p>Our professionals will provide you with independent and custom-tailored tax
-                        analysis and advice </p>
-                    <h6><a class="btn btn-link" th:href="@{/contact}"><span
-                            th:text="#{navbar.contact.text}"></span> Us Now!</a></h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--// Call To Action Area -->
-
-
-<!-- Footer Area -->
-<footer class="footer-area fixed--footer footer-section" id="footer" th:fragment="common-footer">
-
-    <!-- Footer Widgets Area -->
-    <div class="footer-area__widgets section-padding--xxs bg--dark--light">
-        <div class="container">
-            <div class="widget-area footer--widgets">
-
-                <!-- Single Widget -->
-                <section class="widget widget-about">
-                    <h5 class="widget-title">Hours</h5>
-                    <p><strong><i class="fas fa-house-user" title="Office"></i>&nbsp;</strong> 6pm - 9pm Mon - Thu</p>
-                    <p><strong><i class="far fa-calendar-check" title="Appointment">&nbsp;</i></strong> 6pm - 8:30pm Mon - Thu</p>
-                    <div class="social-icons social-icons--rounded">
-                        <ul>
-                            <li class="facebook">
-                                <a target="_blank" th:href="@{https://www.facebook.com/MSLCUMD/}">
-                                    <i class="fa fa-facebook"></i>
-                                </a>
-                            </li>
-                            <li class="twitter">
-                                <a href="#">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                            </li>
-                            <li class="instagram">
-                                <a target="_blank" th:href="@{https://www.instagram.com/mslc2020/}">
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </li>
-                            <li class="google-plus">
-                                <a href="#">
-                                    <i class="fa fa-google-plus"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-                <!--// Single Widget -->
-
-                <!-- Single Widget -->
-                <section class="widget widget-quick-links">
-                    <h5 class="widget-title">QUICK LINKS</h5>
-                    <ul>
-                        <li>
-                            <a th:href="@{/services}">Our Services</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/features}">Features</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/about-us}">About Us</a>
-                        </li>
-                        <li>
-                            <a th:href="@{/contact}">Contact Us</a>
-                        </li>
-                    </ul>
-                </section>
-                <!--// Single Widget -->
-
-                <!-- Single Widget -->
-                <section class="widget widget-quick-links" id="more-on-taxes">
-                    <h5 class="widget-title">More On Taxes</h5>
-                    <ul>
-                        <li>
-                            <a target="_blank"
-                               th:href="@{https://www.irs.gov/individuals/free-tax-return-preparation-for-you-by-volunteers}">Free
-                                Tax Returns</a>
-                        </li>
-                        <li>
-                            <a target="_blank"
-                               th:href="@{https://www.irs.gov/individuals/checklist-for-free-tax-return-preparation}">What
-                                To Bring</a>
-                        </li>
-                        <li>
-                            <a target="_blank"
-                               th:href="@{https://www.irs.gov/individuals/vita-sites-that-offer-caa-services}">CAA
-                                Services</a>
-                        </li>
-                    </ul>
-                </section>
-                <!--// Single Widget -->
-
-
-                <!-- Single Widget -->
-                <section class="widget widget-contact-info">
-                    <h5 class="widget-title">Contact Info</h5>
-                    <ul>
-                        <li>
-                            <p>7621 Mowatt Lane College Park, MD 20742</p>
-                        </li>
-
-                        <li>
-                            <p>
-                                <a target="_blank" th:href="'mailto://' + #{home.info.email}"
-                                   th:text="#{home.info.email}"></a>
-                            </p>
-                        </li>
-                    </ul>
-                </section>
-                <!--// Single Widget -->
-
-            </div>
-        </div>
-    </div>
-    <!--// Footer Widgets Area -->
-
-
-    <!-- Footer Copyright Area -->
-    <th:block th:include="common/tax/tax-template :: common-footer"/>
-    <!--// Footer Copyright Area -->
-
-</footer>
-<!-- //Footer Area -->
 
 
 <div th:fragment="common-scripts">
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script>
-        $(document).ready(() => {
-            let token = $('meta[name="_csrf"]').attr('content');
-            $.ajaxSetup({
-                headers: {'X-CSRF-TOKEN': token, 'X-XSRF-TOKEN': token}
-            });
-        });
-    </script>
-    <!-- jQuery UI -->
-    <script crossorigin="anonymous"
-            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" th:src="@{https://code.jquery.com/ui/1.12.1/jquery-ui.min.js}"></script>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+  <script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
+  <script th:src="@{/webjars/bootbox/bootbox.js}"></script>
 
-    <script crossorigin="anonymous"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
+  <script th:if="${formValidation}" th:src="@{/js/form-validation/FormValidation.min.js}"></script>
+  <script th:if="${formValidation}" th:src="@{/js/form-validation/Bootstrap5.min.js}"></script>
+  <script th:if="${formValidation}"
+          th:src="@{/js/form-validation/FormValidationScript.js}"></script>
 
-    <script th:src="@{/vendor/form-validation/js/formValidation.min.js}"></script>
-    <script th:src="@{/vendor/form-validation/js/framework/bootstrap.min.js}"></script>
+  <!--/*@thymesVar id="togglePassword" type="java.lang.Boolean"*/-->
+  <script th:if="${togglePassword}" th:src="@{/js/show-password-toggle.min.js}"></script>
 
-    <script th:src="@{/js/passwordStrengthValidator.js}"></script>
-    <script th:src="@{/js/formValidationScript.js}"></script>
-
-
-    <!--/*@thymesVar id="taxTemplate" type="java.lang.Boolean"*/-->
-    <th:block th:unless="${taxTemplate}">
-        <script th:src="@{/js/plugins.js}"></script>
-        <script th:src="@{/js/active.js}"></script>
-        <script th:src="@{/js/scripts.js}"></script>
-    </th:block>
-
-    <th:block th:if="${taxTemplate}">
-        <!-- slimscrollbar scrollbar JavaScript -->
-        <script th:src="@{/vendor/dist/js/perfect-scrollbar.jquery.min.js}"></script>
-        <!--Wave Effects -->
-        <script th:src="@{/vendor/dist/js/waves.js}"></script>
-        <!--Menu sidebar -->
-        <script th:src="@{/vendor/dist/js/sidebarmenu.js}"></script>
-        <!--stickey kit -->
-        <script th:src="@{/vendor/assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js}"></script>
-        <script th:src="@{/vendor/assets/node_modules/sparkline/jquery.sparkline.min.js}"></script>
-        <!--Custom JavaScript -->
-        <script th:src="@{/vendor/dist/js/custom.min.js}"></script>
-    </th:block>
-
-    <!-- Masking JS -->
-    <script th:src="@{/vendor/assets/node_modules/inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
-    <script th:src="@{/vendor/dist/js/pages/mask.init.js}"></script>
-
+  <script th:src="@{/js/main.js}"></script>
 </div>
-
-
-</body>
 
 
 </html>

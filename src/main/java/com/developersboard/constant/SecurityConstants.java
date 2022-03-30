@@ -1,9 +1,12 @@
 package com.developersboard.constant;
 
+import com.developersboard.constant.user.PasswordConstants;
+import com.developersboard.constant.user.SignUpConstants;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
@@ -45,7 +48,10 @@ public final class SecurityConstants {
     "/resources/**",
     "/static/**",
     "/console/**",
-    "/actuator/health"
+    "/actuator/health",
+    SignUpConstants.SIGN_UP_VERIFY_MAPPING,
+    StringUtils.joinWith(StringUtils.EMPTY, SignUpConstants.SIGN_UP_MAPPING, "/**"),
+    StringUtils.joinWith(StringUtils.EMPTY, PasswordConstants.FORGOT_ROOT_MAPPING, "/**"),
   };
 
   public static final List<String> ALLOWED_HTTP_METHODS =

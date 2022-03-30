@@ -2,7 +2,7 @@ package com.developersboard.backend.service.mail.impl;
 
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.constant.EmailConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;

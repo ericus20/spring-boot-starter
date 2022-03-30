@@ -23,13 +23,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findByEmail(String email);
 
   /**
-   * Check if user exists by email.
+   * Find user by public id.
    *
-   * @param email email to check if user exists.
-   * @return True if user exists or false otherwise.
+   * @param publicId publicId used to search for user.
+   * @return User found.
    */
-  Boolean existsByEmailOrderById(String email);
-
+  User findByPublicId(String publicId);
   /**
    * Find user by username.
    *
@@ -37,6 +36,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @return User found.
    */
   User findByUsername(String username);
+
+  /**
+   * Check if user exists by email.
+   *
+   * @param email email to check if user exists.
+   * @return True if user exists or false otherwise.
+   */
+  Boolean existsByEmailOrderById(String email);
 
   /**
    * Check if user exists by username.
@@ -57,10 +64,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
       String username, String email);
 
   /**
-   * Find user by public id.
+   * Checks if the publicId and verificationToken exists.
    *
-   * @param publicId publicId used to search for user.
-   * @return User found.
+   * @param publicId the publicId
+   * @param verificationToken the verificationToken
+   * @return <code>true</code> if publicId exists
    */
-  User findByPublicId(String publicId);
+  Boolean existsByPublicIdAndVerificationTokenOrderById(String publicId, String verificationToken);
 }

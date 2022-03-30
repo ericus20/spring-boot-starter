@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<th:block th:replace="common/template :: common-head(title='Profile')"/>
+
+<body>
+
+<!-- Navigation Section -->
+<th:block th:replace="common/template :: common-navbar"/>
+
+
+<!-- Container starts-->
+<div class="container">
+
+  <!-- Row starts-->
+  <div class="row">
+    <!-- Col starts-->
+    <div class="col-md-3 offset-md-4">
+
+      <form id="login-form" method="post" th:action="@{/}" th:object="${user}">
+        <fieldset>
+          <legend>Profile</legend>
+
+          <!-- Username input starts-->
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" class="form-control rounded" id="username" name="username"
+                     th:field="*{name}"
+                     aria-label="Username" aria-describedby="username" required autofocus>
+            </div>
+          </div>
+          <!-- Username input ends -->
+
+        </fieldset>
+      </form>
+
+    </div>
+    <!-- Col ends-->
+  </div>
+  <!-- Row ends -->
+
+</div>
+<!-- Container ends-->
+
+
+<!--Common Body Scripts-->
+<div th:replace="common/template :: common-scripts"></div>
+</body>
+</html>

@@ -90,4 +90,23 @@ class UserServiceTest {
   void testGetUserByPublicIdThrowsExceptionOnNullInput() {
     Assertions.assertThrows(NullPointerException.class, () -> userService.findByPublicId(null));
   }
+
+  @Test
+  void testIsVerificationTokenValidThrowsExceptionOnNullInput() {
+    Assertions.assertThrows(
+        NullPointerException.class, () -> userService.isVerificationTokenValid(null, null));
+  }
+
+  @Test
+  void testSaveVerificationTokenThrowsExceptionOnNullInput() {
+    Assertions.assertThrows(
+        NullPointerException.class, () -> userService.saveVerificationToken(null, null));
+  }
+
+  @Test
+  void testSaveVerificationTokenThrowsIllegalArgumentExceptionOnEmptyToken(TestInfo testInfo) {
+    var userDto = UserUtils.createUserDto(testInfo.getDisplayName());
+    Assertions.assertThrows(
+        IllegalArgumentException.class, () -> userService.saveVerificationToken(userDto, ""));
+  }
 }

@@ -9,6 +9,9 @@ package com.developersboard.constant;
  */
 public final class ErrorConstants {
 
+  public static final String ERROR = "error";
+  public static final String ERROR_MESSAGE = "errorMessage";
+
   public static final String NOT_INSTANTIABLE = "This class cannot be instantiated";
   public static final String INVALID_TOKEN = "Invalid token";
   public static final String UNAUTHORIZED_ACCESS_MESSAGE =
@@ -23,6 +26,7 @@ public final class ErrorConstants {
   public static final String PASSWORD_SIZE = "Password should be at least 4 characters";
 
   public static final String COULD_NOT_CREATE_USER = "Could not create user {}";
+  public static final String NULL_ELEMENTS_NOT_ALLOWED = "Null elements not allowed!";
 
   private ErrorConstants() {
     throw new AssertionError(NOT_INSTANTIABLE);

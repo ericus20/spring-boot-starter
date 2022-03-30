@@ -98,7 +98,7 @@
                     <td align="center" style="padding: 40px 10px 40px 10px;" valign="top">
                         <a href="#" style="text-decoration: none;" target="_blank">
 							<span border="0" style="display: block; font-family: 'Poppins', sans-serif;
-							color: #ff9331; font-size: 36px;"><b th:utext="#{project.short.name}"></b></span>
+							color: #ff9331; font-size: 36px;"><b th:utext="#{project.name}"></b></span>
                         </a>
                     </td>
                 </tr>
@@ -187,10 +187,10 @@
                         style="padding: 30px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
                         <p style="margin: 0;">
                             <a style="color: #999999; font-weight: 700;" target="_blank"
-                               th:href="@{${urls.get('dashboardLink')}}">Dashboard</a>
+                               th:href="@{${urls.get('accountOverviewLink')}}">Account Overview</a>
                             -
                             <a style="color: #999999; font-weight: 700;" target="_blank"
-                               th:href="@{${urls.get('aboutUsLink')}}">About Us</a>
+                               th:href="@{${urls.get('aboutUsLink')}}">Appointments</a>
                             -
                             <a style="color: #999999; font-weight: 700;" target="_blank"
                                th:href="@{${urls.get('helpLink')}}">Help</a>
@@ -208,7 +208,7 @@
                 <tr>
                     <td align="left" bgcolor="#f4f4f4"
                         style="padding: 0px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
-                        <p style="margin: 0;" th:utext="#{project.name}">Spring Boot Starter</p>
+                        <p style="margin: 0;" th:utext="#{project.name}"></p>
                     </td>
                 </tr>
                 <!-- COPYRIGHT -->
@@ -219,7 +219,7 @@
                             <script>
                                 console.log(new Date().getFullYear())
                             </script>
-                            <span th:utext="#{project.short.name}">SBS</span>. All rights reserved .
+                            <span th:utext="#{project.short.name}"></span>. All rights reserved .
                         </p>
                     </td>
                 </tr>

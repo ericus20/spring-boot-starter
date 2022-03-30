@@ -1,155 +1,92 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <!-- Head -->
-<th:block th:replace="common/template :: common-head(title='..:: Tax Tracker | Home ::..')"/>
+<th:block th:replace="common/template :: common-head(title='Login')"/>
 
 <body>
+<!-- Login Section -->
+<img alt="banner" class="img-fluid" src="#" th:src="@{/images/banner.png}"/>
 
-<!--[if lte IE 9]>
-<th:block th:replace="common/template :: common-ie-check">
-<![endif]-->
+<!-- Container starts-->
+<div class="container">
 
-<!-- Add your site or application content here -->
-
-
-<div class="fakeloader"></div>
-
-<!-- Main wrapper -->
-<div class="wrapper" id="wrapper">
-
-    <!-- Start: Header Section -->
-    <header th:replace="common/template :: common-header"></header>
-    <!-- End: Header Section -->
-
-    <!-- Top Banner -->
-    <div class="banner-area">
-        <div class="banner banner-slider-active banner--animated-content">
-
-            <!-- Single Banner -->
-            <div class="banner__single bg-image--1" data-black-overlay="6">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-7 col-lg-8">
-                            <div class="banner__single__content">
-                                <h1>Worried
-                                    <span class="color--theme">about taxes?</span> we are experts in
-                                    <span class="color--theme">tax</span> solutions</h1>
-                                <a class="cr-btn" th:href="@{/tax/dashboard}">
-                                    <span th:text="#{home.call.to.action}"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- //Single Banner -->
-
-            <!-- Single Banner -->
-            <div class="banner__single bg-image--2" data-black-overlay="6">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2 col-12 offset-0">
-                            <div class="banner__single__content text-center">
-                                <h1>SLEEP
-                                    <span class="color--theme">TIGHT</span> WHILE WE HANDLE YOUR
-                                    <span class="color--theme">TAX</span> PROBLEMS</h1>
-                                <a class="cr-btn" th:href="@{/tax/dashboard}">
-                                    <span th:text="#{home.call.to.action}"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- //Single Banner -->
-
-            <!-- Single Banner -->
-            <div class="banner__single bg-image--3" data-black-overlay="6">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-7 col-lg-8">
-                            <div class="banner__single__content">
-                                <h1>WE
-                                    <span class="color--theme">GOT YOU</span> COVERED WITH YOUR
-                                    <span class="color--theme">TAX</span> RETURNS</h1>
-                                <a class="cr-btn" th:href="@{/tax/dashboard}">
-                                    <span th:text="#{home.call.to.action}"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- //Single Banner -->
-
+  <!-- Row starts-->
+  <div class="row">
+    <!-- Col starts-->
+    <div class="col-md-3 offset-md-4">
+      <div class="mt-4 text-center">
+        <div class="bg-warning" th:if="${param.error}">
+          Invalid username or password.
         </div>
-    </div>
-    <!-- //Top Banner -->
+        <div class="bg-warning" th:if="${param.logout}">
+          You have been logged out.
+        </div>
+      </div>
 
-    <!-- Page Conent -->
-    <main class="page-content">
+      <form id="login-form" method="post" th:action="@{/}">
+        <fieldset>
+          <legend>Please Sign In</legend>
 
-        <!-- About Area -->
-        <section class="cr-section about-area bg--white" id="about-area">
-            <div class="container">
-                <div class="about-area__inside">
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <div class="about-area__image">
-                                <img alt="about area thumb" class="wow slideInLeft" data-wow-delay="0"
-                                     src="/images/about/Smith-MBA-20.jpg"
-                                     th:src="@{/images/about/Smith-MBA-20.jpg}">
-                            </div>
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="about-area__content">
-                                <h4>WE ARE “<span class="color--theme">MSLC</span>” and “<span class="color--theme">TerpTax</span>”
-                                </h4>
-                                <h3 class="cd-headline cx-heading slide">PROVIDE BEST TAX SOLUTION FOR YOUR
-                                    <span class="color--theme cd-words-wrapper cd-words-wrapper-2">
-											<b class="is-visible">Profit</b>
-											<b>Performance</b>
-											<b>Success</b>
-										</span>
-                                </h3>
-                                <p>Master Service Learning Club (MSLC), is a master student club
-                                    in charge of the graduate side of Volunteer Income Tax Assistance
-                                    Site at R.H Smith Business School.
-                                </p>
-                                <p>
-                                <p>
-                                    TerpTax, run by undergraduate students from the Robert H. Smith School of Business,
-                                    is
-                                    the University of Maryland Volunteer Income Tax Assistance (VITA) chapter, a
-                                    program...
-                                </p>
-                                <a class="cr-btn" th:href="@{/copy/about-us}">
-                                    <span>Read More</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <!-- Username input starts-->
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" class="form-control rounded" id="username" name="username"
+                     th:placeholder="#{form.username}"
+                     aria-label="Username" aria-describedby="username" required autofocus>
             </div>
-        </section>
-        <!-- //About Area -->
+          </div>
+          <!-- Username input ends -->
 
-        <!-- Features Area -->
-        <section th:replace="common/template :: common-features"></section>
-        <!--// Features Area -->
+          <!-- Password input starts -->
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              <input type="password" class="form-control rounded" id="password" name="password"
+                     th:placeholder="#{form.password}"
+                     aria-label="Password" aria-describedby="password" required>
+              <button id="toggle-password" type="button" class="d-none"
+                      aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+              </button>
+            </div>
+          </div>
+          <!-- Password input ends -->
 
-    </main>
-    <!-- //Page Content -->
+          <!-- Remember me starts -->
+          <div class="mb-3 form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me">
+            <label class="form-check-label" for="remember-me">Remember Me</label>
+          </div>
+          <!-- Remember me ends-->
 
-    <!-- Common Footer Area -->
-    <footer th:replace="common/template :: common-footer"></footer>
-    <!-- //Footer Area -->
+          <!-- Sign in button starts -->
+          <div class="mb-3 d-grid gap-2 mx-auto">
+            <button class="btn btn-primary" type="submit" th:text="#{form.login}"></button>
+          </div>
+          <!-- Sign in button ends -->
+        </fieldset>
+      </form>
+
+      <hr/>
+
+      <div class="input-group mb-3">
+        <a th:href="'#'">Forgot Password?</a>
+      </div>
+      <!-- Sign in button starts -->
+      <div class="d-grid gap-2 mx-auto">
+        <a class="btn btn-info" th:href="@{/sign-up}" type="submit" th:text="#{form.signup}"></a>
+      </div>
+      <!-- Sign in button ends -->
+    </div>
+    <!-- Col ends-->
+  </div>
+  <!-- Row ends -->
+
 </div>
-<!-- //Main wrapper -->
+<!-- Container ends-->
+
 
 <!--Common Body Scripts-->
 <div th:replace="common/template :: common-scripts"></div>
-
 </body>
 </html>

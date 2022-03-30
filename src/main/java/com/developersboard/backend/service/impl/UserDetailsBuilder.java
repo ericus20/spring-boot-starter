@@ -1,7 +1,7 @@
 package com.developersboard.backend.service.impl;
 
 import com.developersboard.backend.persistent.domain.user.User;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import java.io.Serial;
 import java.util.Collection;
 import java.util.HashSet;

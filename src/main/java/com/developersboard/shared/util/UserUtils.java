@@ -5,7 +5,7 @@ import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.persistent.domain.user.UserRole;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.constant.ErrorConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.dto.mapper.UserDtoMapper;

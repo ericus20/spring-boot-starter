@@ -108,6 +108,15 @@ public interface UserService {
   boolean existsByUsernameOrEmailAndEnabled(String username, String email);
 
   /**
+   * Validates the publicId exists and the verification token belongs to the user with the publicId.
+   *
+   * @param publicId the publicId
+   * @param verification the verification
+   * @return if verification is valid
+   */
+  boolean isVerificationTokenValid(String publicId, String verification);
+
+  /**
    * Update the user with the user instance given and the update type for record.
    *
    * @param userDto The user with updated information
@@ -116,6 +125,14 @@ public interface UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   UserDto updateUser(UserDto userDto, UserHistoryType userHistoryType);
+
+  /**
+   * Assigns and saves the reset or verification token with the user object.
+   *
+   * @param userDto the userDto
+   * @param verificationToken the verificationToken
+   */
+  void saveVerificationToken(UserDto userDto, String verificationToken);
 
   /**
    * Enables the user by setting the enabled state to true.

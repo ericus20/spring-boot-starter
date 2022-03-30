@@ -8,7 +8,7 @@ import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.CacheConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public UserDto saveOrUpdate(User user, boolean isUpdate) {
     Validate.notNull(user, UserConstants.USER_MUST_NOT_BE_NULL);
+
     User persistedUser = isUpdate ? userRepository.saveAndFlush(user) : userRepository.save(user);
     LOG.debug(UserConstants.USER_PERSISTED_SUCCESSFULLY, persistedUser);
 
@@ -137,7 +138,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Cacheable(CacheConstants.USERS)
   public UserDto findByPublicId(String publicId) {
-    Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
+    Validate.notBlank(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
     if (Objects.isNull(storedUser)) {
@@ -156,7 +157,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Cacheable(CacheConstants.USERS)
   public UserDto findByUsername(String username) {
-    Validate.notNull(username, UserConstants.BLANK_USERNAME);
+    Validate.notBlank(username, UserConstants.BLANK_USERNAME);
 
     User storedUser = userRepository.findByUsername(username);
     if (Objects.isNull(storedUser)) {
@@ -174,7 +175,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public UserDto findByEmail(String email) {
-    Validate.notNull(email, UserConstants.BLANK_EMAIL);
+    Validate.notBlank(email, UserConstants.BLANK_EMAIL);
 
     User storedUser = userRepository.findByEmail(email);
     if (Objects.isNull(storedUser)) {
@@ -192,7 +193,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public UserDetails getUserDetails(String username) {
-    Validate.notNull(username, UserConstants.BLANK_USERNAME);
+    Validate.notBlank(username, UserConstants.BLANK_USERNAME);
 
     User storedUser = userRepository.findByUsername(username);
     return UserDetailsBuilder.buildUserDetails(storedUser);
@@ -207,7 +208,8 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public boolean existsByUsername(String username) {
-    Validate.notNull(username, UserConstants.BLANK_USERNAME);
+    Validate.notBlank(username, UserConstants.BLANK_USERNAME);
+
     return userRepository.existsByUsernameOrderById(username);
   }
 
@@ -221,11 +223,26 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public boolean existsByUsernameOrEmailAndEnabled(String username, String email) {
-    Validate.notNull(username, UserConstants.BLANK_USERNAME);
-    Validate.notNull(email, UserConstants.BLANK_EMAIL);
+    Validate.notBlank(username, UserConstants.BLANK_USERNAME);
+    Validate.notBlank(email, UserConstants.BLANK_EMAIL);
 
     return userRepository.existsByUsernameAndEnabledTrueOrEmailAndEnabledTrueOrderById(
         username, email);
+  }
+
+  /**
+   * Validates the publicId exists and the verification token belongs to the user with the publicId.
+   *
+   * @param publicId the publicId
+   * @param verification the verification
+   * @return if verification is valid
+   */
+  @Override
+  public boolean isVerificationTokenValid(String publicId, String verification) {
+    Validate.notBlank(publicId, UserConstants.BLANK_PUBLIC_ID);
+    Validate.notBlank(verification, UserConstants.BLANK_TOKEN);
+
+    return userRepository.existsByPublicIdAndVerificationTokenOrderById(publicId, verification);
   }
 
   /**
@@ -251,6 +268,25 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
+   * Assigns and saves the reset or verification token with the user object.
+   *
+   * @param userDto the userDto
+   * @param verificationToken the token
+   */
+  @Override
+  @Transactional
+  public void saveVerificationToken(UserDto userDto, String verificationToken) {
+    Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
+    Validate.notBlank(verificationToken, UserConstants.BLANK_TOKEN);
+
+    User userFromDto = UserUtils.convertToUser(userDto);
+    userFromDto.setVerificationToken(verificationToken);
+
+    User updatedUser = userRepository.saveAndFlush(userFromDto);
+    LOG.debug(UserConstants.USER_UPDATE_SUCCESS, updatedUser);
+  }
+
+  /**
    * Enables the user by setting the enabled state to true.
    *
    * @param publicId The user publicId
@@ -265,7 +301,7 @@ public class UserServiceImpl implements UserService {
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
   public UserDto enableUser(String publicId) {
-    Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
+    Validate.notBlank(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
     LOG.debug("Enabling user {}", storedUser);
@@ -294,7 +330,7 @@ public class UserServiceImpl implements UserService {
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
   public UserDto disableUser(String publicId) {
-    Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
+    Validate.notBlank(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
     if (Objects.nonNull(storedUser)) {

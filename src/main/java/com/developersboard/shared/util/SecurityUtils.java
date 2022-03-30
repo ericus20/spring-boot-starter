@@ -1,6 +1,7 @@
 package com.developersboard.shared.util;
 
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
+import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.shared.dto.UserDto;
@@ -87,6 +88,22 @@ public final class SecurityUtils {
   /** Clears the securityContextHolder. */
   public static void clearAuthentication() {
     SecurityContextHolder.getContext().setAuthentication(null);
+  }
+
+  /**
+   * Authenticate the user with the provided username programmatically.
+   *
+   * @param userService the user service
+   * @param username the username
+   */
+  public static void authenticateUser(final UserService userService, final String username) {
+    UserDetails userDetails = userService.getUserDetails(username);
+    if (Objects.nonNull(userDetails)) {
+      Authentication auth =
+          new UsernamePasswordAuthenticationToken(
+              userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(auth);
+    }
   }
 
   /**

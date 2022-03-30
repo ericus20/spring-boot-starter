@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<th:block th:replace="common/template :: common-head(title='Account Overview')"/>
+
+<body>
+<!-- Navigation Section -->
+<th:block th:replace="common/template :: common-navbar"/>
+
+<div class="container">
+    <div class="row m-lg-5">
+        <div class="col-lg-6 col-md-6">
+            <div class="card mb-4">
+                <div class="card-header" style="background-color: #d9edf7">
+                    <div class="row my-1 py-2">
+                        <div class="col-9">
+                            <h2>Checking Balance: </h2>
+                        </div>
+                        <div class="col-3 text-end">
+                            <h1>
+                                <i class="fa fa-usd" aria-hidden="true"></i>
+                                <span th:inline="text">[[${checkingAccount?.balance}]]</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{/accounts/checking-account}">
+                    <div class="card-body pt-0 my-2">
+                        <span class="float-start">View Details</span>
+                        <span class="float-end"><i class="fa fa-arrow-circle-right"></i></span>
+                    </div>
+                </a>
+            </div>
+            <div class="card">
+                <div class="card-header" style="background-color:#dff0d8">
+                    <div class="row my-1 py-2">
+                        <div class="col-9">
+                            <h2>Savings Balance: </h2>
+                        </div>
+                        <div class="col-3 text-end">
+                            <h1>
+                                <i class="fa fa-usd" aria-hidden="true"></i>
+                                <span th:inline="text">[[${savingsAccount?.balance}]]</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{/accounts/savings-account}">
+                    <div class="card-body pt-0 my-2">
+                        <span class="float-start">View Details</span>
+                        <span class="float-end"><i class="fa fa-arrow-circle-right"></i></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <i class="fa fa-credit-card fa-5x"></i>
+                        </div>
+                        <div class="col text-end">
+                            <div>Deposit</div>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{/account/deposit}">
+                    <div class="card-body pt-0 my-2">
+                        <span class="float-start">Go to Deposit</span>
+                        <span class="float-end"><i class="fa fa-arrow-circle-right"></i></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <i class="fas fa-money-bill-alt fa-5x"></i>
+                        </div>
+                        <div class="col text-end">
+                            <div>Withdraw</div>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{/account/withdraw}">
+                    <div class="card-body pt-0 my-2">
+                        <span class="float-start">Go to Withdrawal</span>
+                        <span class="float-end"><i class="fa fa-arrow-circle-right"></i></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="common/template :: common-scripts"></div>
+</body>
+</html>
