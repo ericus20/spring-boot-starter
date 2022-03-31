@@ -13,6 +13,7 @@ import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
+import com.developersboard.shared.util.core.ValidationUtils;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserDto saveOrUpdate(User user, boolean isUpdate) {
-    Validate.notNull(user, UserConstants.USER_MUST_NOT_BE_NULL);
+    ValidationUtils.validateInputsWithMessage(UserConstants.USER_MUST_NOT_BE_NULL, user);
 
     User persistedUser = isUpdate ? userRepository.saveAndFlush(user) : userRepository.save(user);
     LOG.debug(UserConstants.USER_PERSISTED_SUCCESSFULLY, persistedUser);
@@ -88,7 +89,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserDto createUser(UserDto userDto, Set<RoleType> roleTypes) {
-    Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
+    ValidationUtils.validateInputsWithMessage(UserConstants.USER_DTO_MUST_NOT_BE_NULL, userDto);
 
     User localUser = userRepository.findByEmail(userDto.getEmail());
     if (Objects.nonNull(localUser)) {
@@ -119,7 +120,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public UserDto findById(Long id) {
-    Validate.notNull(id, UserConstants.USER_ID_MUST_NOT_BE_NULL);
+    ValidationUtils.validateInputsWithMessage(UserConstants.USER_ID_MUST_NOT_BE_NULL, id);
 
     User storedUser = userRepository.findById(id).orElse(null);
     if (Objects.isNull(storedUser)) {
@@ -223,8 +224,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public boolean existsByUsernameOrEmailAndEnabled(String username, String email) {
-    Validate.notBlank(username, UserConstants.BLANK_USERNAME);
-    Validate.notBlank(email, UserConstants.BLANK_EMAIL);
+    ValidationUtils.validateInputs(username, email);
 
     return userRepository.existsByUsernameAndEnabledTrueOrEmailAndEnabledTrueOrderById(
         username, email);
@@ -239,8 +239,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public boolean isVerificationTokenValid(String publicId, String verification) {
-    Validate.notBlank(publicId, UserConstants.BLANK_PUBLIC_ID);
-    Validate.notBlank(verification, UserConstants.BLANK_TOKEN);
+    ValidationUtils.validateInputs(publicId, verification);
 
     return userRepository.existsByPublicIdAndVerificationTokenOrderById(publicId, verification);
   }
@@ -276,8 +275,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void saveVerificationToken(UserDto userDto, String verificationToken) {
-    Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
-    Validate.notBlank(verificationToken, UserConstants.BLANK_TOKEN);
+    ValidationUtils.validateInputs(userDto, verificationToken);
 
     User userFromDto = UserUtils.convertToUser(userDto);
     userFromDto.setVerificationToken(verificationToken);

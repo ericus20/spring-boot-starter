@@ -105,8 +105,11 @@ class UserServiceTest {
 
   @Test
   void testSaveVerificationTokenThrowsIllegalArgumentExceptionOnEmptyToken(TestInfo testInfo) {
-    var userDto = UserUtils.createUserDto(testInfo.getDisplayName());
+
     Assertions.assertThrows(
-        IllegalArgumentException.class, () -> userService.saveVerificationToken(userDto, ""));
+        IllegalArgumentException.class,
+        () ->
+            userService.saveVerificationToken(
+                UserUtils.createUserDto(testInfo.getDisplayName()), ""));
   }
 }

@@ -4,7 +4,6 @@ import com.developersboard.constant.ErrorConstants;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -14,7 +13,6 @@ import org.apache.commons.lang3.Validate;
  * @version 1.0
  * @since 1.0
  */
-@Slf4j
 public final class ValidationUtils {
 
   private ValidationUtils() {
@@ -28,7 +26,7 @@ public final class ValidationUtils {
    * @throws IllegalArgumentException if any of the inputs is {@literal null}.
    */
   public static void validateInputs(final Object... inputs) {
-    validateInputWithMessage(ErrorConstants.NULL_ELEMENTS_NOT_ALLOWED, inputs);
+    validateInputsWithMessage(ErrorConstants.NULL_ELEMENTS_NOT_ALLOWED, inputs);
   }
 
   /**
@@ -38,7 +36,7 @@ public final class ValidationUtils {
    * @param inputs instances to be validated
    * @throws IllegalArgumentException if any of the inputs is {@literal null}.
    */
-  public static void validateInputWithMessage(String message, final Object... inputs) {
+  public static void validateInputsWithMessage(String message, final Object... inputs) {
     // validate that the entire array is not empty (if length is 0)
     Validate.notEmpty(inputs, message);
 
@@ -46,34 +44,14 @@ public final class ValidationUtils {
       // Ensure the element is not null
       Validate.notNull(input, message);
 
-      if (isObjectAString(input)) {
+      if (input instanceof String) {
         // Ensure the element is not blank if it's a string
         Validate.notBlank(String.valueOf(input), message);
-      } else if (isObjectAnArray(input)) {
-        // Ensure the element is not blank if it's an array
+      } else if (input.getClass().isArray()) {
+        // Ensure the element is not empty if it's an array
         Validate.notEmpty(convertToObjectArray(input), message);
       }
     }
-  }
-
-  /**
-   * Checks if the object is a string then validates that it is not blank.
-   *
-   * @param object the object to validate
-   * @return if object is valid
-   */
-  private static boolean isObjectAString(Object object) {
-    return object instanceof String;
-  }
-
-  /**
-   * Checks if the object is an array.
-   *
-   * @param object the object to validate
-   * @return if object is an array
-   */
-  private static boolean isObjectAnArray(Object object) {
-    return object.getClass().isArray();
   }
 
   /**

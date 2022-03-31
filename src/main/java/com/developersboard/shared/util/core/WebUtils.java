@@ -20,7 +20,7 @@ public final class WebUtils {
   }
 
   /**
-   * Generates a uri dynamically by constructing url.
+   * Generates uri dynamically by constructing url.
    *
    * @param path the custom path
    * @param publicUserId the publicUserId
@@ -36,7 +36,7 @@ public final class WebUtils {
   }
 
   /**
-   * Generates a uri dynamically by constructing url.
+   * Generates uri dynamically by constructing url.
    *
    * @param path the custom path
    * @return a dynamically formulated uri

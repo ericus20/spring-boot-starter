@@ -5,6 +5,7 @@ import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
+import com.developersboard.web.payload.request.LoginRequest;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang3.SerializationUtils;
@@ -62,6 +63,15 @@ public abstract class IntegrationTestUtils {
     return persistUser;
   }
 
+  /**
+   * Persists user to the database with all configurations and returns the persisted user.
+   *
+   * @param userService the userService
+   * @param isAdmin if the user should be an admin
+   * @param enabled if the user should be enabled
+   * @param userDto the userDto
+   * @return the persisted user
+   */
   protected UserDto persistUser(
       UserService userService, boolean isAdmin, boolean enabled, UserDto userDto) {
     Set<RoleType> roleTypes = new HashSet<>();
@@ -74,5 +84,18 @@ public abstract class IntegrationTestUtils {
       UserUtils.enableUser(userDto);
     }
     return userService.createUser(userDto, roleTypes);
+  }
+
+  /**
+   * Creates a login request with the given username and password and converts it to JSON.
+   *
+   * @param username the username
+   * @param password the password
+   * @return the login request
+   */
+  protected String createLoginRequest(String username, String password) {
+    var loginRequest = new LoginRequest(username, password);
+
+    return TestUtils.toJson(loginRequest);
   }
 }

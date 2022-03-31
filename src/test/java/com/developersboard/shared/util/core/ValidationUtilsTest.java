@@ -31,48 +31,47 @@ class ValidationUtilsTest {
 
   @Test
   void nullAndValidArrayInputThrowsException(TestInfo testInfo) {
-    Object[] objects = {null, testInfo.getDisplayName()};
-    var message = "An empty array should not be accepted as a valid input";
 
-    var ex = NullPointerException.class;
-    Assertions.assertThrows(ex, () -> ValidationUtils.validateInputWithMessage(message, objects));
+    Assertions.assertThrows(
+        NullPointerException.class,
+        () ->
+            ValidationUtils.validateInputsWithMessage(
+                "An empty array should not be accepted as a valid input",
+                null,
+                testInfo.getDisplayName()));
   }
 
   @Test
   void emptyArrayInputThrowsException() {
-    Object[] objects = {};
-
-    var expectedType = IllegalArgumentException.class;
-    Assertions.assertThrows(expectedType, () -> ValidationUtils.validateInputs(objects));
+    Assertions.assertThrows(IllegalArgumentException.class, ValidationUtils::validateInputs);
   }
 
   @Test
   void validArrayInputDoesNotThrowException(TestInfo testInfo) {
-    Object[] objects = {testInfo.getDisplayName()};
-
-    Assertions.assertDoesNotThrow(() -> ValidationUtils.validateInputs(objects));
+    Assertions.assertDoesNotThrow(() -> ValidationUtils.validateInputs(testInfo.getDisplayName()));
   }
 
   @Test
   void validArrayWithEmptyArrayInputThrowsException() {
-    Object[] objects = {new String[] {}};
-
-    var expectedType = IllegalArgumentException.class;
-    Assertions.assertThrows(expectedType, () -> ValidationUtils.validateInputs(objects));
+    Assertions.assertThrows(
+        IllegalArgumentException.class,
+        () -> ValidationUtils.validateInputs((Object) new String[] {}));
   }
 
   @Test
   void validArrayWithArrayInputsShouldBeValid(TestInfo testInfo) {
-    Object[] objects = {testInfo.getDisplayName(), new String[] {testInfo.getDisplayName()}};
 
-    Assertions.assertDoesNotThrow(() -> ValidationUtils.validateInputs(objects));
+    Assertions.assertDoesNotThrow(
+        () ->
+            ValidationUtils.validateInputs(
+                testInfo.getDisplayName(), new String[] {testInfo.getDisplayName()}));
   }
 
   @Test
   void validArrayWithPrimitiveArrayInputsShouldBeValid(TestInfo testInfo) {
-    Object[] objects = {testInfo.getDisplayName(), new int[] {1}};
 
-    Assertions.assertDoesNotThrow(() -> ValidationUtils.validateInputs(objects));
+    Assertions.assertDoesNotThrow(
+        () -> ValidationUtils.validateInputs(testInfo.getDisplayName(), new int[] {1}));
   }
 
   private static Stream<String> blankStrings() {

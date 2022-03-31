@@ -27,7 +27,6 @@ public final class SecurityConstants {
   public static final String H2_CONSOLE_URL_MAPPING = "/console/*";
   public static final String JSESSIONID = "JSESSIONID";
   public static final String LOGIN_LOGOUT = "/?logout";
-  public static final String LOGIN_ERROR = "/?error";
   public static final String LOGOUT = "/logout";
   public static final String LOGIN = "/login";
   public static final String REFRESH_TOKEN = "/refresh-token";
@@ -49,6 +48,7 @@ public final class SecurityConstants {
     "/static/**",
     "/console/**",
     "/actuator/health",
+    HomeConstants.INDEX_VIEW_NAME,
     SignUpConstants.SIGN_UP_VERIFY_MAPPING,
     StringUtils.joinWith(StringUtils.EMPTY, SignUpConstants.SIGN_UP_MAPPING, "/**"),
     StringUtils.joinWith(StringUtils.EMPTY, PasswordConstants.FORGOT_ROOT_MAPPING, "/**"),

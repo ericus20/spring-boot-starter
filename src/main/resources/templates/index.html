@@ -1,84 +1,18 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <!-- Head -->
-<th:block th:replace="common/template :: common-head(title='Login')"/>
+<th:block th:replace="common/template :: common-head(title='Home')"/>
 
 <body>
-<!-- Login Section -->
-<img alt="banner" class="img-fluid" src="#" th:src="@{/images/banner.png}"/>
+
 
 <!-- Container starts-->
 <div class="container">
 
   <!-- Row starts-->
   <div class="row">
-    <!-- Col starts-->
-    <div class="col-md-3 offset-md-4">
-      <div class="mt-4 text-center">
-        <div class="bg-warning" th:if="${param.error}">
-          Invalid username or password.
-        </div>
-        <div class="bg-warning" th:if="${param.logout}">
-          You have been logged out.
-        </div>
-      </div>
-
-      <form id="login-form" method="post" th:action="@{/}">
-        <fieldset>
-          <legend>Please Sign In</legend>
-
-          <!-- Username input starts-->
-          <div class="mb-3">
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-user"></i></span>
-              <input type="text" class="form-control rounded" id="username" name="username"
-                     th:placeholder="#{form.username}"
-                     aria-label="Username" aria-describedby="username" required autofocus>
-            </div>
-          </div>
-          <!-- Username input ends -->
-
-          <!-- Password input starts -->
-          <div class="mb-3">
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-lock"></i></span>
-              <input type="password" class="form-control rounded" id="password" name="password"
-                     th:placeholder="#{form.password}"
-                     aria-label="Password" aria-describedby="password" required>
-              <button id="toggle-password" type="button" class="d-none"
-                      aria-label="Show password as plain text. Warning: this will display your password on the screen.">
-              </button>
-            </div>
-          </div>
-          <!-- Password input ends -->
-
-          <!-- Remember me starts -->
-          <div class="mb-3 form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me">
-            <label class="form-check-label" for="remember-me">Remember Me</label>
-          </div>
-          <!-- Remember me ends-->
-
-          <!-- Sign in button starts -->
-          <div class="mb-3 d-grid gap-2 mx-auto">
-            <button class="btn btn-primary" type="submit" th:text="#{form.login}"></button>
-          </div>
-          <!-- Sign in button ends -->
-        </fieldset>
-      </form>
-
-      <hr/>
-
-      <div class="input-group mb-3">
-        <a th:href="'#'">Forgot Password?</a>
-      </div>
-      <!-- Sign in button starts -->
-      <div class="d-grid gap-2 mx-auto">
-        <a class="btn btn-info" th:href="@{/sign-up}" type="submit" th:text="#{form.signup}"></a>
-      </div>
-      <!-- Sign in button ends -->
-    </div>
-    <!-- Col ends-->
+    <h1>Home Page</h1>
   </div>
   <!-- Row ends -->
 
