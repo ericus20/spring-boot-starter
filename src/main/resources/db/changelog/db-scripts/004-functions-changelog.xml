@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Simon" id="fnx">
+        <sql endDelimiter="/">
+            CREATE OR REPLACE FUNCTION user_tgr_fnx()
+            RETURNS TRIGGER
+            LANGUAGE PLPGSQL
+            AS
+                $BODY$
+                DECLARE
+                old_row json = NULL;
+                    new_row json = NULL;
+                BEGIN
+                    IF TG_OP IN ('UPDATE','DELETE') THEN
+                        old_row = row_to_json(OLD);
+                END IF;
+
+                    IF TG_OP IN ('INSERT','UPDATE') THEN
+                        new_row = row_to_json(NEW);
+                END IF;
+
+                INSERT INTO user_audit
+                (
+                    username,
+                    add_time,
+                    operation,
+                    row_before,
+                    row_after
+                )
+                VALUES
+                    (
+                        session_user,
+                        CURRENT_TIMESTAMP AT TIME ZONE 'UTC', -- remove the AT TIME ZONE 'UTC' IF you don't need UTC time
+                        TG_OP,
+                        old_row,
+                        new_row
+                    );
+                RETURN NEW;
+                END;
+                $BODY$;
+                /
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
