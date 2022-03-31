@@ -110,7 +110,8 @@ jacocoTestReport {
                     "**/exception/*",
                     "**/enums/*",
                     "**/constant/*",
-                    "**/config/*"
+                    "**/config/*",
+                    "**/backend/bootstrap/*"
             ])
         }))
     }
