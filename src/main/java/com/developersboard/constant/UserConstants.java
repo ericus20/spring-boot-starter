@@ -32,8 +32,12 @@ public final class UserConstants {
   public static final String USER_ALREADY_EXIST = "Email {} already exist and nothing will be done";
   public static final String USER_EXIST_BUT_NOT_ENABLED =
       "Email {} exists but not enabled. Returning user {}";
-  public static final String USERNAME_OR_EMAIL_EXITS = "The username or email already exits.";
+  public static final String USER_DETAILS_DEBUG_MESSAGE = "User details {}";
   public static final String USER_ID_MUST_NOT_BE_NULL = "User Id must not be null";
+  public static final String USER_DISABLED_MESSAGE = "User is disabled";
+  public static final String USER_LOCKED_MESSAGE = "User is locked";
+  public static final String USER_EXPIRED_MESSAGE = "User is expired";
+  public static final String USER_CREDENTIALS_EXPIRED_MESSAGE = "User credentials expired";
 
   private UserConstants() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);

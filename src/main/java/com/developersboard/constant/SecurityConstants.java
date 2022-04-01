@@ -45,7 +45,10 @@ public final class SecurityConstants {
     "/resources/**",
     "/static/**",
     "/console/**",
-    "/actuator/health"
+    "/actuator/health",
+    "/v3/api-docs/**",
+    "/swagger-ui/**",
+    "/swagger-ui.html"
   };
 
   public static final List<String> ALLOWED_HTTP_METHODS =
