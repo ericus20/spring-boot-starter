@@ -56,6 +56,9 @@ public class User extends BaseEntity<Long> implements Serializable {
   private String verificationToken;
 
   private boolean enabled;
+  private boolean accountNonExpired;
+  private boolean accountNonLocked;
+  private boolean credentialsNonExpired;
 
   @ToString.Exclude
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

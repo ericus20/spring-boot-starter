@@ -32,6 +32,7 @@ repositories {
 
 ext {
     mapstructVersion = '1.4.2.Final'
+    springDocVersion = '1.6.6'
 }
 
 dependencies {
@@ -67,6 +68,12 @@ dependencies {
             strictly '2.13.2.1'
         }
     }
+
+    // Documentation and API Tools
+    implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-javadoc:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-security:${springDocVersion}"
+    annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:0.13.0"
 
     // Database Tools
     implementation 'com.h2database:h2:2.1.210'

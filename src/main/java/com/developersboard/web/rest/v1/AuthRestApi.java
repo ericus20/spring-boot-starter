@@ -12,6 +12,7 @@ import com.developersboard.shared.util.SecurityUtils;
 import com.developersboard.web.payload.request.LoginRequest;
 import com.developersboard.web.payload.response.JwtResponseBuilder;
 import com.developersboard.web.payload.response.LogoutResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import java.time.Duration;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
@@ -55,12 +56,16 @@ public class AuthRestApi {
   private final AuthenticationManager authenticationManager;
 
   /**
-   * Attempts to authenticate with the provided credentials.
+   * Attempts to authenticate with the provided credentials. If successful, a JWT token is returned
+   * with some user details.
+   *
+   * <p>A refresh token is generated and returned as a cookie.
    *
    * @param loginRequest the login request
    * @return the jwt token details
    */
   @Loggable
+  @SecurityRequirements
   @PostMapping(SecurityConstants.LOGIN)
   public ResponseEntity<JwtResponseBuilder> authenticateUser(
       @CookieValue(required = false) String refreshToken,
@@ -89,6 +94,7 @@ public class AuthRestApi {
    * @return the jwt token details
    */
   @Loggable
+  @SecurityRequirements
   @GetMapping(SecurityConstants.REFRESH_TOKEN)
   public ResponseEntity<JwtResponseBuilder> refreshToken(@CookieValue String refreshToken) {
     String decryptedRefreshToken = encryptionService.decrypt(refreshToken);
@@ -99,7 +105,7 @@ public class AuthRestApi {
     }
     String username = jwtService.getUsernameFromToken(decryptedRefreshToken);
     var userDetails = userDetailsService.loadUserByUsername(username);
-    // Authenticate to ensure the user is valid.
+    SecurityUtils.validateUserDetailsStatus(userDetails);
     SecurityUtils.authenticateUser(authenticationManager, userDetails);
 
     var expiration = DateUtils.addMinutes(new Date(), NUMBER_OF_MINUTES_TO_EXPIRE);
@@ -117,6 +123,7 @@ public class AuthRestApi {
    * @return response entity
    */
   @Loggable
+  @SecurityRequirements
   @DeleteMapping(SecurityConstants.LOGOUT)
   public ResponseEntity<LogoutResponse> logout(
       HttpServletRequest request, HttpServletResponse response) {

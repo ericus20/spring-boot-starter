@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<databaseChangeLog 
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
-  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
-   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
-   http://www.liquibase.org/xml/ns/dbchangelog 
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-   	
-    
+
+
 	<changeSet author="Simon" id="per_login">
   		<sql>
 			create table if not exists persistent_logins (
@@ -21,7 +21,7 @@
 			);
   		</sql>
     </changeSet>
-    
+
     <changeSet author="Simon" id="role">
   		<sql>
 			create table if not exists role (
@@ -30,8 +30,8 @@
 				  primary key (id)
 			);
   		</sql>
-    </changeSet> 
-    
+    </changeSet>
+
      <changeSet author="Simon" id="user_hist">
   		<sql>
 			create table if not exists user_history (
@@ -47,7 +47,7 @@
 				  primary key (id)
 			);
   		</sql>
-    </changeSet> 
+    </changeSet>
 
 	   <changeSet author="Simon" id="user_role">
   		<sql>
@@ -65,7 +65,7 @@
 			);
   		</sql>
     </changeSet>
-    
+
             <changeSet author="Simon" id="users">
   		<sql>
 			create table if not exists users (
@@ -78,6 +78,9 @@
 				   version bigint,
 				   email varchar(255) not null,
 				   enabled boolean not null,
+					 account_non_expired boolean not null,
+					 account_non_locked boolean not null,
+					 credentials_non_expired boolean not null,
 				   first_name varchar(255),
 				   last_name varchar(255),
 				   middle_name varchar(255),
@@ -89,5 +92,5 @@
 			);
   		</sql>
     </changeSet>
- 
+
  </databaseChangeLog>

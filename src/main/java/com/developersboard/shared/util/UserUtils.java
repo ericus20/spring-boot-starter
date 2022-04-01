@@ -46,6 +46,20 @@ public final class UserUtils {
   }
 
   /**
+   * Create a test user with flexibility.
+   *
+   * @param enabled if the user should be enabled or disabled
+   * @return the user
+   */
+  public static User createUser(final boolean enabled) {
+    return createUser(
+        FAKER.name().username(),
+        FAKER.internet().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH),
+        FAKER.internet().emailAddress(),
+        enabled);
+  }
+
+  /**
    * Create a user with some flexibility.
    *
    * @param username username used to create user.
@@ -106,6 +120,9 @@ public final class UserUtils {
 
     if (enabled) {
       user.setEnabled(true);
+      user.setAccountNonExpired(true);
+      user.setAccountNonLocked(true);
+      user.setCredentialsNonExpired(true);
     }
     return user;
   }
@@ -212,6 +229,9 @@ public final class UserUtils {
   public static void enableUser(final UserDto userDto) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
     userDto.setEnabled(true);
+    userDto.setAccountNonExpired(true);
+    userDto.setAccountNonLocked(true);
+    userDto.setCredentialsNonExpired(true);
   }
 
   /**

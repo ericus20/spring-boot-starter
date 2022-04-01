@@ -31,9 +31,9 @@ class UserDetailsBuilderTest {
     Assertions.assertAll(
         () -> {
           Assertions.assertNotNull(userDetails);
-          Assertions.assertTrue(userDetails.isAccountNonExpired());
-          Assertions.assertTrue(userDetails.isAccountNonLocked());
-          Assertions.assertTrue(userDetails.isCredentialsNonExpired());
+          Assertions.assertFalse(userDetails.isAccountNonExpired());
+          Assertions.assertFalse(userDetails.isAccountNonLocked());
+          Assertions.assertFalse(userDetails.isCredentialsNonExpired());
           Assertions.assertFalse(userDetails.isEnabled());
           MatcherAssert.assertThat(userDetails, CoreMatchers.instanceOf(UserDetails.class));
           Assertions.assertEquals(testInfo.getDisplayName(), userDetails.getUsername());

@@ -43,6 +43,7 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 
 ## Features
 
+- [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Fully Covered Equals, HashCode, ToString Testing](documents/TESTS.md)
 - [Unit and Integration Tests](documents/TESTS.md)
 - [Production Ready Folder Structure](README.md#production-ready-folder-structure)
@@ -144,3 +145,4 @@ TBD
 * Run all tests using - **./gradlew testAll**
 * Access in-memory database on *http://localhost:8080/console*
 * Run owasp dependency check - **./gradlew  dependencyCheckAnalyze --info**
+* Access Swagger UI - **http://localhost:8080/swagger-ui/index.html**
