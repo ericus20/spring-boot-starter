@@ -9,13 +9,11 @@ import com.developersboard.constant.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.dto.mapper.UserDtoMapper;
-import com.developersboard.web.payload.response.UserResponse;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -210,15 +208,6 @@ public final class UserUtils {
     var user = UserDtoMapper.MAPPER.toUser(userDto);
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
     return user;
-  }
-
-  /**
-   * Transfers data from entity to returnable object.
-   *
-   * @return user dto
-   */
-  public static Function<User, UserResponse> getUserResponse() {
-    return UserDtoMapper.MAPPER::toUserResponse;
   }
 
   /**
