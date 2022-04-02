@@ -118,7 +118,8 @@ jacocoTestReport {
                     "**/enums/*",
                     "**/constant/*",
                     "**/config/*",
-                    "**/backend/bootstrap/*"
+                    "**/backend/bootstrap/*",
+                    "**/MockEmailServiceImpl.class",
             ])
         }))
     }
