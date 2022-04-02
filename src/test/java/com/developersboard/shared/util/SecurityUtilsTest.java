@@ -2,6 +2,7 @@ package com.developersboard.shared.util;
 
 import com.developersboard.TestUtils;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
+import com.developersboard.shared.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -79,5 +80,18 @@ class SecurityUtilsTest {
     Assertions.assertThrows(
         CredentialsExpiredException.class,
         () -> SecurityUtils.validateUserDetailsStatus(userDetails));
+  }
+
+  @Test
+  void testingGetAuthorizedUserDto(TestInfo testInfo) {
+    TestUtils.setAuthentication(testInfo.getDisplayName(), TestUtils.ROLE_USER);
+
+    UserDto authorizedUserDto = SecurityUtils.getAuthorizedUserDto();
+    Assertions.assertAll(
+        () -> {
+          Assertions.assertEquals(testInfo.getDisplayName(), authorizedUserDto.getUsername());
+          Assertions.assertNotNull(authorizedUserDto);
+          Assertions.assertTrue(SecurityUtils.isAuthenticated());
+        });
   }
 }
