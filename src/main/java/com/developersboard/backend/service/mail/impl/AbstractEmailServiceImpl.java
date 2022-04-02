@@ -4,6 +4,7 @@ import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.UserConstants;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.util.core.ValidationUtils;
 import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
@@ -34,12 +35,12 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
   /**
    * Sends an email given a feedback Pojo.
    *
-   * @param feedbackRequestBuilder the feedback pojo.
+   * @param feedbackRequest the feedback pojo.
    * @see FeedbackRequest
    */
   @Override
-  public void sendMailWithFeedback(final FeedbackRequest feedbackRequestBuilder) {
-    sendMail(prepareSimpleMailMessage(feedbackRequestBuilder));
+  public void sendMailWithFeedback(final FeedbackRequest feedbackRequest) {
+    sendMail(prepareSimpleMailMessage(feedbackRequest));
   }
 
   /**
@@ -221,6 +222,8 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @param mailMessage the mailMessage
    */
   private void configureInternetAddress(FeedbackRequest feedback, SimpleMailMessage mailMessage) {
+    LOG.debug("feedback: {}", feedback);
+    ValidationUtils.validateInputs(feedback, feedback.getEmail(), feedback.getName());
     try {
       InternetAddress address = new InternetAddress(feedback.getEmail(), feedback.getName());
       mailMessage.setFrom(String.valueOf(address));

@@ -4,8 +4,6 @@ import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.AdminConstants;
 import com.developersboard.enums.OperationStatus;
 import com.developersboard.shared.dto.UserDto;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +37,6 @@ public class UserRestApi {
    * @return if the operation is success
    */
   @PutMapping("/{publicId}/enable")
-  @Operation(summary = "Enable user", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<OperationStatus> enableUser(@PathVariable String publicId) {
     UserDto userDto = userService.enableUser(publicId);
     return ResponseEntity.ok(
@@ -53,7 +50,6 @@ public class UserRestApi {
    * @return if the operation is success
    */
   @PutMapping("/{publicId}/disable")
-  @Operation(summary = "Disable user", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<OperationStatus> disableUser(@PathVariable String publicId) {
     UserDto userDto = userService.disableUser(publicId);
     return ResponseEntity.ok(

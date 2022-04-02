@@ -1,10 +1,13 @@
 package com.developersboard.backend.persistent.domain.user;
 
 import com.developersboard.TestUtils;
+import com.developersboard.enums.RoleType;
 import com.developersboard.shared.util.UserUtils;
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
 import nl.jqno.equalsverifier.EqualsVerifier;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
@@ -27,5 +30,36 @@ class UserTest {
         .withClassName(NameStyle.SIMPLE_NAME)
         .withIgnoredFields("password", "userRoles", "userHistories")
         .verify();
+  }
+
+  @Test
+  void testAddUserRole() {
+    User user = UserUtils.createUser();
+    user.addUserRole(new UserRole(user, new Role(RoleType.ROLE_USER)));
+
+    Assertions.assertFalse(user.getUserRoles().isEmpty());
+  }
+
+  @Test
+  void testRemoveUserRole() {
+    User user = UserUtils.createUser();
+    UserRole userRole = new UserRole(user, new Role(RoleType.ROLE_USER));
+    user.addUserRole(userRole);
+
+    Assertions.assertFalse(user.getUserRoles().isEmpty());
+
+    user.removeUserRole(userRole);
+
+    Assertions.assertTrue(user.getUserRoles().isEmpty());
+  }
+
+  @Test
+  void testName() {
+    var user = UserUtils.createUser();
+    var name =
+        String.join(
+            StringUtils.SPACE, user.getFirstName(), user.getMiddleName(), user.getLastName());
+
+    Assertions.assertEquals(name, user.getName());
   }
 }
