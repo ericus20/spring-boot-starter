@@ -1,14 +1,17 @@
 package com.developersboard.web.rest.v1;
 
 import com.developersboard.TestUtils;
+import com.developersboard.backend.service.security.CookieService;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.web.payload.request.LoginRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,11 +22,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ExtendWith(MockitoExtension.class)
 class AuthRestApiTest {
 
+  @Mock private transient CookieService cookieService;
+
   @InjectMocks private transient AuthRestApi authRestApi;
 
   private transient MockMvc mockMvc;
   private transient String loginUri;
   private transient String refreshUri;
+  private transient String logoutUri;
 
   @BeforeEach
   void setUp() {
@@ -31,6 +37,7 @@ class AuthRestApiTest {
     loginUri = String.join("/", SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.LOGIN);
     refreshUri =
         String.join("/", SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.REFRESH_TOKEN);
+    logoutUri = String.join("/", SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.LOGOUT);
   }
 
   @Test
@@ -71,5 +78,14 @@ class AuthRestApiTest {
     mockMvc
         .perform(MockMvcRequestBuilders.get(refreshUri))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
+  }
+
+  @Test
+  void testLogoutReturnsOKWithSuccessResponse() throws Exception {
+    Assertions.assertNotNull(cookieService);
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.delete(logoutUri))
+        .andExpect(MockMvcResultMatchers.status().isOk());
   }
 }
