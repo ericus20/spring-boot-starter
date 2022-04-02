@@ -115,6 +115,7 @@ TBD
 * **Matthew Puentes** - *Initial work*
 * **Stephen Boakye** - *Contributor*
 * **Charles Dimbeng** - *Contributor*
+* **Simon Kodua** - *Contributor*
 
 ## Acknowledgments
 
