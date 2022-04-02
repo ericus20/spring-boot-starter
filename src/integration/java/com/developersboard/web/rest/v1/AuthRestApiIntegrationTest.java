@@ -13,6 +13,7 @@ import com.developersboard.shared.util.UserUtils;
 import com.developersboard.web.payload.request.LoginRequest;
 import com.developersboard.web.payload.response.JwtResponseBuilder;
 import java.time.Duration;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +46,7 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   @Autowired private transient EncryptionService encryptionService;
 
   private transient String loginUri;
+  private transient String logoutUri;
   private transient String refreshUri;
   private transient String loginRequestJson;
   private transient UserDto storedUser;
@@ -61,6 +63,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
     String delimiter = "/";
     loginUri =
         String.join(delimiter, SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.LOGIN);
+    logoutUri =
+        String.join(delimiter, SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.LOGOUT);
     refreshUri =
         String.join(
             delimiter, SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.REFRESH_TOKEN);
@@ -76,6 +80,12 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   @Test
   void refreshPathPreflightReturnsOk() throws Exception {
     performRequest(MockMvcRequestBuilders.options(refreshUri))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+  }
+
+  @Test
+  void logoutPathPreflightReturnsOk() throws Exception {
+    performRequest(MockMvcRequestBuilders.options(logoutUri))
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
@@ -124,6 +134,22 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
 
     // Assert that the access token returned by the refresh token is different from the original
     Assertions.assertNotEquals(jwtToken, originalAccessToken);
+  }
+
+  @Test
+  void loginLogoutReturnsResponseWithoutRefreshToken() throws Exception {
+    // login
+    performRequest(MockMvcRequestBuilders.post(loginUri))
+        .andExpectAll(expectedResponseDetails(storedUser))
+        .andReturn();
+
+    // logout
+    performRequest(MockMvcRequestBuilders.delete(logoutUri))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.cookie().exists(TokenType.REFRESH.getName()))
+        .andExpect(
+            MockMvcResultMatchers.cookie().value(TokenType.REFRESH.getName(), StringUtils.EMPTY))
+        .andReturn();
   }
 
   /**
