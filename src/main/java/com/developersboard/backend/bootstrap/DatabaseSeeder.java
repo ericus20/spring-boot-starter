@@ -5,6 +5,8 @@ import com.developersboard.backend.persistent.repository.RoleRepository;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.enums.RoleType;
+import com.developersboard.enums.UserHistoryType;
+import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,6 +56,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     var adminDto = UserUtils.createUserDto(adminUsername, adminPassword, adminEmail, true);
     Set<RoleType> adminRoleType = Collections.singleton(RoleType.ROLE_ADMIN);
 
-    userService.createUser(adminDto, adminRoleType);
+    UserDto user = userService.createUser(adminDto, adminRoleType);
+    user.setLastName("Test");
+
+    userService.updateUser(user, UserHistoryType.PROFILE_UPDATE);
   }
 }

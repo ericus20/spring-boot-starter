@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 /**
  * The user role model for the application.
@@ -24,6 +25,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
+@Audited
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class UserRole extends BaseEntity<Long> implements Serializable {
