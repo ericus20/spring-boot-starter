@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 /**
  * Class UserHistory captures activities happening to user such as profile update, password reset
@@ -26,6 +27,7 @@ import lombok.ToString;
  */
 @Getter
 @Entity
+@Audited
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class UserHistory extends BaseEntity<Long> implements Serializable {
