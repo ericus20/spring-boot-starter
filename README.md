@@ -25,8 +25,6 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 * [Gradle](https://gradle.org/) - Dependency Management and Build Tool
 * [Lombok](https://projectlombok.org/) - Automatically plugs into your editor and build tools,
   spicing up your java.
-* [NextJS](https://nextjs.org/) - The React Framework for production
-* [MySQL](https://www.mysql.com/) - Open-source relational database management system
 * [AWS](https://aws.amazon.com/) - On-demand cloud computing platforms
 * [H2](http://www.h2database.com/) - In-Memory Database for development
 * [Liquibase](https://liquibase.org/) - Rapidly manage database schema changes.
