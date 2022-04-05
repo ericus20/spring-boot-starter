@@ -135,6 +135,21 @@ TBD
         ENCRYPTION_SECRET_PASSWORD=password
         JWT_SECRET=salt
 
+- The AWS Properties and defaults are:
+
+        AWS_REGION=us-east-1
+        AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+        AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        AWS_S3_BUCKET_NAME=spring-boot-starter
+
+- The Email Properties and defaults are:
+
+        EMAIL_PROTOCOL=smtp
+        EMAIL_HOST=smtp.gmail.com
+        EMAIL_PORT=587
+        EMAIL_USERNAME
+        EMAIL_PASSWORD
+
 * Default profile for the application is **dev**, **test** and **prod** to test out production
   functionalities.
     - Datasource must be provided for production profile for the application to run.

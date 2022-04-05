@@ -75,11 +75,12 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-security:${springDocVersion}"
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:0.13.0"
 
-    // Database Tools
-    implementation 'com.h2database:h2:2.1.210'
+    // Database and File Storage Tools
     runtimeOnly 'org.postgresql:postgresql'
+    implementation 'com.h2database:h2:2.1.210'
     implementation 'org.hibernate:hibernate-envers'
     implementation 'org.liquibase:liquibase-core:4.9.0'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.190'
 
     // MapStruct for Object Mapping
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
@@ -118,7 +119,7 @@ jacocoTestReport {
                     "**/constant/*",
                     "**/config/*",
                     "**/backend/bootstrap/*",
-                    "**/MockEmailServiceImpl.class",
+                    "**/Mock*.class",
             ])
         }))
     }
