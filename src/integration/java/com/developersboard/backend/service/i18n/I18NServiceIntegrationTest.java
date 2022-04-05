@@ -20,7 +20,7 @@ class I18NServiceIntegrationTest {
   @Test
   void getMessage() {
     String expected = "This is a test message.";
-    LocaleContextHolder.setDefaultLocale(Locale.CHINESE);
+    LocaleContextHolder.setDefaultLocale(Locale.ENGLISH);
 
     Assertions.assertEquals(expected, i18NService.getMessage(MESSAGE_TEST_KEY));
   }

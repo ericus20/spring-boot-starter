@@ -4,6 +4,7 @@ import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.dto.UserDto;
 import java.util.Arrays;
 import java.util.Objects;
@@ -11,8 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
@@ -31,6 +36,10 @@ import org.springframework.security.web.authentication.rememberme.AbstractRememb
  */
 @Slf4j
 public final class SecurityUtils {
+
+  private SecurityUtils() {
+    throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
+  }
 
   /**
    * If we are running with dev profile, disable csrf and frame options to enable h2 to work.
@@ -191,7 +200,25 @@ public final class SecurityUtils {
     securityContextLogoutHandler.logout(request, response, null);
   }
 
-  private SecurityUtils() {
-    throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
+  /**
+   * Validates that the user is neither disabled, locked nor expired.
+   *
+   * @param userDetails the user details
+   */
+  public static void validateUserDetailsStatus(UserDetails userDetails) {
+    LOG.debug(UserConstants.USER_DETAILS_DEBUG_MESSAGE, userDetails);
+
+    if (!userDetails.isEnabled()) {
+      throw new DisabledException(UserConstants.USER_DISABLED_MESSAGE);
+    }
+    if (!userDetails.isAccountNonLocked()) {
+      throw new LockedException(UserConstants.USER_LOCKED_MESSAGE);
+    }
+    if (!userDetails.isAccountNonExpired()) {
+      throw new AccountExpiredException(UserConstants.USER_EXPIRED_MESSAGE);
+    }
+    if (!userDetails.isCredentialsNonExpired()) {
+      throw new CredentialsExpiredException(UserConstants.USER_CREDENTIALS_EXPIRED_MESSAGE);
+    }
   }
 }

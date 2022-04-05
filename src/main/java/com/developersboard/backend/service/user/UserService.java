@@ -4,6 +4,7 @@ import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
+import java.util.List;
 import java.util.Set;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -82,6 +83,13 @@ public interface UserService {
   UserDto findByEmail(String email);
 
   /**
+   * Find all users that failed to verify their email after a certain time.
+   *
+   * @return List of users that failed to verify their email.
+   */
+  List<UserDto> findAllNotEnabledAfterAllowedDays();
+
+  /**
    * Returns a userDetails for the given username or null if a user could not be found.
    *
    * @param username The username associated to the user to find
@@ -151,4 +159,12 @@ public interface UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   UserDto disableUser(String publicId);
+
+  /**
+   * Delete the user with the user id given.
+   *
+   * @param publicId The publicId associated to the user to delete
+   * @throws NullPointerException in case the given entity is {@literal null}
+   */
+  void deleteUser(String publicId);
 }

@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 /**
  * The user role model for the application.
@@ -24,6 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
+@Audited
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class UserRole extends BaseEntity<Long> implements Serializable {
@@ -34,6 +37,7 @@ public class UserRole extends BaseEntity<Long> implements Serializable {
   @JoinColumn(name = "user_id")
   private User user;
 
+  @NotAudited
   @ToString.Exclude
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   @JoinColumn(name = "role_id")

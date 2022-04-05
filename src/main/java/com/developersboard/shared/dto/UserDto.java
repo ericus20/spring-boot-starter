@@ -47,6 +47,9 @@ public class UserDto extends BaseDto implements Serializable {
 
   private String phone;
   private boolean enabled;
+  private boolean accountNonExpired;
+  private boolean accountNonLocked;
+  private boolean credentialsNonExpired;
   private String verificationToken;
 
   @ToString.Exclude private Set<UserRole> userRoles = new HashSet<>();

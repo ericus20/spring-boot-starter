@@ -55,5 +55,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     Set<RoleType> adminRoleType = Collections.singleton(RoleType.ROLE_ADMIN);
 
     userService.createUser(adminDto, adminRoleType);
+
+    userService.createUser(UserUtils.createUserDto(false));
   }
 }

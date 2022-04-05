@@ -2,6 +2,7 @@ package com.developersboard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * The class has the main method to get the application started.
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0
  * @since 1.0
  */
+@EnableScheduling
 @SpringBootApplication
 public class SpringBootStarterApplication {
 

@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 /**
  * The role entity.
@@ -22,6 +23,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
+@Audited
 @ToString
 @Cacheable
 @NoArgsConstructor

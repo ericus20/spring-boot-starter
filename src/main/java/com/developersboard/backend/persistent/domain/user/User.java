@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.envers.Audited;
 
 /**
  * The user model for the application.
@@ -30,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 @Getter
 @Setter
+@Audited
 @Table(name = "users")
 @ToString(callSuper = true)
 public class User extends BaseEntity<Long> implements Serializable {
@@ -56,6 +58,9 @@ public class User extends BaseEntity<Long> implements Serializable {
   private String verificationToken;
 
   private boolean enabled;
+  private boolean accountNonExpired;
+  private boolean accountNonLocked;
+  private boolean credentialsNonExpired;
 
   @ToString.Exclude
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

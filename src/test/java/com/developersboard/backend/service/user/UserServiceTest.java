@@ -20,13 +20,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 class UserServiceTest {
 
-  @InjectMocks private transient UserServiceImpl userService;
+  @InjectMocks
+  private transient UserServiceImpl userService;
 
-  @Mock private transient RoleService roleService;
+  @Mock
+  private transient RoleService roleService;
 
-  @Mock private transient UserRepository userRepository;
+  @Mock
+  private transient UserRepository userRepository;
 
-  @Mock private transient PasswordEncoder passwordEncoder;
+  @Mock
+  private transient PasswordEncoder passwordEncoder;
 
   private transient UserDto userDto;
   private transient User user;
@@ -94,22 +98,35 @@ class UserServiceTest {
   @Test
   void testIsVerificationTokenValidThrowsExceptionOnNullInput() {
     Assertions.assertThrows(
-        NullPointerException.class, () -> userService.isVerificationTokenValid(null, null));
+            NullPointerException.class, () -> userService.isVerificationTokenValid(null, null));
   }
 
   @Test
   void testSaveVerificationTokenThrowsExceptionOnNullInput() {
     Assertions.assertThrows(
-        NullPointerException.class, () -> userService.saveVerificationToken(null, null));
+            NullPointerException.class, () -> userService.saveVerificationToken(null, null));
   }
 
   @Test
   void testSaveVerificationTokenThrowsIllegalArgumentExceptionOnEmptyToken(TestInfo testInfo) {
 
     Assertions.assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            userService.saveVerificationToken(
-                UserUtils.createUserDto(testInfo.getDisplayName()), ""));
+            IllegalArgumentException.class,
+            () ->
+                    userService.saveVerificationToken(
+                            UserUtils.createUserDto(testInfo.getDisplayName()), ""));
   }
-}
+    void enableUserNotWithNullPublicId () {
+      Assertions.assertThrows(NullPointerException.class, () -> userService.enableUser(null));
+    }
+
+    @Test
+    void disableUserNotWithNullPublicId () {
+      Assertions.assertThrows(NullPointerException.class, () -> userService.disableUser(null));
+    }
+
+    @Test
+    void testDeleteUserByPublicIdThrowsExceptionOnNullInput () {
+      Assertions.assertThrows(NullPointerException.class, () -> userService.deleteUser(null));
+    }
+  }

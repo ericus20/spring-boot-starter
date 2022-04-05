@@ -14,7 +14,9 @@ import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.ValidationUtils;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -186,6 +188,19 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
+   * Find all users that failed to verify their email after a certain time.
+   *
+   * @return List of users that failed to verify their email.
+   */
+  @Override
+  public List<UserDto> findAllNotEnabledAfterAllowedDays() {
+    var days = LocalDateTime.now().minusDays(UserConstants.DAYS_TO_ALLOW_ACCOUNT_ACTIVATION);
+    List<User> expiredUsers = userRepository.findByEnabledFalseAndCreatedAtAfter(days);
+
+    return UserUtils.convertToUserDto(expiredUsers);
+  }
+
+  /**
    * Returns a userDetails for the given username or null if a user could not be found.
    *
    * @param username The username associated to the user to find
@@ -338,6 +353,22 @@ public class UserServiceImpl implements UserService {
       return persistUser(userDto, Collections.emptySet(), UserHistoryType.ACCOUNT_DISABLED, true);
     }
     return null;
+  }
+
+  /**
+   * Delete the user with the user id given.
+   *
+   * @param publicId The publicId associated to the user to delete
+   * @throws NullPointerException in case the given entity is {@literal null}
+   */
+  @Override
+  @Transactional
+  public void deleteUser(String publicId) {
+    ValidationUtils.validateInputsWithMessage(UserConstants.BLANK_PUBLIC_ID, publicId);
+
+    // Number of rows deleted is expected to be 1 since publicId is unique
+    int numberOfRowsDeleted = userRepository.deleteByPublicId(publicId);
+    LOG.debug("Deleted {} user(s) with publicId {}", numberOfRowsDeleted, publicId);
   }
 
   /**

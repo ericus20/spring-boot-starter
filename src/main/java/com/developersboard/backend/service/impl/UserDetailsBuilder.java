@@ -37,23 +37,11 @@ public final class UserDetailsBuilder implements UserDetails {
   private String password;
   private String phone;
   private boolean enabled;
+  private boolean accountNonExpired;
+  private boolean accountNonLocked;
+  private boolean credentialsNonExpired;
 
   private Collection<? extends GrantedAuthority> authorities;
-
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
 
   /**
    * Builds userDetails object from the specified user.
@@ -85,6 +73,9 @@ public final class UserDetailsBuilder implements UserDetails {
         .lastName(user.getLastName())
         .publicId(user.getPublicId())
         .enabled(user.isEnabled())
+        .accountNonExpired(user.isAccountNonExpired())
+        .accountNonLocked(user.isAccountNonLocked())
+        .credentialsNonExpired(user.isCredentialsNonExpired())
         .authorities(authorities)
         .build();
   }

@@ -1,6 +1,8 @@
 package com.developersboard.backend.persistent.repository;
 
 import com.developersboard.backend.persistent.domain.user.User;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -71,4 +73,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @return <code>true</code> if publicId exists
    */
   Boolean existsByPublicIdAndVerificationTokenOrderById(String publicId, String verificationToken);
+
+
+  /**
+   * Find all users that failed to verify their email after a certain time.
+   *
+   * @param allowedDaysToVerify email verification allowed days.
+   * @return List of users that failed to verify their email.
+   */
+  List<User> findByEnabledFalseAndCreatedAtAfter(LocalDateTime allowedDaysToVerify);
+
+  /**
+   * Delete the user associated with the given public id.
+   *
+   * @param publicId public id of the user to delete.
+   * @return Number of rows deleted.
+   */
+  int deleteByPublicId(String publicId);
 }

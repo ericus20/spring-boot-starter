@@ -25,8 +25,6 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 * [Gradle](https://gradle.org/) - Dependency Management and Build Tool
 * [Lombok](https://projectlombok.org/) - Automatically plugs into your editor and build tools,
   spicing up your java.
-* [NextJS](https://nextjs.org/) - The React Framework for production
-* [MySQL](https://www.mysql.com/) - Open-source relational database management system
 * [AWS](https://aws.amazon.com/) - On-demand cloud computing platforms
 * [H2](http://www.h2database.com/) - In-Memory Database for development
 * [Liquibase](https://liquibase.org/) - Rapidly manage database schema changes.
@@ -43,6 +41,7 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 
 ## Features
 
+- [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Fully Covered Equals, HashCode, ToString Testing](documents/TESTS.md)
 - [Unit and Integration Tests](documents/TESTS.md)
 - [Production Ready Folder Structure](README.md#production-ready-folder-structure)
@@ -114,6 +113,7 @@ TBD
 * **Matthew Puentes** - *Initial work*
 * **Stephen Boakye** - *Contributor*
 * **Charles Dimbeng** - *Contributor*
+* **Simon Kodua** - *Contributor*
 
 ## Acknowledgments
 
@@ -133,6 +133,21 @@ TBD
         ENCRYPTION_SECRET_PASSWORD=password
         JWT_SECRET=salt
 
+- The AWS Properties and defaults are:
+
+        AWS_REGION=us-east-1
+        AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+        AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+        AWS_S3_BUCKET_NAME=spring-boot-starter
+
+- The Email Properties and defaults are:
+
+        EMAIL_PROTOCOL=smtp
+        EMAIL_HOST=smtp.gmail.com
+        EMAIL_PORT=587
+        EMAIL_USERNAME
+        EMAIL_PASSWORD
+
 * Default profile for the application is **dev**, **test** and **prod** to test out production
   functionalities.
     - Datasource must be provided for production profile for the application to run.
@@ -144,3 +159,4 @@ TBD
 * Run all tests using - **./gradlew testAll**
 * Access in-memory database on *http://localhost:8080/console*
 * Run owasp dependency check - **./gradlew  dependencyCheckAnalyze --info**
+* Access Swagger UI - **http://localhost:8080/swagger-ui/index.html**

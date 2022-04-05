@@ -9,13 +9,11 @@ import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.dto.mapper.UserDtoMapper;
-import com.developersboard.web.payload.response.UserResponse;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -43,6 +41,20 @@ public final class UserUtils {
    */
   public static User createUser() {
     return createUser(FAKER.name().username());
+  }
+
+  /**
+   * Create a test user with flexibility.
+   *
+   * @param enabled if the user should be enabled or disabled
+   * @return the user
+   */
+  public static User createUser(final boolean enabled) {
+    return createUser(
+        FAKER.name().username(),
+        FAKER.internet().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH),
+        FAKER.internet().emailAddress(),
+        enabled);
   }
 
   /**
@@ -106,6 +118,9 @@ public final class UserUtils {
 
     if (enabled) {
       user.setEnabled(true);
+      user.setAccountNonExpired(true);
+      user.setAccountNonLocked(true);
+      user.setCredentialsNonExpired(true);
     }
     return user;
   }
@@ -162,13 +177,25 @@ public final class UserUtils {
   /**
    * Transfers data from entity to transfer object.
    *
-   * @param user stored user details
+   * @param user stored user
    * @return user dto
    */
   public static UserDto convertToUserDto(final User user) {
     var userDto = UserDtoMapper.MAPPER.toUserDto(user);
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
     return userDto;
+  }
+
+  /**
+   * Transfers data from entity to transfer object.
+   *
+   * @param users stored users
+   * @return user dto
+   */
+  public static List<UserDto> convertToUserDto(final List<User> users) {
+    var userDtoList = UserDtoMapper.MAPPER.toUserDto(users);
+    Validate.notNull(userDtoList, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
+    return userDtoList;
   }
 
   /**
@@ -196,15 +223,6 @@ public final class UserUtils {
   }
 
   /**
-   * Transfers data from entity to returnable object.
-   *
-   * @return user dto
-   */
-  public static Function<User, UserResponse> getUserResponse() {
-    return UserDtoMapper.MAPPER::toUserResponse;
-  }
-
-  /**
    * Enables and unlocks a user.
    *
    * @param userDto the userDto
@@ -212,6 +230,9 @@ public final class UserUtils {
   public static void enableUser(final UserDto userDto) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
     userDto.setEnabled(true);
+    userDto.setAccountNonExpired(true);
+    userDto.setAccountNonLocked(true);
+    userDto.setCredentialsNonExpired(true);
   }
 
   /**

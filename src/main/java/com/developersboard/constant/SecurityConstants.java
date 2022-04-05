@@ -48,10 +48,15 @@ public final class SecurityConstants {
     "/static/**",
     "/console/**",
     "/actuator/health",
+
     HomeConstants.INDEX_VIEW_NAME,
     SignUpConstants.SIGN_UP_VERIFY_MAPPING,
     StringUtils.joinWith(StringUtils.EMPTY, SignUpConstants.SIGN_UP_MAPPING, "/**"),
     StringUtils.joinWith(StringUtils.EMPTY, PasswordConstants.FORGOT_ROOT_MAPPING, "/**"),
+
+    "/v3/api-docs/**",
+    "/swagger-ui/**",
+    "/swagger-ui.html"
   };
 
   public static final List<String> ALLOWED_HTTP_METHODS =

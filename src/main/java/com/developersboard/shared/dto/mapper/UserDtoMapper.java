@@ -4,6 +4,7 @@ import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.web.payload.response.UserResponse;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -28,6 +29,14 @@ public interface UserDtoMapper {
    * @return the userDto
    */
   UserDto toUserDto(User user);
+
+  /**
+   * Convert and populate users to list of userDto objects.
+   *
+   * @param users the users
+   * @return the list of userDto
+   */
+  List<UserDto> toUserDto(List<User> users);
 
   /**
    * Convert and populate a userDto to User object.
