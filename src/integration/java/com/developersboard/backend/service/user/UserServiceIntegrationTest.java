@@ -5,6 +5,7 @@ import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
+import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.StringUtils;
 import com.developersboard.shared.util.UserUtils;
 import java.util.Objects;
@@ -205,11 +206,6 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void enableUserNotWithNullPublicId() {
-    Assertions.assertThrows(NullPointerException.class, () -> userService.enableUser(null));
-  }
-
-  @Test
   void enableUserNotExistingDoesNothing(TestInfo testInfo) {
     Assertions.assertNull(userService.enableUser(testInfo.getDisplayName()));
   }
@@ -232,12 +228,16 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void disableUserNotWithNullPublicId() {
-    Assertions.assertThrows(NullPointerException.class, () -> userService.disableUser(null));
+  void disableUserNotExistingDoesNothing(TestInfo testInfo) {
+    Assertions.assertNull(userService.disableUser(testInfo.getDisplayName()));
   }
 
   @Test
-  void disableUserNotExistingDoesNothing(TestInfo testInfo) {
-    Assertions.assertNull(userService.disableUser(testInfo.getDisplayName()));
+  void deleteUser() {
+    UserDto userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
+    Assertions.assertTrue(userService.existsByUsername(userDto.getUsername()));
+
+    userService.deleteUser(userDto.getPublicId());
+    Assertions.assertFalse(userService.existsByUsername(userDto.getUsername()));
   }
 }

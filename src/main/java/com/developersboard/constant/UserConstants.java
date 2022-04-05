@@ -9,6 +9,8 @@ package com.developersboard.constant;
  */
 public final class UserConstants {
 
+  public static final int DAYS_TO_ALLOW_ACCOUNT_ACTIVATION = 30;
+
   public static final String USER_MODEL_KEY = "user";
   public static final String EMAIL = "email";
   public static final String PASSWORD = "password";

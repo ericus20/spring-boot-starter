@@ -177,13 +177,25 @@ public final class UserUtils {
   /**
    * Transfers data from entity to transfer object.
    *
-   * @param user stored user details
+   * @param user stored user
    * @return user dto
    */
   public static UserDto convertToUserDto(final User user) {
     var userDto = UserDtoMapper.MAPPER.toUserDto(user);
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
     return userDto;
+  }
+
+  /**
+   * Transfers data from entity to transfer object.
+   *
+   * @param users stored users
+   * @return user dto
+   */
+  public static List<UserDto> convertToUserDto(final List<User> users) {
+    var userDtoList = UserDtoMapper.MAPPER.toUserDto(users);
+    Validate.notNull(userDtoList, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
+    return userDtoList;
   }
 
   /**

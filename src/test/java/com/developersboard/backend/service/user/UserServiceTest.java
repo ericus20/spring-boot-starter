@@ -90,4 +90,19 @@ class UserServiceTest {
   void testGetUserByPublicIdThrowsExceptionOnNullInput() {
     Assertions.assertThrows(NullPointerException.class, () -> userService.findByPublicId(null));
   }
+
+  @Test
+  void enableUserNotWithNullPublicId() {
+    Assertions.assertThrows(NullPointerException.class, () -> userService.enableUser(null));
+  }
+
+  @Test
+  void disableUserNotWithNullPublicId() {
+    Assertions.assertThrows(NullPointerException.class, () -> userService.disableUser(null));
+  }
+
+  @Test
+  void testDeleteUserByPublicIdThrowsExceptionOnNullInput() {
+    Assertions.assertThrows(NullPointerException.class, () -> userService.deleteUser(null));
+  }
 }
