@@ -14,6 +14,7 @@ import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.ValidationUtils;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
+  private final Clock clock;
   private final RoleService roleService;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -193,8 +195,8 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public List<UserDto> findAllNotEnabledAfterAllowedDays() {
-    var days = LocalDateTime.now().minusDays(UserConstants.DAYS_TO_ALLOW_ACCOUNT_ACTIVATION);
-    List<User> expiredUsers = userRepository.findByEnabledFalseAndCreatedAtAfter(days);
+    var days = LocalDateTime.now(clock).minusDays(UserConstants.DAYS_TO_ALLOW_ACCOUNT_ACTIVATION);
+    List<User> expiredUsers = userRepository.findByEnabledFalseAndCreatedAtBefore(days);
 
     return UserUtils.convertToUserDto(expiredUsers);
   }

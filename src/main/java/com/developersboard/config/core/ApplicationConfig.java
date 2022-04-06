@@ -5,9 +5,13 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.developersboard.backend.service.impl.ApplicationDateTimeProvider;
 import com.developersboard.config.properties.AwsProperties;
+import java.time.Clock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.auditing.DateTimeProvider;
 
 /**
  * This class holds application configuration settings for this application.
@@ -34,5 +38,26 @@ public class ApplicationConfig {
         .withRegion(Regions.fromName(props.getRegion()))
         .withCredentials(new AWSStaticCredentialsProvider(credentials))
         .build();
+  }
+
+  /**
+   * A bean to be used by Clock.
+   *
+   * @return instance of Clock
+   */
+  @Bean
+  public Clock clock() {
+    return Clock.systemDefaultZone();
+  }
+
+  /**
+   * A bean to be used by DateTimeProvider.
+   *
+   * @return instance of CurrentDateTimeProvider
+   */
+  @Bean
+  @Primary
+  public DateTimeProvider dateTimeProvider() {
+    return new ApplicationDateTimeProvider(clock());
   }
 }

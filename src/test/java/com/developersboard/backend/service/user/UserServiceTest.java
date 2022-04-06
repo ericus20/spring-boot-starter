@@ -7,6 +7,10 @@ import com.developersboard.backend.service.user.impl.UserServiceImpl;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +31,8 @@ class UserServiceTest {
   @Mock private transient UserRepository userRepository;
 
   @Mock private transient PasswordEncoder passwordEncoder;
+
+  @Mock private transient Clock clock;
 
   private transient UserDto userDto;
   private transient User user;
@@ -69,6 +75,22 @@ class UserServiceTest {
 
     UserDto storedUserDetails = userService.findByUsername(this.userDto.getUsername());
     Assertions.assertEquals(userDto, storedUserDetails);
+  }
+
+  // Test find all users that failed to verify their email after a certain time.
+  @Test
+  void findAllNotEnabledAfterAllowedDays() {
+    var user = UserUtils.createUser();
+
+    var fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+    Mockito.doReturn(fixedClock.instant()).when(clock).instant();
+    Mockito.doReturn(fixedClock.getZone()).when(clock).getZone();
+
+    Mockito.when(userRepository.findByEnabledFalseAndCreatedAtBefore(ArgumentMatchers.any()))
+        .thenReturn(List.of(user));
+
+    List<UserDto> users = userService.findAllNotEnabledAfterAllowedDays();
+    Assertions.assertTrue(users.contains(UserUtils.convertToUserDto(user)));
   }
 
   @Test
