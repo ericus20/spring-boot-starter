@@ -1,4 +1,4 @@
-package com.developersboard.config;
+package com.developersboard.config.jpa;
 
 import com.developersboard.backend.persistent.domain.base.ApplicationAuditorAware;
 import com.developersboard.constant.CacheConstants;

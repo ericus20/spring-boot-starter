@@ -2,6 +2,7 @@ package com.developersboard.backend.persistent.domain.user;
 
 import com.developersboard.backend.persistent.domain.base.BaseEntity;
 import com.developersboard.constant.ErrorConstants;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -47,6 +48,7 @@ public class User extends BaseEntity<Long> implements Serializable {
   @Email(message = ErrorConstants.INVALID_EMAIL)
   private String email;
 
+  @JsonIgnore
   @ToString.Exclude
   @NotBlank(message = ErrorConstants.BLANK_PASSWORD)
   private String password;

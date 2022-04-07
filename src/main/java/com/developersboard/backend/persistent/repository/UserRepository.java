@@ -4,6 +4,7 @@ import com.developersboard.backend.persistent.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -55,6 +56,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param email email to check if user exists.
    * @return True if user exists or false otherwise.
    */
+  @RestResource(exported = false)
   Boolean existsByUsernameAndEnabledTrueOrEmailAndEnabledTrueOrderById(
       String username, String email);
 
@@ -72,6 +74,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param allowedDaysToVerify email verification allowed days.
    * @return List of users that failed to verify their email.
    */
+  @RestResource(exported = false)
   List<User> findByEnabledFalseAndCreatedAtBefore(LocalDateTime allowedDaysToVerify);
 
   /**
@@ -80,5 +83,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param publicId public id of the user to delete.
    * @return Number of rows deleted.
    */
+  @RestResource(exported = false)
   int deleteByPublicId(String publicId);
 }

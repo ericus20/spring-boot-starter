@@ -137,6 +137,15 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
+  void invalidRefreshTokenThrowsException() throws Exception {
+    var cookie = cookieService.createTokenCookie("invalid_token", TokenType.REFRESH);
+
+    performRequest(
+            MockMvcRequestBuilders.get(refreshUri).cookie(cookieService.createCookie(cookie)))
+        .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+  }
+
+  @Test
   void loginLogoutReturnsResponseWithoutRefreshToken() throws Exception {
     // login
     performRequest(MockMvcRequestBuilders.post(loginUri))
