@@ -8,6 +8,7 @@ import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.StringUtils;
 import com.developersboard.shared.util.UserUtils;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.RandomUtils;
@@ -128,6 +129,15 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   void getUserByEmailNotExisting(TestInfo testInfo) {
     var userByEmail = userService.findByEmail(testInfo.getDisplayName());
     Assertions.assertNull(userByEmail);
+  }
+
+  @Test
+  void findAllNotEnabledAfterCreationDays(TestInfo testInfo) {
+    UserDto userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+
+    List<UserDto> users = userService.findAllNotEnabledAfterAllowedDays();
+    // User was just created and should not be returned to be deleted.
+    Assertions.assertFalse(users.contains(userDto));
   }
 
   @Test

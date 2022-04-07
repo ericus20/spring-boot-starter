@@ -72,7 +72,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param allowedDaysToVerify email verification allowed days.
    * @return List of users that failed to verify their email.
    */
-  List<User> findByEnabledFalseAndCreatedAtAfter(LocalDateTime allowedDaysToVerify);
+  List<User> findByEnabledFalseAndCreatedAtBefore(LocalDateTime allowedDaysToVerify);
 
   /**
    * Delete the user associated with the given public id.
