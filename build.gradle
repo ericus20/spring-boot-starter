@@ -73,6 +73,8 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
     implementation "org.springdoc:springdoc-openapi-javadoc:${springDocVersion}"
     implementation "org.springdoc:springdoc-openapi-security:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-data-rest:${springDocVersion}"
+    implementation "com.github.therapi:therapi-runtime-javadoc-scribe:0.13.0"
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:0.13.0"
 
     // Database and File Storage Tools
