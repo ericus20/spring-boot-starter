@@ -2,235 +2,241 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="common-head">
-    <title></title>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <title></title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
 
 
-    <style type="text/css">
+  <style type="text/css">
 
-        /* FONTS */
-        @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+    /* FONTS */
+    @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 
-        /* CLIENT-SPECIFIC STYLES */
-        body, table, td, a {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-        }
+    /* CLIENT-SPECIFIC STYLES */
+    body, table, td, a {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
 
-        table, td {
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }
+    table, td {
+      mso-table-lspace: 0;
+      mso-table-rspace: 0;
+    }
 
-        img {
-            -ms-interpolation-mode: bicubic;
-        }
+    img {
+      -ms-interpolation-mode: bicubic;
+    }
 
-        /* RESET STYLES */
-        img {
-            border: 0;
-            height: auto;
-            line-height: 100%;
-            outline: none;
-            text-decoration: none;
-        }
+    /* RESET STYLES */
+    img {
+      border: 0;
+      height: auto;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+    }
 
-        table {
-            border-collapse: collapse !important;
-        }
+    table {
+      border-collapse: collapse !important;
+    }
 
-        body {
-            height: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-        }
+    body {
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
 
-        /* iOS BLUE LINKS */
-        a[x-apple-data-detectors] {
-            color: inherit !important;
-            text-decoration: none !important;
-            font-size: inherit !important;
-            font-family: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
-        }
+    /* iOS BLUE LINKS */
+    a[x-apple-data-detectors] {
+      color: inherit !important;
+      text-decoration: none !important;
+      font-size: inherit !important;
+      font-family: inherit !important;
+      font-weight: inherit !important;
+      line-height: inherit !important;
+    }
 
-        /* MOBILE STYLES */
-        @media screen and (max-width: 600px) {
-            h1 {
-                font-size: 32px !important;
-                line-height: 32px !important;
-            }
-        }
+    /* MOBILE STYLES */
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 32px !important;
+        line-height: 32px !important;
+      }
+    }
 
-        /* ANDROID CENTER FIX */
-        div[style*="margin: 16px 0;"] {
-            margin: 0 !important;
-        }
-    </style>
+    /* ANDROID CENTER FIX */
+    div[style*="margin: 16px 0;"] {
+      margin: 0 !important;
+    }
+  </style>
 
 </head>
 
 <body style="background-color: #f3f5f7; margin: 0 !important; padding: 0 !important;">
 
 <!-- HIDDEN PREHEADER TEXT -->
-<div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Poppins', sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"
-     th:fragment="common-pre-header (text)">
-    <span th:text="${text}"></span>
+<div
+    style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Poppins', sans-serif; max-height: 0; max-width: 0; opacity: 0; overflow: hidden;"
+    th:fragment="common-pre-header (text)">
+  <span th:text="${text}"></span>
 </div>
 
-<table border="0" cellpadding="0" cellspacing="0" th:style="'background:url(' + @{${urls.get('imageUrl')}} + ');'"
+<table border="0" cellpadding="0" cellspacing="0"
+       th:style="'background:url(' + @{${urls.get('imageUrl')}} + ');'"
        width="100%">
 
-    <!-- LOGO -->
-    <tr th:fragment="common-logo">
-        <td align="center">
-            <!--[if (gte mso 9)|(IE)]>
-            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                <tr>
-                    <td align="center" valign="top" width="600">
-            <![endif]-->
-            <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;" width="100%">
-                <tr>
-                    <td align="center" style="padding: 40px 10px 40px 10px;" valign="top">
-                        <a href="#" style="text-decoration: none;" target="_blank">
+  <!-- LOGO -->
+  <tr th:fragment="common-logo">
+    <td align="center">
+      <!--[if (gte mso 9)|(IE)]>
+      <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+        <tr>
+          <td align="center" valign="top" width="600">
+      <![endif]-->
+      <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;" width="100%">
+        <tr>
+          <td align="center" style="padding: 40px 10px 40px 10px;" valign="top">
+            <a href="#" style="text-decoration: none;" target="_blank">
 							<span border="0" style="display: block; font-family: 'Poppins', sans-serif;
-							color: #ff9331; font-size: 36px;"><b th:utext="#{project.short.name}"></b></span>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-            <!--[if (gte mso 9)|(IE)]>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
-        </td>
-    </tr>
+							color: #ff9331; font-size: 36px;"><b>Spring Boot Starter</b></span>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <!--[if (gte mso 9)|(IE)]>
+      </td>
+      </tr>
+      </table>
+      <![endif]-->
+    </td>
+  </tr>
 
-    <!-- HERO -->
-    <tr th:fragment="common-hero (salutation)">
-        <td align="center" style="padding: 0px 10px 0px 10px;">
-            <!--[if (gte mso 9)|(IE)]>
-            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                <tr>
-                    <td align="center" valign="top" width="600">
-            <![endif]-->
-            <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;"
-                   width="100%">
-                <tr>
-                    <td align="center" bgcolor="#ffffff"
-                        style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Poppins', sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 2px; line-height: 48px;"
-                        valign="top">
-                        <th:block th:if="${username}">
-                            <h1 style="font-size: 42px; font-weight: 400; margin: 0;"><span
-                                    th:text="${salutation}"></span>
-                                <span style="text-transform: capitalize;" th:text="${username}"></span>
-                            </h1>
-                        </th:block>
-                        <th:block th:unless="${username}">
-                            <h1 style="font-size: 42px; font-weight: 400; margin: 0;" th:text="${salutation}"></h1>
-                        </th:block>
-                    </td>
-                </tr>
-            </table>
-            <!--[if (gte mso 9)|(IE)]>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
-        </td>
-    </tr>
+  <!-- HERO -->
+  <tr th:fragment="common-hero (salutation)">
+    <td align="center" style="padding: 0px 10px 0px 10px;">
+      <!--[if (gte mso 9)|(IE)]>
+      <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+        <tr>
+          <td align="center" valign="top" width="600">
+      <![endif]-->
+      <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;"
+             width="100%">
+        <tr>
+          <td align="center" bgcolor="#ffffff"
+              style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Poppins', sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 2px; line-height: 48px;"
+              valign="top">
+            <th:block th:if="${username}">
+              <h1 style="font-size: 42px; font-weight: 400; margin: 0;"><span
+                  th:text="${salutation}"></span>
+                <span style="text-transform: capitalize;" th:text="${username}"></span>
+              </h1>
+            </th:block>
+            <th:block th:unless="${username}">
+              <h1 style="font-size: 42px; font-weight: 400; margin: 0;"
+                  th:text="${salutation}"></h1>
+            </th:block>
+          </td>
+        </tr>
+      </table>
+      <!--[if (gte mso 9)|(IE)]>
+      </td>
+      </tr>
+      </table>
+      <![endif]-->
+    </td>
+  </tr>
 
-    <!-- SUPPORT CALLOUT -->
-    <tr th:fragment="common-support-callout">
-        <td align="center" style="padding: 10px 10px 0px 10px;">
-            <!--[if (gte mso 9)|(IE)]>
-            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                <tr>
-                    <td align="center" valign="top" width="600">
-            <![endif]-->
-            <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;" width="100%">
-                <!-- HEADLINE -->
-                <tr>
-                    <td align="center" bgcolor="#398bf7"
-                        style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;">
-                        <h2 style="font-size: 16px; font-weight: 400; color: #ffffff; margin: 0;">Need more help?</h2>
-                        <p style="margin: 0; font-size: 14px;"><a href="#" style="color: #ffffff;" target="_blank">We&rsquo;re
-                            here, ready to talk</a></p>
-                    </td>
-                </tr>
-            </table>
-            <!--[if (gte mso 9)|(IE)]>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
-        </td>
-    </tr>
+  <!-- SUPPORT CALLOUT -->
+  <tr th:fragment="common-support-callout">
+    <td align="center" style="padding: 10px 10px 0px 10px;">
+      <!--[if (gte mso 9)|(IE)]>
+      <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+        <tr>
+          <td align="center" valign="top" width="600">
+      <![endif]-->
+      <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;" width="100%">
+        <!-- HEADLINE -->
+        <tr>
+          <td align="center" bgcolor="#398bf7"
+              style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;">
+            <h2 style="font-size: 16px; font-weight: 400; color: #ffffff; margin: 0;">Need more
+              help?</h2>
+            <p style="margin: 0; font-size: 14px;"><a href="#" style="color: #ffffff;"
+                                                      target="_blank">We&rsquo;re
+              here, ready to talk</a></p>
+          </td>
+        </tr>
+      </table>
+      <!--[if (gte mso 9)|(IE)]>
+      </td>
+      </tr>
+      </table>
+      <![endif]-->
+    </td>
+  </tr>
 
-    <!-- FOOTER -->
-    <tr th:fragment="common-footer">
-        <td align="center" style="padding: 10px 10px 50px 10px;">
-            <!--[if (gte mso 9)|(IE)]>
-            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                <tr>
-                    <td align="center" valign="top" width="600">
-            <![endif]-->
-            <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;" width="100%">
-                <!-- NAVIGATION -->
-                <tr>
-                    <td align="left" bgcolor="#f4f4f4"
-                        style="padding: 30px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
-                        <p style="margin: 0;">
-                            <a style="color: #999999; font-weight: 700;" target="_blank"
-                               th:href="@{${urls.get('dashboardLink')}}">Dashboard</a>
-                            -
-                            <a style="color: #999999; font-weight: 700;" target="_blank"
-                               th:href="@{${urls.get('aboutUsLink')}}">About Us</a>
-                            -
-                            <a style="color: #999999; font-weight: 700;" target="_blank"
-                               th:href="@{${urls.get('helpLink')}}">Help</a>
-                        </p>
-                    </td>
-                </tr>
-                <!-- PERMISSION REMINDER -->
-                <tr>
-                    <td align="left" bgcolor="#f4f4f4"
-                        style="padding: 0px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
-                        <p style="margin: 0;">You received this email because you just signed up for a new account.</p>
-                    </td>
-                </tr>
-                <!-- ADDRESS -->
-                <tr>
-                    <td align="left" bgcolor="#f4f4f4"
-                        style="padding: 0px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
-                        <p style="margin: 0;" th:utext="#{project.name}">Spring Boot Starter</p>
-                    </td>
-                </tr>
-                <!-- COPYRIGHT -->
-                <tr>
-                    <td align="center"
-                        style="padding: 30px 30px 5px 30px; color: #ffffff; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
-                        <p style="margin: 0;">Copyright &copy;
-                            <script>
-                                console.log(new Date().getFullYear())
-                            </script>
-                            <span th:utext="#{project.short.name}">SBS</span>. All rights reserved .
-                        </p>
-                    </td>
-                </tr>
-            </table>
-            <!--[if (gte mso 9)|(IE)]>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
-        </td>
-    </tr>
+  <!-- FOOTER -->
+  <tr th:fragment="common-footer">
+    <td align="center" style="padding: 10px 10px 50px 10px;">
+      <!--[if (gte mso 9)|(IE)]>
+      <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+        <tr>
+          <td align="center" valign="top" width="600">
+      <![endif]-->
+      <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;" width="100%">
+        <!-- NAVIGATION -->
+        <tr>
+          <td align="left" bgcolor="#f4f4f4"
+              style="padding: 30px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
+            <p style="margin: 0;">
+              <a style="color: #999999; font-weight: 700;" target="_blank"
+                 th:href="@{${urls.get('accountOverviewLink')}}">Account Overview</a>
+              -
+              <a style="color: #999999; font-weight: 700;" target="_blank"
+                 th:href="@{${urls.get('aboutUsLink')}}">Appointments</a>
+              -
+              <a style="color: #999999; font-weight: 700;" target="_blank"
+                 th:href="@{${urls.get('helpLink')}}">Help</a>
+            </p>
+          </td>
+        </tr>
+        <!-- PERMISSION REMINDER -->
+        <tr>
+          <td align="left" bgcolor="#f4f4f4"
+              style="padding: 0px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
+            <p style="margin: 0;">You received this email because you just signed up for a new
+              account.</p>
+          </td>
+        </tr>
+        <!-- ADDRESS -->
+        <tr>
+          <td align="left" bgcolor="#f4f4f4"
+              style="padding: 0px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
+            <p style="margin: 0;"> Spring Boot Starter</p>
+          </td>
+        </tr>
+        <!-- COPYRIGHT -->
+        <tr>
+          <td align="center"
+              style="padding: 30px 30px 5px 30px; color: #ffffff; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
+            <p style="margin: 0;">Copyright &copy;
+              <script>
+                console.log(new Date().getFullYear())
+              </script>
+              <span>Spring Boot Starter</span>. All rights reserved .
+            </p>
+          </td>
+        </tr>
+      </table>
+      <!--[if (gte mso 9)|(IE)]>
+      </td>
+      </tr>
+      </table>
+      <![endif]-->
+    </td>
+  </tr>
 </table>
 
 </body>

@@ -1,0 +1,23 @@
+
+html {
+    background: url('../images/bg.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+body {
+    padding: 0 2em;
+    color: #024457;
+    background-color: transparent;
+    font-family: Arial, sans-serif;
+}
+
+.ms-8 {
+    margin-left: 8rem;
+}
+
+.me-8 {
+    margin-right: 8rem;
+}

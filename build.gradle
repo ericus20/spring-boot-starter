@@ -88,6 +88,16 @@ dependencies {
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
+    // Webjars
+    implementation 'org.webjars:jquery:3.6.0'
+    implementation 'org.webjars:bootstrap:5.1.3'
+    implementation 'org.webjars:font-awesome:6.1.0'
+    implementation 'org.webjars:popper.js:2.9.3'
+    implementation 'org.webjars:bootbox:5.5.2'
+    implementation 'org.webjars:datatables:1.11.4'
+    implementation 'org.webjars:bootstrap-datetimepicker:6aa746736d'
+    implementation 'org.webjars:webjars-locator:0.45'
+
     // Testing
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'

@@ -2,45 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- Head -->
-<th:block th:replace="common/template :: common-head(title='..:: Tax Tracker | Starter ::..')"/>
+<th:block th:replace="common/template :: common-head(title='Starter')"/>
 
 <body>
 
-<!--[if lte IE 9]>
-<th:block th:replace="common/template :: common-ie-check">
-<![endif]-->
 
-<div class="fakeloader"></div>
-
-<!-- Main wrapper -->
-<div class="wrapper" id="wrapper">
-
-    <!-- Start: Header Section -->
-    <header th:replace="common/template :: common-header"></header>
-    <!-- End: Header Section -->
-
-    <!-- Breadcrumb Area -->
-    <div th:replace="common/template :: common-breadcrumb('Tax Tracker', 'Stater ')"></div>
-    <!--// Breadcrumb Area -->
-
-    <!-- Page Conent -->
-    <main class="page-content">
-
-
-    </main>
-    <!-- //Page Conent -->
-
-    <!-- Common Footer Area -->
-    <footer th:replace="common/template :: common-footer"></footer>
-    <!-- //Footer Area -->
-
-</div>
-<!-- //Main wrapper -->
-
-<!--Common Body Scripts-->
-<div th:replace="common/template :: common-scripts"></div>
-
+  <!--Common Body Scripts-->
+  <div th:replace="common/template :: common-scripts"></div>
 </body>
-
-
 </html>
