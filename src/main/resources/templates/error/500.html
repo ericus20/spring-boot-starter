@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/template :: common-head(title=~{::title/text()})">
+    <title>..:: Spring Boot Starter | 500 ::..</title>
+</head>
+
+<body>
+
+
+<!-- Start: Header Section -->
+<header th:replace="common/template :: common-header"></header>
+<!-- End: Header Section -->
+
+<div class="container error-container">
+
+    <div class="jumbotron">
+        <h1 class="display-3">Spring Boot Starter Support Center</h1>
+        <p class="lead">Exception Error</p>
+        <hr class="my-2">
+
+
+        <h1>A friendly Support Center</h1>
+
+        <!--  As we are using Thymeleaf, you might consider using
+              ${#httpServletRequest.requestURL}. But that returns the path
+              to this error page.  Hence we explicitly add the url to the
+              Model in some of the example code. -->
+        <p th:if="${url}">
+            <b>Page:</b> <span th:text="${url}">Page URL</span>
+        </p>
+
+        <p id='created' th:with="timeZone=${T(java.util.TimeZone).getTimeZone('EST')}">
+            <b>Occurred:</b> <span
+                th:text="${T(org.apache.commons.lang3.time.DateFormatUtils).format(#dates.createNow(), 'MMM dd yyyy h:mm a', timeZone)}"></span>
+        </p>
+
+        <p th:if="${status}">
+            <b>Response Status:</b> <span th:text="${status}">status-code</span> <span
+                th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+        </p>
+
+        <div class="alert alert-warning" role="alert">
+            <strong>
+                There was an unexpected exception... Please contact support using link below
+            </strong>
+        </div>
+
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" role="button" style="color: white" th:href="@{/contact}">Please Contact
+                Support</a>
+        </p>
+
+    </div>
+
+</div>
+
+<!--Common Footer -->
+<footer th:replace="common/template :: common-footer"></footer>
+
+<!--Common Body Scripts-->
+<div th:replace="common/template :: common-scripts"></div>
+
+</body>
+</html>
