@@ -1,6 +1,9 @@
 package com.developersboard.shared.util;
 
 import com.developersboard.backend.persistent.domain.user.User;
+import com.developersboard.enums.RoleType;
+import com.developersboard.shared.dto.UserDto;
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -35,6 +38,26 @@ class UserUtilsTest {
           Assertions.assertNotNull(user.getEmail());
 
           Assertions.assertEquals(testInfo.getDisplayName(), user.getUsername());
+        });
+  }
+
+  @Test
+  void createUserWithFourParameters() {
+    Faker faker = new Faker();
+
+    UserDto userDto =
+        UserUtils.createUserDto(
+            faker.name().username(),
+            faker.elderScrolls().city(),
+            faker.pokemon().name(),
+            Boolean.TRUE);
+
+    Assertions.assertAll(
+        () -> {
+          Assertions.assertNotNull(userDto.getUsername());
+          Assertions.assertNotNull(userDto.getPassword());
+          Assertions.assertNotNull(userDto.getEmail());
+          Assertions.assertTrue(userDto.isEnabled());
         });
   }
 
@@ -92,5 +115,17 @@ class UserUtilsTest {
   @Test
   void shouldThrowExceptionWhenUserDtoInputIsNull() {
     Assertions.assertThrows(NullPointerException.class, () -> UserUtils.convertToUser(null));
+  }
+
+  @Test
+  void retrieveRolesFromUserRole(TestInfo testInfo) {
+    User user = UserUtils.createUser(testInfo.getDisplayName(), RoleType.ROLE_ADMIN);
+    UserUtils.getRoles(user.getUserRoles());
+
+    Assertions.assertAll(
+        () -> {
+          Assertions.assertNotNull(user);
+          Assertions.assertNotNull(user.getUserRoles());
+        });
   }
 }
