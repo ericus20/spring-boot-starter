@@ -49,8 +49,7 @@ public final class SecurityUtils {
       throws Exception {
     var profiles = Arrays.asList(environment.getActiveProfiles());
 
-    if (profiles.contains(ProfileTypeConstants.DEV)
-        || profiles.contains(ProfileTypeConstants.DEV_DOCKER)) {
+    if (profiles.contains(ProfileTypeConstants.DEV)) {
       http.headers().frameOptions().sameOrigin().and().csrf().disable().cors();
     }
   }

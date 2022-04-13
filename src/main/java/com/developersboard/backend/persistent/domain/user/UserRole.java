@@ -39,7 +39,9 @@ public class UserRole extends BaseEntity<Long> implements Serializable {
 
   @NotAudited
   @ToString.Exclude
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+  @ManyToOne(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   @JoinColumn(name = "role_id")
   private Role role;
 

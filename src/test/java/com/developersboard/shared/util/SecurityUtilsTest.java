@@ -7,10 +7,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.platform.commons.util.ReflectionUtils;
+import org.mockito.Mockito;
 import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.Authentication;
 
 class SecurityUtilsTest {
 
@@ -21,8 +24,19 @@ class SecurityUtilsTest {
   }
 
   @Test
+  void testingIsUserAuthenticatedNull() {
+    Assertions.assertFalse(SecurityUtils.isAuthenticated(null));
+  }
+
+  @Test
   void testingIsUserAuthenticatedNotAuthenticated() {
-    Assertions.assertFalse(SecurityUtils.isAuthenticated());
+    SecurityUtils.clearAuthentication();
+    Authentication authentication = SecurityUtils.getAuthentication();
+    Assertions.assertAll(
+        () -> {
+          Assertions.assertFalse(SecurityUtils.isAuthenticated());
+          Assertions.assertFalse(SecurityUtils.isAuthenticated(authentication));
+        });
   }
 
   @Test
@@ -92,6 +106,34 @@ class SecurityUtilsTest {
           Assertions.assertEquals(testInfo.getDisplayName(), authorizedUserDto.getUsername());
           Assertions.assertNotNull(authorizedUserDto);
           Assertions.assertTrue(SecurityUtils.isAuthenticated());
+        });
+  }
+
+  @Test
+  void getAuthorizedUserDtoWithoutAuthenticationThrowsException() {
+    SecurityUtils.clearAuthentication();
+    Assertions.assertThrows(NullPointerException.class, SecurityUtils::getAuthorizedUserDto);
+  }
+
+  @Test
+  void getAuthorizedUserDetailsWithoutAuthenticationReturnsNull() {
+    SecurityUtils.clearAuthentication();
+    Assertions.assertNull(SecurityUtils.getAuthenticatedUserDetails());
+  }
+
+  @Test
+  void authenticateUserWithNullAuthenticationManagerDoesNothing() {
+    Assertions.assertDoesNotThrow(() -> SecurityUtils.authenticateUser(null, null));
+  }
+
+  @Test
+  void authenticateUserWithNullUserDetailsDoesNothing() {
+    var authManager = Mockito.mock(AuthenticationManager.class);
+
+    Assertions.assertAll(
+        () -> {
+          Assertions.assertNotNull(authManager);
+          Assertions.assertDoesNotThrow(() -> SecurityUtils.authenticateUser(authManager, null));
         });
   }
 }
