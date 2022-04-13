@@ -3,7 +3,6 @@ package com.developersboard.shared.dto.mapper;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
-import com.developersboard.web.payload.response.UserResponse;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -53,12 +52,4 @@ public interface UserDtoMapper {
    * @return the user
    */
   User toUser(UserDto userDto);
-
-  /**
-   * Convert and populate a User to UserResponse object.
-   *
-   * @param user the user
-   * @return the userResponse
-   */
-  UserResponse toUserResponse(User user);
 }

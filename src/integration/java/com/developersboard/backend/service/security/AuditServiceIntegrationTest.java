@@ -3,11 +3,12 @@ package com.developersboard.backend.service.security;
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.service.user.UserService;
-import com.developersboard.enums.UserHistoryType;
+import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
-import com.developersboard.shared.util.StringUtils;
 import com.developersboard.shared.util.UserUtils;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.envers.RevisionType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,9 @@ class AuditServiceIntegrationTest extends IntegrationTestUtils {
 
   @BeforeEach
   void setUp() {
-    userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
+    Set<RoleType> adminRoleType = Collections.singleton(RoleType.ROLE_ADMIN);
+
+    userDto = userService.createUser(UserUtils.createUserDto(false), adminRoleType);
   }
 
   @Test
@@ -52,11 +55,19 @@ class AuditServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void testReturnsAuditLogsForCreatedEntityWithDeletedEntities() {
-    UserDto userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
-    userDto.setLastName(StringUtils.FAKER.name().lastName());
-    userService.updateUser(userDto, UserHistoryType.PROFILE_UPDATE);
+    var userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
 
-    List<?> auditLogsWithRevision = auditService.getAuditLogs(User.class);
-    Assertions.assertFalse(auditLogsWithRevision.isEmpty());
+    userService.deleteUser(userDto.getPublicId());
+    Assertions.assertFalse(userService.existsByUsername(userDto.getUsername()));
+
+    var auditLogs = auditService.getAuditLogs(User.class, true, false, true);
+    Assertions.assertFalse(auditLogs.isEmpty());
+
+    // since we are selecting most recent, the deletion should be the first entry
+    var auditLog = (Object[]) auditLogs.get(0);
+    var user = (User) auditLog[0];
+
+    Assertions.assertEquals(user.getId(), userDto.getId());
+    Assertions.assertEquals(RevisionType.DEL, auditLog[2]);
   }
 }
