@@ -1,5 +1,11 @@
 package com.developersboard.config.core;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
 import org.h2.server.web.WebServlet;
@@ -21,6 +27,23 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 @Profile(ProfileTypeConstants.DEV)
 public class DevConfig {
+
+  /**
+   * A bean to be used by AmazonS3 Service.
+   *
+   * @param props the aws properties
+   * @return instance of AmazonS3Client
+   */
+  @Bean
+  public AmazonS3 amazonS3(AwsProperties props) {
+    // Create the credentials provider
+    var credentials = new BasicAWSCredentials(props.getAccessKeyId(), props.getSecretAccessKey());
+
+    return AmazonS3ClientBuilder.standard()
+        .withRegion(Regions.fromName(props.getRegion()))
+        .withCredentials(new AWSStaticCredentialsProvider(credentials))
+        .build();
+  }
 
   /**
    * A bean to register the path /h2-console for the h2 database.

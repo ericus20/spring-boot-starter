@@ -1,6 +1,7 @@
 package com.developersboard.backend.service.storage.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CopyObjectRequest;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
@@ -38,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Profile({ProfileTypeConstants.PROD})
+@Profile({ProfileTypeConstants.PROD, ProfileTypeConstants.TEST})
 public class AmazonS3ServiceImpl extends AbstractAmazonS3Service {
 
   /**
@@ -87,6 +88,7 @@ public class AmazonS3ServiceImpl extends AbstractAmazonS3Service {
    *
    * @param path the path
    * @return list of files
+   * @throws AmazonS3Exception if the path is not found
    */
   @Override
   public List<String> getFiles(String path) {
@@ -105,6 +107,7 @@ public class AmazonS3ServiceImpl extends AbstractAmazonS3Service {
    *
    * @param path the path
    * @return the file
+   * @throws AmazonS3Exception if the path is not found
    */
   @Override
   public InputStream getFile(String path) throws IOException {

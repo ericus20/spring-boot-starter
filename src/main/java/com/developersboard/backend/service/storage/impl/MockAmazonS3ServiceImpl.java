@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Slf4j
 @Service
-@Profile({ProfileTypeConstants.DEV, ProfileTypeConstants.TEST})
+@Profile({ProfileTypeConstants.DEV})
 public class MockAmazonS3ServiceImpl extends AbstractAmazonS3Service {
   /**
    * It stores the given file name in S3 and returns the key under which the file has been stored.
