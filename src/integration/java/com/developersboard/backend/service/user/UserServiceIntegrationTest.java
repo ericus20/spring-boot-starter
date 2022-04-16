@@ -6,7 +6,6 @@ import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
-import com.developersboard.shared.util.StringUtils;
 import com.developersboard.shared.util.UserUtils;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +66,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
     // since the user is enabled, create another user using the same details from the first user
     // should return null as the user already exists.
-    var existingUser = persistUser(userService, false, true, userDto);
+    var existingUser = persistUser(userService, true, userDto);
 
     Assertions.assertNull(existingUser);
   }
@@ -187,7 +186,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   void updateUser(TestInfo testInfo) {
     var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
     var previousFirstName = userDto.getFirstName();
-    userDto.setFirstName(StringUtils.FAKER.name().firstName());
+    userDto.setFirstName(FAKER.name().firstName());
 
     var updatedUserDto = userService.updateUser(userDto, UserHistoryType.PROFILE_UPDATE);
     Assertions.assertNotNull(updatedUserDto.getId());

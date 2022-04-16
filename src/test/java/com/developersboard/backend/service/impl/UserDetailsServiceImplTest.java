@@ -1,7 +1,7 @@
 package com.developersboard.backend.service.impl;
 
+import com.developersboard.TestUtils;
 import com.developersboard.backend.persistent.repository.UserRepository;
-import com.developersboard.shared.util.StringUtils;
 import com.developersboard.shared.util.UserUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-class UserDetailsServiceImplTest {
+class UserDetailsServiceImplTest extends TestUtils {
 
   @Mock private transient UserRepository userRepository;
 
@@ -22,18 +22,17 @@ class UserDetailsServiceImplTest {
   private transient String email;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) {
-    MockitoAnnotations.openMocks(this);
-    Assertions.assertNotNull(userRepository);
-    Assertions.assertNotNull(userDetailsService);
+  void setUp(TestInfo testInfo) throws Exception {
+    try (var mocks = MockitoAnnotations.openMocks(this)) {
+      Assertions.assertNotNull(mocks);
 
-    email = StringUtils.FAKER.internet().emailAddress();
-    var user =
-        UserUtils.createUser(
-            testInfo.getDisplayName(), StringUtils.FAKER.internet().password(), email);
+      email = FAKER.internet().emailAddress();
+      var user =
+          UserUtils.createUser(testInfo.getDisplayName(), FAKER.internet().password(), email);
 
-    Mockito.when(userRepository.findByUsername(testInfo.getDisplayName())).thenReturn(user);
-    Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+      Mockito.when(userRepository.findByUsername(testInfo.getDisplayName())).thenReturn(user);
+      Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+    }
   }
 
   @Test
@@ -52,7 +51,7 @@ class UserDetailsServiceImplTest {
   void testShouldThrowExceptionForNonExistingUsername() {
     Assertions.assertThrows(
         UsernameNotFoundException.class,
-        () -> userDetailsService.loadUserByUsername(StringUtils.FAKER.name().username()));
+        () -> userDetailsService.loadUserByUsername(FAKER.name().username()));
   }
 
   @Test
