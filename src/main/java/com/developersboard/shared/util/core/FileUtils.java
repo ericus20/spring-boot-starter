@@ -1,4 +1,4 @@
-package com.developersboard.shared.util;
+package com.developersboard.shared.util.core;
 
 import com.developersboard.constant.ErrorConstants;
 import java.awt.AlphaComposite;

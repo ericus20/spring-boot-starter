@@ -41,18 +41,20 @@ class JwtAuthTokenFilterTest {
   private transient MockHttpServletResponse response;
 
   @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
+  void setUp() throws Exception {
+    try (var mocks = MockitoAnnotations.openMocks(this)) {
+      Assertions.assertNotNull(mocks);
 
-    UserDetailsBuilder userDetails = UserDetailsBuilder.buildUserDetails(UserUtils.createUser());
-    Mockito.when(userDetailsService.loadUserByUsername(ArgumentMatchers.anyString()))
-        .thenReturn(userDetails);
-    Mockito.when(encryptionService.decrypt(ArgumentMatchers.anyString())).thenReturn(bearerToken);
+      UserDetailsBuilder userDetails = UserDetailsBuilder.buildUserDetails(UserUtils.createUser());
+      Mockito.when(userDetailsService.loadUserByUsername(ArgumentMatchers.anyString()))
+          .thenReturn(userDetails);
+      Mockito.when(encryptionService.decrypt(ArgumentMatchers.anyString())).thenReturn(bearerToken);
 
-    request = new MockHttpServletRequest();
-    request.setRequestURI(API_AUTH_LOGIN);
+      request = new MockHttpServletRequest();
+      request.setRequestURI(API_AUTH_LOGIN);
 
-    response = new MockHttpServletResponse();
+      response = new MockHttpServletResponse();
+    }
   }
 
   @Test

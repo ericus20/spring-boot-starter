@@ -8,11 +8,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class RoleServiceTest {
 
   @InjectMocks private transient RoleServiceImpl roleService;
@@ -24,7 +26,6 @@ class RoleServiceTest {
   @BeforeEach
   void setUp() {
     roleEntity = new Role(RoleType.ROLE_USER);
-    MockitoAnnotations.openMocks(this);
   }
 
   @Test

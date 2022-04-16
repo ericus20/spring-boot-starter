@@ -1,8 +1,9 @@
-package com.developersboard.shared.util;
+package com.developersboard.shared.util.core;
 
 import com.developersboard.TestUtils;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.util.UserUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;

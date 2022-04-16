@@ -1,4 +1,4 @@
-package com.developersboard.shared.util;
+package com.developersboard.shared.util.core;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

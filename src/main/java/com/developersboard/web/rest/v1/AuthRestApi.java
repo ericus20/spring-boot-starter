@@ -8,7 +8,7 @@ import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.OperationStatus;
 import com.developersboard.enums.TokenType;
-import com.developersboard.shared.util.SecurityUtils;
+import com.developersboard.shared.util.core.SecurityUtils;
 import com.developersboard.web.payload.request.LoginRequest;
 import com.developersboard.web.payload.response.JwtResponseBuilder;
 import com.developersboard.web.payload.response.LogoutResponse;

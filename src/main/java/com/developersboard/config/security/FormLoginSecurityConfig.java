@@ -1,7 +1,7 @@
 package com.developersboard.config.security;
 
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.shared.util.SecurityUtils;
+import com.developersboard.shared.util.core.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
