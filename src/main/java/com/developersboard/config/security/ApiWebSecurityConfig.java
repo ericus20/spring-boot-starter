@@ -4,7 +4,7 @@ import com.developersboard.config.security.jwt.JwtAuthTokenFilter;
 import com.developersboard.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.RoleType;
-import com.developersboard.shared.util.SecurityUtils;
+import com.developersboard.shared.util.core.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

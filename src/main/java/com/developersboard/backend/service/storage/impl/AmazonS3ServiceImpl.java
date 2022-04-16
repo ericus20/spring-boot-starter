@@ -10,7 +10,7 @@ import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.StorageConstants;
 import com.developersboard.exception.InvalidFileFormatException;
-import com.developersboard.shared.util.FileUtils;
+import com.developersboard.shared.util.core.FileUtils;
 import com.developersboard.shared.util.core.ValidationUtils;
 import java.io.File;
 import java.io.IOException;

@@ -2,7 +2,7 @@ package com.developersboard.config.security.jwt;
 
 import com.developersboard.backend.service.security.EncryptionService;
 import com.developersboard.backend.service.security.JwtService;
-import com.developersboard.shared.util.SecurityUtils;
+import com.developersboard.shared.util.core.SecurityUtils;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

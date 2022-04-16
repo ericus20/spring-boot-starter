@@ -1,10 +1,11 @@
-package com.developersboard.shared.util;
+package com.developersboard.shared.util.core;
 
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.UserConstants;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.util.UserUtils;
 import java.util.Arrays;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;

@@ -6,21 +6,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @WebAppConfiguration
+@ExtendWith(MockitoExtension.class)
 class WebUtilsTest {
 
   @Mock private transient HttpServletRequest request;
 
   @BeforeEach
   public void setup() {
-    MockitoAnnotations.openMocks(this);
     RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
   }
 

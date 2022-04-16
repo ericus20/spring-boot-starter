@@ -1,4 +1,4 @@
-package com.developersboard.shared.util;
+package com.developersboard.shared.util.core;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

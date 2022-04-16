@@ -15,13 +15,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
   @InjectMocks private transient UserServiceImpl userService;
@@ -39,7 +41,6 @@ class UserServiceTest {
 
   @BeforeEach
   void setUp(TestInfo testInfo) {
-    MockitoAnnotations.openMocks(this);
     userDto = UserUtils.createUserDto(testInfo.getDisplayName());
     user = UserUtils.convertToUser(userDto);
   }

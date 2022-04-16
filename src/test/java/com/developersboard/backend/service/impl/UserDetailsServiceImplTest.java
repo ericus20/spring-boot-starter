@@ -1,8 +1,8 @@
 package com.developersboard.backend.service.impl;
 
 import com.developersboard.backend.persistent.repository.UserRepository;
-import com.developersboard.shared.util.StringUtils;
 import com.developersboard.shared.util.UserUtils;
+import com.developersboard.shared.util.core.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,18 +22,18 @@ class UserDetailsServiceImplTest {
   private transient String email;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) {
-    MockitoAnnotations.openMocks(this);
-    Assertions.assertNotNull(userRepository);
-    Assertions.assertNotNull(userDetailsService);
+  void setUp(TestInfo testInfo) throws Exception {
+    try (AutoCloseable mocks = MockitoAnnotations.openMocks(this)) {
+      Assertions.assertNotNull(mocks);
 
-    email = StringUtils.FAKER.internet().emailAddress();
-    var user =
-        UserUtils.createUser(
-            testInfo.getDisplayName(), StringUtils.FAKER.internet().password(), email);
+      email = StringUtils.FAKER.internet().emailAddress();
+      var user =
+          UserUtils.createUser(
+              testInfo.getDisplayName(), StringUtils.FAKER.internet().password(), email);
 
-    Mockito.when(userRepository.findByUsername(testInfo.getDisplayName())).thenReturn(user);
-    Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+      Mockito.when(userRepository.findByUsername(testInfo.getDisplayName())).thenReturn(user);
+      Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+    }
   }
 
   @Test

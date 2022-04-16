@@ -35,7 +35,7 @@ public class TestUtils {
   public static final String ROLE_USER = "ROLE_USER";
 
   public static Collection<String> getBaseEqualsAndHashCodeFields() {
-    return Collections.unmodifiableCollection(List.of(BASE_EQUALS_AND_HASH_CODE_FIELDS));
+    return List.of(BASE_EQUALS_AND_HASH_CODE_FIELDS);
   }
 
   public static Collection<String> getIgnoredFields() {

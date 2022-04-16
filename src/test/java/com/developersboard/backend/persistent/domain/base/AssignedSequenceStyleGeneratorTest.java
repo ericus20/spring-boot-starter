@@ -7,10 +7,12 @@ import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class AssignedSequenceStyleGeneratorTest {
 
   @Mock private transient SharedSessionContractImplementor implementor;
@@ -22,7 +24,6 @@ class AssignedSequenceStyleGeneratorTest {
   @BeforeEach
   void setUp() {
     assignedSequenceStyleGenerator = new AssignedSequenceStyleGenerator();
-    MockitoAnnotations.openMocks(this);
   }
 
   @Test
