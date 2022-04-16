@@ -7,7 +7,6 @@ import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
-import com.developersboard.shared.util.core.StringUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
