@@ -7,7 +7,7 @@
 
 # Spring Boot Starter
 
-A highly opinionated and complete starter for Spring Boot projects ready to production.
+A highly opinionated and complete starter for Spring Boot projects ready for production.
 
 ![Java CI with Gradle](https://github.com/ericus20/spring-boot-starter/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
@@ -54,7 +54,7 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 - [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
 
 
-## Sample *ongoing* project using this template
+## Sample *on-going* project using this template
 - [A Simple E-Commerce Application](https://github.com/ericus20/e-commerce)
 
 
