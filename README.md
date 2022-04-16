@@ -54,6 +54,10 @@ A highly opinionated and complete starter for Spring Boot projects ready to prod
 - [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
 
 
+## Sample *ongoing* project using this template
+- [A Simple E-Commerce Application](https://github.com/ericus20/e-commerce)
+
+
 ## Production Ready Folder Structure
 
 ```
