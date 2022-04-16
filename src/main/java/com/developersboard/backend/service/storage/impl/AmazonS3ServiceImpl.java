@@ -72,7 +72,7 @@ public class AmazonS3ServiceImpl extends AbstractAmazonS3Service {
     }
     File image = multipartToFile(file);
     // check if the file to upload is an image then we will resize accordingly.
-    if (ImageIO.read(image) != null) {
+    if (Objects.nonNull(ImageIO.read(image))) {
       LOG.debug("MultipartFile is an image and a resize will be done accordingly.");
       FileUtils.resize600(image);
     }
