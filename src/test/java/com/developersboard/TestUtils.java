@@ -2,6 +2,7 @@ package com.developersboard;
 
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.util.UserUtils;
+import com.github.javafaker.Faker;
 import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,6 +24,7 @@ import org.springframework.security.core.userdetails.User;
  * @since 1.0
  */
 public class TestUtils {
+  protected static final Faker FAKER = new Faker();
 
   private static final String[] IGNORED_FIELDS = {
     "id", "createdAt", "createdBy", "updatedAt", "updatedBy"

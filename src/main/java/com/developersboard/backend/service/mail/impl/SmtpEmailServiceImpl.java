@@ -1,5 +1,6 @@
 package com.developersboard.backend.service.mail.impl;
 
+import com.developersboard.config.properties.SystemProperties;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.web.payload.request.mail.EmailRequest;
@@ -11,6 +12,7 @@ import java.util.Objects;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,22 +32,13 @@ import org.thymeleaf.context.Context;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @Profile({ProfileTypeConstants.PROD, ProfileTypeConstants.TEST})
 public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
 
+  private final SystemProperties systemProps;
   private final transient JavaMailSender mailSender;
   private final transient TemplateEngine templateEngine;
-
-  /**
-   * Controller to inject dependencies.
-   *
-   * @param mailSender the mail sender
-   * @param templateEngine the template engine
-   */
-  public SmtpEmailServiceImpl(JavaMailSender mailSender, TemplateEngine templateEngine) {
-    this.mailSender = mailSender;
-    this.templateEngine = templateEngine;
-  }
 
   /**
    * Sends an email with the provided simple mail message object.
@@ -70,7 +63,8 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
     LOG.info("Template used is {}", templateEngine);
     LOG.debug("Sending html email with details {}", emailRequest);
     try {
-      mailSender.send(prepareMimeMessage(emailRequest, false));
+      MimeMessage mimeMessage = prepareMimeMessage(emailRequest, false);
+      mailSender.send(mimeMessage);
       LOG.debug(EmailConstants.MAIL_SUCCESS_MESSAGE);
     } catch (MessagingException | UnsupportedEncodingException e) {
       LOG.error("Unexpected exception sending an html email", e);
@@ -136,13 +130,17 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
    */
   private void setFromAndReplyTo(HtmlEmailRequest emailFormat, MimeMessageHelper helper)
       throws UnsupportedEncodingException, MessagingException {
+
     InternetAddress internetAddress;
     if (Objects.nonNull(emailFormat.getFrom()) && Objects.nonNull(emailFormat.getSender())) {
       internetAddress =
           new InternetAddress(emailFormat.getFrom(), emailFormat.getSender().getName());
+    } else if (Objects.nonNull(emailFormat.getFrom())) {
+      internetAddress = new InternetAddress(emailFormat.getFrom(), systemProps.getName());
     } else {
-      internetAddress = new InternetAddress(emailFormat.getFrom(), "Starter App");
+      internetAddress = new InternetAddress(systemProps.getEmail(), systemProps.getName());
     }
+
     helper.setFrom(String.valueOf(internetAddress));
     helper.setReplyTo(internetAddress);
 

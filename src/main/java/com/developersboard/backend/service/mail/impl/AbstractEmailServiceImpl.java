@@ -2,6 +2,7 @@ package com.developersboard.backend.service.mail.impl;
 
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.constant.EmailConstants;
+import com.developersboard.constant.SignUpConstants;
 import com.developersboard.constant.UserConstants;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.core.ValidationUtils;
@@ -57,7 +58,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
         prepareHtmlEmailRequest(
             userDto,
             token,
-            "/sign-up-path",
+            SignUpConstants.SIGN_UP_MAPPING,
             EmailConstants.EMAIL_VERIFY_TEMPLATE,
             EmailConstants.CONFIRMATION_PENDING_EMAIL_SUBJECT);
     // prepare the email request then send it.
@@ -166,7 +167,8 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     // set the appropriate to and from based on the details available
     configureSenderAndReceiverDetails(emailRequest, context);
     emailRequest.setSubject(emailRequest.getSubject());
-    if (Objects.nonNull(emailRequest.getUrls().get(EmailConstants.EMAIL_LINK))) {
+
+    if (emailRequest.getUrls().containsKey(EmailConstants.EMAIL_LINK)) {
       context.setVariable(
           EmailConstants.EMAIL_LINK, emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
       LOG.info(emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
@@ -207,7 +209,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     simpleMailMessage.setTo(feedbackRequest.getTo());
     simpleMailMessage.setSentDate(new Date());
     simpleMailMessage.setText(feedbackRequest.getMessage());
-    simpleMailMessage.setReplyTo(feedbackRequest.getFrom());
+    simpleMailMessage.setReplyTo(feedbackRequest.getEmail());
     simpleMailMessage.setCc(feedbackRequest.getRecipients().toArray(new String[0]));
 
     // prepare the update the simpleMailMessage with senders name.
