@@ -21,4 +21,6 @@ public class AwsProperties {
   private String accessKeyId;
   private String secretAccessKey;
   private String s3BucketName;
+  private String serviceEndpoint;
+  private String servicePort;
 }

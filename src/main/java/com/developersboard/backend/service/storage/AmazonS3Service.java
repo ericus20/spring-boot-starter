@@ -1,5 +1,6 @@
 package com.developersboard.backend.service.storage;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -44,6 +45,7 @@ public interface AmazonS3Service {
    *
    * @param path the path
    * @return list of files
+   * @throws AmazonS3Exception if the path is not found
    */
   List<String> getFiles(String path);
 
@@ -52,6 +54,7 @@ public interface AmazonS3Service {
    *
    * @param path the path
    * @return the file
+   * @throws AmazonS3Exception if the path is not found
    */
   InputStream getFile(String path) throws IOException;
 

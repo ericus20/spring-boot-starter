@@ -1,5 +1,11 @@
 package com.developersboard;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.AnonymousAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.util.GreenMail;
@@ -58,5 +64,24 @@ public class TestConfig {
   public GreenMail greenMail() {
     return new GreenMail(ServerSetupTest.SMTP)
         .withConfiguration(GreenMailConfiguration.aConfig().withUser(mailUsername, mailPassword));
+  }
+
+  /**
+   * A bean to be used by AmazonS3 Service.
+   *
+   * @param props the aws properties
+   * @return instance of AmazonS3Client
+   */
+  @Bean
+  public AmazonS3 amazonS3(AwsProperties props) {
+    var endpoint = new EndpointConfiguration(props.getServiceEndpoint(), props.getRegion());
+    // Create the credentials provider
+    var credentials = new AnonymousAWSCredentials();
+
+    return AmazonS3ClientBuilder.standard()
+        .withPathStyleAccessEnabled(true)
+        .withEndpointConfiguration(endpoint)
+        .withCredentials(new AWSStaticCredentialsProvider(credentials))
+        .build();
   }
 }

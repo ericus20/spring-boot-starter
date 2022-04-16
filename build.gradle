@@ -103,6 +103,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.mockito:mockito-inline'
+    testImplementation 'io.findify:s3mock_2.13:0.2.6'
     testImplementation 'com.icegreen:greenmail-junit5:1.6.8'
     testImplementation 'com.jparams:to-string-verifier:1.4.8'
     testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.10'
