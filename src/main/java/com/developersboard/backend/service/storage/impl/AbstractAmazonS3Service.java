@@ -148,6 +148,7 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
    * @param properties the AWS properties
    * @return The URL of the uploaded resource or null if a problem occurred
    * @throws AmazonS3Exception If something goes wrong.
+   * @throws InterruptedException if there is any interruption during upload
    */
   protected String storeFileToS3(
       final File resource,
@@ -156,6 +157,7 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
       final AmazonS3 s3Client,
       final AwsProperties properties)
       throws InterruptedException {
+
     if (!resource.exists()) {
       LOG.error("The file {} does not exist. Throwing an exception", resource.getAbsolutePath());
       throw new AmazonS3Exception("The file " + resource.getAbsolutePath() + " " + "doesn't exist");

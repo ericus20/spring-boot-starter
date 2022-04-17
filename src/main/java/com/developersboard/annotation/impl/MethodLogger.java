@@ -24,6 +24,7 @@ public class MethodLogger {
    *
    * @param joinPoint the joinPoint
    * @return the log object
+   * @throws Throwable if an error occurs
    */
   @Around("execution(* *(..)) && @annotation(com.developersboard.annotation.Loggable)")
   public Object log(ProceedingJoinPoint joinPoint) throws Throwable {

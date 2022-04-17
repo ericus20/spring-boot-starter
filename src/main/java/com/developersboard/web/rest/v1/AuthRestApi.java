@@ -61,6 +61,7 @@ public class AuthRestApi {
    *
    * <p>A refresh token is generated and returned as a cookie.
    *
+   * @param refreshToken The refresh token
    * @param loginRequest the login request
    * @return the jwt token details
    */
@@ -91,6 +92,7 @@ public class AuthRestApi {
   /**
    * Refreshes the current access token and refresh token accordingly.
    *
+   * @param refreshToken The refresh token
    * @return the jwt token details
    */
   @Loggable

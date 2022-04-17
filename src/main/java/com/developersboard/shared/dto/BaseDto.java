@@ -23,18 +23,38 @@ public class BaseDto {
   private LocalDateTime updatedAt;
   private String updatedBy;
 
+  /**
+   * Returns a deep copy of createdAt.
+   *
+   * @return the createdAt
+   */
   public LocalDateTime getCreatedAt() {
     return SerializationUtils.clone(createdAt);
   }
 
+  /**
+   * Sets a deep copy of the createdAt provided.
+   *
+   * @param createdAt the createdAt to set
+   */
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = SerializationUtils.clone(createdAt);
   }
 
+  /**
+   * Returns a deep copy of updatedAt.
+   *
+   * @return the updatedAt
+   */
   public LocalDateTime getUpdatedAt() {
     return SerializationUtils.clone(updatedAt);
   }
 
+  /**
+   * Sets a deep copy of the updatedAt provided.
+   *
+   * @param updatedAt the updatedAt to set
+   */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = SerializationUtils.clone(updatedAt);
   }

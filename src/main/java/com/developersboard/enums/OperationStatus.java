@@ -8,6 +8,9 @@ package com.developersboard.enums;
  * @since 1.0
  */
 public enum OperationStatus {
+  /** If an operation is successful. */
   SUCCESS,
+
+  /** If an operation is unsuccessful. */
   FAILURE;
 }

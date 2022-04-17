@@ -27,6 +27,7 @@ public class SecurityConfig {
    * Configures global user's with authentication credentials.
    *
    * @param auth to easily build in memory, LDAP, and JDBC authentication
+   * @throws Exception if an error occurs
    */
   @Autowired
   protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

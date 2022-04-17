@@ -9,9 +9,13 @@ package com.developersboard.constant;
  */
 public final class ProfileTypeConstants {
 
+  /** The dev profile exposes development specific beans and configurations. */
   public static final String DEV = "dev";
-  public static final String DEV_DOCKER = "dev-docker";
+
+  /** The prod profile exposes production specific beans and configurations. */
   public static final String PROD = "prod";
+
+  /** The test profile exposes testing specific beans and configurations. */
   public static final String TEST = "test";
 
   private ProfileTypeConstants() {
