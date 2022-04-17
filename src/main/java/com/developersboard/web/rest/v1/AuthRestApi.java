@@ -93,26 +93,31 @@ public class AuthRestApi {
    * Refreshes the current access token and refresh token accordingly.
    *
    * @param refreshToken The refresh token
+   * @param request The request
    * @return the jwt token details
    */
   @Loggable
   @SecurityRequirements
   @GetMapping(SecurityConstants.REFRESH_TOKEN)
-  public ResponseEntity<JwtResponseBuilder> refreshToken(@CookieValue String refreshToken) {
-    String decryptedRefreshToken = encryptionService.decrypt(refreshToken);
+  public ResponseEntity<JwtResponseBuilder> refreshToken(
+      @CookieValue String refreshToken, HttpServletRequest request) {
+    var decryptedRefreshToken = encryptionService.decrypt(refreshToken);
     boolean refreshTokenValid = jwtService.isValidJwtToken(decryptedRefreshToken);
 
     if (!refreshTokenValid) {
       throw new IllegalArgumentException(ErrorConstants.INVALID_TOKEN);
     }
-    String username = jwtService.getUsernameFromToken(decryptedRefreshToken);
+    var username = jwtService.getUsernameFromToken(decryptedRefreshToken);
     var userDetails = userDetailsService.loadUserByUsername(username);
+
     SecurityUtils.validateUserDetailsStatus(userDetails);
-    SecurityUtils.authenticateUser(authenticationManager, userDetails);
+    SecurityUtils.authenticateUser(request, userDetails);
 
     var expiration = DateUtils.addMinutes(new Date(), NUMBER_OF_MINUTES_TO_EXPIRE);
-    String newAccessToken = jwtService.generateJwtToken(username, expiration);
-    String encryptedAccessToken = encryptionService.encrypt(newAccessToken);
+    var newAccessToken = jwtService.generateJwtToken(username, expiration);
+    var encryptedAccessToken = encryptionService.encrypt(newAccessToken);
+
+    SecurityUtils.clearAuthentication();
 
     return ResponseEntity.ok(JwtResponseBuilder.buildJwtResponse(encryptedAccessToken));
   }

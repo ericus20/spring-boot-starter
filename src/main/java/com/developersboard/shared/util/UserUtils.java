@@ -159,9 +159,11 @@ public final class UserUtils {
    * @return the userDto
    */
   public static UserDto createUserDto(final String username, boolean enabled) {
-    User user = createUser(username);
-    user.setEnabled(enabled);
-    return UserUtils.convertToUserDto(user);
+    var userDto = UserUtils.convertToUserDto(createUser(username));
+    if (enabled) {
+      enableUser(userDto);
+    }
+    return userDto;
   }
 
   /**

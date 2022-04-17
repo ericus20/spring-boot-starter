@@ -23,6 +23,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
@@ -105,13 +106,28 @@ public final class SecurityUtils {
    * Creates an authentication object with the userDetails then set authentication to
    * SecurityContextHolder.
    *
-   * @param authManager the authentication manager
    * @param userDetails the userDetails
    */
-  public static void authenticateUser(AuthenticationManager authManager, UserDetails userDetails) {
-    if (Objects.nonNull(authManager) && Objects.nonNull(userDetails)) {
-      var authentication =
-          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+  public static void authenticateUser(UserDetails userDetails) {
+    if (Objects.nonNull(userDetails)) {
+      var authorities = userDetails.getAuthorities();
+      var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+
+      setAuthentication(authentication);
+    }
+  }
+
+  /**
+   * Creates an authentication object with the userDetails then set authentication to
+   * SecurityContextHolder.
+   *
+   * @param userDetails the userDetails
+   */
+  public static void authenticateUser(HttpServletRequest request, UserDetails userDetails) {
+    if (Objects.nonNull(request) && Objects.nonNull(userDetails)) {
+      var authorities = userDetails.getAuthorities();
+      var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+      authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
       setAuthentication(authentication);
     }
