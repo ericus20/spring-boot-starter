@@ -5,6 +5,7 @@ import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.platform.commons.util.ReflectionUtils;
@@ -17,6 +18,11 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 
 class SecurityUtilsTest {
+
+  @BeforeEach
+  void setUp() {
+    SecurityUtils.clearAuthentication();
+  }
 
   @Test
   void callingConstructorShouldThrowException() {
@@ -31,7 +37,6 @@ class SecurityUtilsTest {
 
   @Test
   void testingIsUserAuthenticatedNotAuthenticated() {
-    SecurityUtils.clearAuthentication();
     Authentication authentication = SecurityUtils.getAuthentication();
     Assertions.assertAll(
         () -> {
@@ -123,18 +128,13 @@ class SecurityUtilsTest {
   }
 
   @Test
-  void authenticateUserWithNullAuthenticationManagerDoesNothing() {
-    Assertions.assertDoesNotThrow(() -> SecurityUtils.authenticateUser(null, null));
-  }
-
-  @Test
   void authenticateUserWithNullUserDetailsDoesNothing() {
     var authManager = Mockito.mock(AuthenticationManager.class);
 
     Assertions.assertAll(
         () -> {
           Assertions.assertNotNull(authManager);
-          Assertions.assertDoesNotThrow(() -> SecurityUtils.authenticateUser(authManager, null));
+          Assertions.assertDoesNotThrow(() -> SecurityUtils.authenticateUser(null));
         });
   }
 }

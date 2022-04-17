@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -41,21 +39,22 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
       @NonNull FilterChain filterChain)
       throws ServletException, IOException {
 
+    // Get the token from the request header
     var jwt = jwtService.getJwtToken(request, false);
+
+    if (StringUtils.isBlank(jwt)) {
+      // if no Authorization token was found from the header, check the cookies.
+      jwt = jwtService.getJwtToken(request, true);
+    }
+
     if (StringUtils.isNotBlank(jwt)) {
-      String decryptedAccessToken = encryptionService.decrypt(jwt);
+      var accessToken = encryptionService.decrypt(jwt);
 
-      if (StringUtils.isNotBlank(decryptedAccessToken)
-          && jwtService.isValidJwtToken(decryptedAccessToken)) {
+      if (StringUtils.isNotBlank(accessToken) && jwtService.isValidJwtToken(accessToken)) {
 
-        var username = jwtService.getUsernameFromToken(decryptedAccessToken);
+        var username = jwtService.getUsernameFromToken(accessToken);
         var userDetails = userDetailsService.loadUserByUsername(username);
-        var authorities = userDetails.getAuthorities();
-        var authentication =
-            new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        SecurityUtils.setAuthentication(authentication);
+        SecurityUtils.authenticateUser(request, userDetails);
       }
     }
     filterChain.doFilter(request, response);
