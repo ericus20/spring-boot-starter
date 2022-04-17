@@ -43,8 +43,8 @@ A highly opinionated and complete starter for Spring Boot projects ready for pro
 
 - [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Fully Covered Equals, HashCode, ToString Testing](documents/TESTS.md#equals-hashcode-and-tostring)
-- [Amazon S3 Implementation](documents/S3.md)
-- [Local AmazonS3 Integration Tests with S3Mock](documents/TESTS.md)
+- [Amazon S3 Implementation](documents/S3.md#amazon-s3-implementation)
+- [Local AmazonS3 Integration Tests with S3Mock](documents/TESTS.md#local-amazons3-integration-tests)
 - [Unit and Integration Tests](documents/TESTS.md)
 - [Production Ready Folder Structure](README.md#production-ready-folder-structure)
 - [Authentication and Authorization with JWT](documents/AUTHENTICATION.MD)
@@ -62,7 +62,7 @@ A highly opinionated and complete starter for Spring Boot projects ready for pro
 
 ## Production Ready Folder Structure
 
-```
+```bash
 .
 |-- documents
 |-- gradle
