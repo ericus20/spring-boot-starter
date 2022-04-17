@@ -45,6 +45,8 @@ public final class SecurityUtils {
    * If we are running with dev profile, disable csrf and frame options to enable h2 to work.
    *
    * @param http the http request
+   * @param environment the environment
+   * @throws Exception if there is an error
    */
   public static void configureDevEnvironmentAccess(HttpSecurity http, Environment environment)
       throws Exception {
@@ -58,6 +60,7 @@ public final class SecurityUtils {
   /**
    * Returns true if the user is authenticated.
    *
+   * @param authentication the authentication object
    * @return if user is authenticated
    */
   public static boolean isAuthenticated(Authentication authentication) {

@@ -13,8 +13,6 @@ public final class StorageConstants {
   public static final String SEPARATOR = "/";
   public static final int PRE_SIGNED_URL_DAYS_TO_EXPIRE = 7;
   private static final String S3_EMAIL_IMAGE_BASE_URL = S3_BASE_URL + "/email-template-images";
-  public static final String S3_EMAIL_IMG_BG_URL = S3_EMAIL_IMAGE_BASE_URL + "/email-bg.jpg";
-  public static final String S3_EMAIL_IMG_UPDATE_URL = S3_EMAIL_IMAGE_BASE_URL + "/update.jpg";
 
   public static final String PROFILE_PATH = "profileImages";
   public static final String PROFILE_PICTURE_FILE_NAME = "profileImage";

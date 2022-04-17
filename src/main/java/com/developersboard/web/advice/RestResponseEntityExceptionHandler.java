@@ -18,7 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-  // handle IllegalArgumentException
+  /**
+   * Handles IllegalArgumentException and IllegalStateException thrown by the REST API.
+   *
+   * @param ex The exception thrown by the REST API.
+   * @param request The request object.
+   * @return A ResponseEntity object.
+   */
   @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class})
   protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
     String message = ex.getMessage();

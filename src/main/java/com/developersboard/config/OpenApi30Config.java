@@ -23,6 +23,12 @@ public class OpenApi30Config {
   private final transient String moduleName;
   private final transient String apiVersion;
 
+  /**
+   * Constructs a new instance of {@link OpenApi30Config}.
+   *
+   * @param moduleName the name of the module
+   * @param apiVersion the version of the API
+   */
   public OpenApi30Config(
       @Value("${module-name}") String moduleName, @Value("${api-version}") String apiVersion) {
 
@@ -30,6 +36,11 @@ public class OpenApi30Config {
     this.apiVersion = apiVersion;
   }
 
+  /**
+   * Configures the OpenApi 3.0 bean.
+   *
+   * @return the OpenApi 3.0 bean
+   */
   @Bean
   public OpenAPI customOpenAPI() {
     final String securitySchemeName = "bearerAuth";

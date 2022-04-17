@@ -99,6 +99,14 @@ public class BaseEntity<T extends Serializable> {
         && Objects.equals(getPublicId(), that.getPublicId());
   }
 
+  /**
+   * This method is meant for allowing to redefine equality on several levels of the class hierarchy
+   * while keeping its contract.
+   *
+   * @see <a href="https://www.artima.com/articles/how-to-write-an-equality-method-in-java">More</a>
+   * @param other is the other object use in equality test.
+   * @return if the other object can be equal to this object.
+   */
   protected boolean canEqual(Object other) {
     return other instanceof BaseEntity;
   }

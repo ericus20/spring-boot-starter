@@ -43,6 +43,7 @@ public class SecurityBean {
   /**
    * Making use of persistent option instead of in-memory for maximum security.
    *
+   * @param dataSource DataSource
    * @return persistentTokenRepository
    */
   @Bean

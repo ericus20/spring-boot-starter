@@ -26,7 +26,10 @@ public enum UserHistoryType {
   /** This will be used for user info updates like name and phone changes. */
   PROFILE_UPDATE("Profile updated"),
 
+  /** This will be used for account enabling. */
   ACCOUNT_ENABLED("Account Enabled"),
+
+  /** This will be used for account disabling. */
   ACCOUNT_DISABLED("Account Disabled");
 
   private final String name;

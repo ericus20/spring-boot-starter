@@ -55,6 +55,7 @@ public interface AmazonS3Service {
    * @param path the path
    * @return the file
    * @throws AmazonS3Exception if the path is not found
+   * @throws IOException if any error comes up dealing with i/o operations
    */
   InputStream getFile(String path) throws IOException;
 

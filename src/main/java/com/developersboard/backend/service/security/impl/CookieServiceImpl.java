@@ -31,9 +31,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CookieServiceImpl implements CookieService {
 
+  /** The token type cannot be null. */
   public static final String THE_TOKEN_TYPE_CANNOT_BE_NULL = "The tokenType cannot be null";
+
+  /** The token cannot be null or empty */
   public static final String THE_TOKEN_CANNOT_BE_NULL_OR_EMPTY =
       "The token cannot be null or empty";
+
   private final Environment environment;
   private final EncryptionService encryptionService;
 

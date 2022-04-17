@@ -9,23 +9,36 @@ package com.developersboard.constant;
  */
 public final class EmailConstants {
 
-  /** Generic Constants. */
+  /** Email link is used to render links within html templates. */
   public static final String EMAIL_LINK = "link";
 
+  /** Extra emails can be passed to the email template through the urls. */
   public static final String URLS = "urls";
-  public static final String IMAGE_URL = "imageUrl";
-  public static final String IMAGE_URL_INLINE = "imageUrlInline";
+
+  /** Email verification html template */
   public static final String EMAIL_VERIFY_TEMPLATE = "email/verify-email";
+
+  /** Mail successfully sent message key */
   public static final String MAIL_SUCCESS_MESSAGE = "Mail successfully sent!";
+
+  /** Mail message key */
   public static final String MESSAGE = "message";
+
+  /** Email welcome html template */
   public static final String EMAIL_WELCOME_TEMPLATE = "email/welcome";
+
+  /** Email password reset html template */
   public static final String PASSWORD_RESET_TEMPLATE = "email/reset-password";
+
+  /** Email password update html template */
   public static final String PASSWORD_UPDATE_TEMPLATE = "email/password-update";
+
+  /** Simulation message to be displayed in dev mode */
   public static final String SIMULATING_SENDING_AN_EMAIL = "Simulating sending an email...";
 
-  public static final String DASHBOARD_LINK = "dashboardLink";
+  /** About us link */
   public static final String ABOUT_US_LINK = "aboutUsLink";
-  public static final String HELP_LINK = "helpLink";
+
   public static final String COPY_ABOUT_US = "/copy/about-us";
 
   /** Message Constants. */

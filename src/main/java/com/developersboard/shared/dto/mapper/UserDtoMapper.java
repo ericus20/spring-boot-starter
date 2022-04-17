@@ -19,6 +19,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserDtoMapper {
 
+  /** The Dto mapper instance. */
   UserDtoMapper MAPPER = Mappers.getMapper(UserDtoMapper.class);
 
   /**
