@@ -47,7 +47,7 @@ class SecurityUtilsTest {
 
   @Test
   void testingIsUserAuthenticatedAsAnonymous() {
-    TestUtils.setAuthentication(TestUtils.ANONYMOUS_USER, TestUtils.ROLE_ANONYMOUS);
+    TestUtils.setAuthentication(TestUtils.ANONYMOUS_USER, TestUtils.ANONYMOUS_ROLE);
     Assertions.assertFalse(SecurityUtils.isAuthenticated());
   }
 
