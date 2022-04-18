@@ -133,14 +133,14 @@ jacocoTestReport {
                     "**/config/*",
                     "**/backend/bootstrap/*",
                     "**/Mock*.class",
+                    "**/*DtoMapperImpl.class",
             ])
         }))
     }
 }
 
 spotless {
-    ratchetFrom 'origin/main' // only format files which have changed since origin/main
-    
+
     format 'misc', {
         // define the files to apply `misc` to
         target '*.gradle', '*.md', '.gitignore'

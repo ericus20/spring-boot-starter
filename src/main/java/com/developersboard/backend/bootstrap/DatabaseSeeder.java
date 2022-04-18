@@ -1,7 +1,7 @@
 package com.developersboard.backend.bootstrap;
 
 import com.developersboard.backend.persistent.domain.user.Role;
-import com.developersboard.backend.persistent.repository.RoleRepository;
+import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.enums.RoleType;
@@ -28,7 +28,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
   private final Environment environment;
   private final UserService userService;
-  private final RoleRepository roleRepository;
+  private final RoleService roleService;
 
   @Value("${admin.username}")
   private String adminUsername;
@@ -41,8 +41,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    Arrays.stream(RoleType.values())
-        .forEach(roleTypeValue -> roleRepository.save(new Role(roleTypeValue)));
+    Arrays.stream(RoleType.values()).forEach(roleType -> roleService.save(new Role(roleType)));
 
     // only run these initial data if we are not in test mode.
     if (!Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.TEST)) {
