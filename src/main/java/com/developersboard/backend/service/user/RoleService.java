@@ -17,7 +17,7 @@ public interface RoleService {
    * @param role the role
    * @return the persisted role with assigned id
    */
-  Role saveRole(final Role role);
+  Role save(final Role role);
 
   /**
    * Retrieves the role with the specified id.
@@ -25,7 +25,7 @@ public interface RoleService {
    * @param id the id of the role to retrieve
    * @return the role tuple that matches the id given
    */
-  Role getRoleById(final Integer id);
+  Role findById(final Integer id);
 
   /**
    * Retrieves the role with the specified name.
@@ -33,5 +33,5 @@ public interface RoleService {
    * @param name the name of the role to retrieve
    * @return the role tuple that matches the id given
    */
-  Role getRoleByName(final String name);
+  Role findByName(final String name);
 }

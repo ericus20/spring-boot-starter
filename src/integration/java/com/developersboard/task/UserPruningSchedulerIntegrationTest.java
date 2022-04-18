@@ -3,6 +3,7 @@ package com.developersboard.task;
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.util.UserUtils;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -12,7 +13,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,7 +38,7 @@ class UserPruningSchedulerIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void findAllNotEnabledAfterAllowedDays(TestInfo testInfo) {
+  void findAllNotEnabledAfterAllowedDays() {
     // Create a fixed clock to 60 days back in time.
     var instantExpected = LocalDateTime.now().minusDays(60).toInstant(ZoneOffset.UTC).toString();
     var fixedClock = Clock.fixed(Instant.parse(instantExpected), ZoneId.systemDefault());
@@ -46,7 +46,7 @@ class UserPruningSchedulerIntegrationTest extends IntegrationTestUtils {
     // When dateTimeProvider is called, return fixedClock to simulate creating user in the past.
     Mockito.when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now(fixedClock)));
 
-    UserDto userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    UserDto userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
 
     var users = userService.findAllNotEnabledAfterAllowedDays();
     Assertions.assertFalse(users.isEmpty());

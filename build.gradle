@@ -133,6 +133,7 @@ jacocoTestReport {
                     "**/config/*",
                     "**/backend/bootstrap/*",
                     "**/Mock*.class",
+                    "**/*DtoMapperImpl.class",
             ])
         }))
     }

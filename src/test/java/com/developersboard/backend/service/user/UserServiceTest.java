@@ -49,7 +49,7 @@ class UserServiceTest {
   void createUserNotExistingWithDefaultRoleAsClient() {
 
     var role = new Role(RoleType.ROLE_USER);
-    Mockito.when(roleService.getRoleByName(ArgumentMatchers.anyString())).thenReturn(role);
+    Mockito.when(roleService.findByName(ArgumentMatchers.anyString())).thenReturn(role);
     Mockito.when(userRepository.findByEmail(userDto.getEmail())).thenReturn(null);
     Mockito.when(userRepository.save(ArgumentMatchers.any(User.class))).thenReturn(user);
     Mockito.when(passwordEncoder.encode(userDto.getPassword())).thenReturn(userDto.getPassword());
