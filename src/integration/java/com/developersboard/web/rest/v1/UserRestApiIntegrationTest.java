@@ -5,13 +5,14 @@ import com.developersboard.TestUtils;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.AdminConstants;
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.enums.RoleType;
+import com.developersboard.enums.OperationStatus;
+import com.developersboard.enums.TokenType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.web.payload.request.LoginRequest;
 import com.developersboard.web.payload.response.JwtResponseBuilder;
-import java.util.Collections;
 import java.util.UUID;
+import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -40,10 +42,9 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   @BeforeEach
   void setUp() {
     var adminDto = UserUtils.createUserDto(true);
-    String password = adminDto.getPassword();
-    userService.createUser(adminDto, Collections.singleton(RoleType.ROLE_ADMIN));
+    createAndAssertAdmin(userService, adminDto);
 
-    var loginRequest = new LoginRequest(adminDto.getUsername(), password);
+    var loginRequest = new LoginRequest(adminDto.getUsername(), adminDto.getPassword());
     loginRequestJson = TestUtils.toJson(loginRequest);
 
     var delimiter = "/";
@@ -59,6 +60,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
 
     // Authenticate to retrieve access token
     var jwtResponse = getJwtResponse();
+    Assertions.assertNotNull(jwtResponse);
 
     var accessToken = jwtResponse.getAccessToken();
     var bearerToken = String.format("Bearer %s", accessToken);
@@ -66,13 +68,37 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
         String.format("%s/%s/enable", AdminConstants.API_V1_USERS_ROOT_URL, userDto.getPublicId());
 
     performRequest(
-        MockMvcRequestBuilders.put(enableUrl).header(HttpHeaders.AUTHORIZATION, bearerToken))
+            MockMvcRequestBuilders.put(enableUrl)
+                .cookie(new Cookie(TokenType.ACCESS.getName(), accessToken))
+                .header(HttpHeaders.AUTHORIZATION, bearerToken))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andReturn();
 
     // Assert that user is enabled
     Assertions.assertTrue(
         userService.existsByUsernameOrEmailAndEnabled(userDto.getUsername(), userDto.getEmail()));
+  }
+
+  @Test
+  void enableUserWithAuthorizationAndInvalidPublicId() throws Exception {
+    // Authenticate to retrieve access token
+    var jwtResponse = getJwtResponse();
+    Assertions.assertNotNull(jwtResponse);
+
+    var accessToken = jwtResponse.getAccessToken();
+    var bearerToken = String.format("Bearer %s", accessToken);
+    var enableUrl =
+        String.format("%s/%s/enable", AdminConstants.API_V1_USERS_ROOT_URL, UUID.randomUUID());
+
+    MvcResult result =
+        performRequest(
+                MockMvcRequestBuilders.put(enableUrl)
+                    .header(HttpHeaders.AUTHORIZATION, bearerToken))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn();
+
+    Assertions.assertTrue(
+        result.getResponse().getContentAsString().contains(OperationStatus.FAILURE.name()));
   }
 
   /** Disabling user with authorization should return 200. */
@@ -89,14 +115,36 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
 
     var accessToken = jwtResponse.getAccessToken();
     var bearerToken = String.format("Bearer %s", accessToken);
+
     performRequest(
-        MockMvcRequestBuilders.put(disableUrl).header(HttpHeaders.AUTHORIZATION, bearerToken))
+            MockMvcRequestBuilders.put(disableUrl).header(HttpHeaders.AUTHORIZATION, bearerToken))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andReturn();
 
     // Assert that user is enabled
     Assertions.assertFalse(
         userService.existsByUsernameOrEmailAndEnabled(userDto.getUsername(), userDto.getEmail()));
+  }
+
+  @Test
+  void disableUserWithAuthorizationAndInvalidPublicId() throws Exception {
+    // Authenticate to retrieve access token
+    var jwtResponse = getJwtResponse();
+    Assertions.assertNotNull(jwtResponse);
+
+    var accessToken = jwtResponse.getAccessToken();
+    var disableUser =
+        String.format("%s/%s/disable", AdminConstants.API_V1_USERS_ROOT_URL, UUID.randomUUID());
+
+    MvcResult result =
+        performRequest(
+                MockMvcRequestBuilders.put(disableUser)
+                    .cookie(new Cookie(TokenType.ACCESS.getName(), accessToken)))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn();
+
+    Assertions.assertTrue(
+        result.getResponse().getContentAsString().contains(OperationStatus.FAILURE.name()));
   }
 
   /** Enabling user without authorization should fail. Should return 401 Unauthorized. */

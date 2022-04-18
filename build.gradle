@@ -140,7 +140,7 @@ jacocoTestReport {
 }
 
 spotless {
-    ratchetFrom 'origin/main' // only format files which have changed since origin/main
+    ratchetFrom 'origin/develop' // only format files which have changed since origin/main
 
     format 'misc', {
         // define the files to apply `misc` to

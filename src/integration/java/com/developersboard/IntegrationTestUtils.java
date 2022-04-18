@@ -46,7 +46,36 @@ public abstract class IntegrationTestUtils {
         persistUser(userService, userDto.isEnabled(), SerializationUtils.clone(userDto));
     Assertions.assertNotNull(persistUser);
     Assertions.assertNotNull(persistUser.getId());
+    Assertions.assertFalse(persistUser.getUserRoles().isEmpty());
+
     return persistUser;
+  }
+
+  /**
+   * Creates and verify user with flexible field creation.
+   *
+   * @param userService the userService
+   * @param userDto the userDto
+   * @return persisted user
+   */
+  protected UserDto createAndAssertAdmin(UserService userService, UserDto userDto) {
+    Set<RoleType> roleTypes = new HashSet<>();
+
+    roleTypes.add(RoleType.ROLE_ADMIN);
+
+    if (userDto.isEnabled()) {
+      UserUtils.enableUser(userDto);
+    }
+    UserDto admin = userService.createUser(SerializationUtils.clone(userDto), roleTypes);
+
+    Assertions.assertNotNull(admin);
+    Assertions.assertNotNull(admin.getId());
+    Assertions.assertFalse(admin.getUserRoles().isEmpty());
+    Assertions.assertTrue(
+        admin.getUserRoles().stream()
+            .anyMatch(role -> role.getRole().getName().equals(RoleType.ROLE_ADMIN.getName())));
+
+    return admin;
   }
 
   protected UserDto persistUser(UserService userService, boolean enabled, UserDto userDto) {

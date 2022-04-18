@@ -32,7 +32,7 @@ class RoleServiceTest {
   void saveRole() {
     Mockito.when(roleEntityRepository.save(roleEntity)).thenReturn(roleEntity);
 
-    Role storedRoleDetails = roleService.saveRole(this.roleEntity);
+    Role storedRoleDetails = roleService.save(this.roleEntity);
     Assertions.assertNotNull(storedRoleDetails);
   }
 
@@ -41,7 +41,7 @@ class RoleServiceTest {
     Mockito.when(roleEntityRepository.findById(roleEntity.getId()))
         .thenReturn(Optional.of(roleEntity));
 
-    Role storedRoleDetails = roleService.getRoleById(roleEntity.getId());
+    Role storedRoleDetails = roleService.findById(roleEntity.getId());
     Assertions.assertEquals(roleEntity, storedRoleDetails);
   }
 
@@ -49,7 +49,7 @@ class RoleServiceTest {
   void getRoleByName() {
     Mockito.when(roleEntityRepository.findByName(roleEntity.getName())).thenReturn(roleEntity);
 
-    Role storedRoleDetails = roleService.getRoleByName(roleEntity.getName());
+    Role storedRoleDetails = roleService.findByName(roleEntity.getName());
     Assertions.assertEquals(roleEntity, storedRoleDetails);
   }
 }
