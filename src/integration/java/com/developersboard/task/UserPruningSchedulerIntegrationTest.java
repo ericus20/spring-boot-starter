@@ -1,7 +1,6 @@
 package com.developersboard.task;
 
 import com.developersboard.IntegrationTestUtils;
-import com.developersboard.backend.service.user.UserService;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import java.time.Clock;
@@ -14,23 +13,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.data.auditing.AuditingHandler;
-import org.springframework.data.auditing.DateTimeProvider;
 
 class UserPruningSchedulerIntegrationTest extends IntegrationTestUtils {
-
-  @Autowired private transient UserService userService;
-
-  @Autowired private transient UserPruningScheduler userPruningScheduler;
-
-  // We are mocking the entire dateTimeProvider since there is only one method in it.
-  @MockBean private transient DateTimeProvider dateTimeProvider;
-
-  // We want to mock just the dateTimeProvider method within the auditHandler
-  @SpyBean private transient AuditingHandler auditingHandler;
 
   @BeforeEach
   void setUp() {
@@ -46,7 +30,7 @@ class UserPruningSchedulerIntegrationTest extends IntegrationTestUtils {
     // When dateTimeProvider is called, return fixedClock to simulate creating user in the past.
     Mockito.when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now(fixedClock)));
 
-    UserDto userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
+    UserDto userDto = createAndAssertUser(UserUtils.createUserDto(false));
 
     var users = userService.findAllNotEnabledAfterAllowedDays();
     Assertions.assertFalse(users.isEmpty());

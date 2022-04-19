@@ -2,7 +2,6 @@ package com.developersboard.backend.service.storage;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.developersboard.IntegrationTestUtils;
-import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.StorageConstants;
 import com.developersboard.exception.InvalidFileFormatException;
 import com.developersboard.shared.util.core.FileUtils;
@@ -19,18 +18,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 
 class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
-
-  @Mock private transient MockMultipartFile multipartFile;
-
-  @Autowired private transient AwsProperties awsProperties;
-
-  @Autowired private transient AmazonS3Service amazonS3Service;
 
   /*
   S3Mock.create(8001, "/tmp/s3");

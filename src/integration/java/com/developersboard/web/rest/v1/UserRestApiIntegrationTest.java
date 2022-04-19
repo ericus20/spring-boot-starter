@@ -2,7 +2,6 @@ package com.developersboard.web.rest.v1;
 
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.TestUtils;
-import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.AdminConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.OperationStatus;
@@ -16,25 +15,17 @@ import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@AutoConfigureMockMvc
 class UserRestApiIntegrationTest extends IntegrationTestUtils {
-
-  @Autowired private transient MockMvc mockMvc;
-
-  @Autowired private transient UserService userService;
 
   private transient String loginUri;
   private transient String loginRequestJson;
@@ -42,7 +33,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   @BeforeEach
   void setUp() {
     var adminDto = UserUtils.createUserDto(true);
-    createAndAssertAdmin(userService, adminDto);
+    createAndAssertAdmin(adminDto);
 
     var loginRequest = new LoginRequest(adminDto.getUsername(), adminDto.getPassword());
     loginRequestJson = TestUtils.toJson(loginRequest);
@@ -55,7 +46,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   /** Enabling user with authorization should return 200. */
   @Test
   void enableUserWithAuthorization() throws Exception {
-    var userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
+    var userDto = createAndAssertUser(UserUtils.createUserDto(false));
     Assertions.assertFalse(userDto.isEnabled());
 
     // Authenticate to retrieve access token
@@ -104,7 +95,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   /** Disabling user with authorization should return 200. */
   @Test
   void disableUserWithAuthorization() throws Exception {
-    UserDto userDto = createAndAssertUser(userService, UserUtils.createUserDto(true));
+    UserDto userDto = createAndAssertUser(UserUtils.createUserDto(true));
     Assertions.assertTrue(userDto.isEnabled());
 
     // Authenticate to retrieve access token

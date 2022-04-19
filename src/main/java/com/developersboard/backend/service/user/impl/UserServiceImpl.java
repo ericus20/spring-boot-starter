@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
   public UserDto createUser(UserDto userDto, Set<RoleType> roleTypes) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
-    User localUser = userRepository.findByEmail(userDto.getEmail());
+    var localUser = userRepository.findByEmail(userDto.getEmail());
     if (Objects.nonNull(localUser)) {
       if (!localUser.isEnabled()) {
         LOG.debug(UserConstants.USER_EXIST_BUT_NOT_ENABLED, userDto.getEmail(), localUser);
@@ -196,8 +196,8 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public List<UserDto> findAllNotEnabledAfterAllowedDays() {
-    var days = LocalDateTime.now(clock).minusDays(UserConstants.DAYS_TO_ALLOW_ACCOUNT_ACTIVATION);
-    List<User> expiredUsers = userRepository.findByEnabledFalseAndCreatedAtBefore(days);
+    var date = LocalDateTime.now(clock).minusDays(UserConstants.DAYS_TO_ALLOW_ACCOUNT_ACTIVATION);
+    List<User> expiredUsers = userRepository.findByEnabledFalseAndCreatedAtBefore(date);
 
     return UserUtils.convertToUserDto(expiredUsers);
   }

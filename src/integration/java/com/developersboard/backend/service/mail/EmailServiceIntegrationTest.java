@@ -1,14 +1,11 @@
 package com.developersboard.backend.service.mail;
 
 import com.developersboard.IntegrationTestUtils;
-import com.developersboard.backend.service.security.JwtService;
-import com.developersboard.config.properties.SystemProperties;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
-import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import java.io.IOException;
 import java.util.Collections;
@@ -25,7 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -33,12 +29,6 @@ import org.springframework.mail.SimpleMailMessage;
 class EmailServiceIntegrationTest extends IntegrationTestUtils {
 
   public static final String PROFILE_IMAGE_JPEG = "/profileImage.jpeg";
-
-  @Autowired private transient SystemProperties systemProperties;
-  @Autowired private transient EmailService emailService;
-  @Autowired private transient JwtService jwtService;
-
-  @Autowired private transient GreenMail greenMail;
 
   private transient String body;
   private transient String subject;

@@ -69,10 +69,12 @@ public class BaseEntity<T extends Serializable> {
   @Version private int version;
 
   @CreatedDate
-  @Column(nullable = false, updatable = false)
+  @Column(updatable = false)
   private LocalDateTime createdAt;
 
-  @Column @CreatedBy private String createdBy;
+  @Column(nullable = false, updatable = false)
+  @CreatedBy
+  private String createdBy;
 
   @Column @LastModifiedDate private LocalDateTime updatedAt;
 
