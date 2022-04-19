@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
 class CookieServiceIntegrationTest extends IntegrationTestUtils {
@@ -21,17 +21,15 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   private static final String MAX_AGE = "Max-Age";
   private static final String SAME_SITE = "SameSite";
 
-  @Autowired private transient CookieService cookieService;
+  private transient String jwtToken;
 
-  @Autowired private transient JwtService jwtService;
-
-  @Autowired private transient EncryptionService encryptionService;
+  @BeforeEach
+  void setUp(TestInfo testInfo) {
+    jwtToken = jwtService.generateJwtToken(testInfo.getDisplayName());
+  }
 
   @Test
-  void testGeneratesEncryptedCookieWithTokenThenDecrypt(TestInfo testInfo) {
-    var jwtToken = jwtService.generateJwtToken(testInfo.getDisplayName());
-    Assertions.assertTrue(jwtService.isValidJwtToken(jwtToken));
-
+  void testGeneratesEncryptedCookieWithTokenThenDecrypt() {
     var tokenCookie = cookieService.createTokenCookie(jwtToken, TokenType.ACCESS);
     String decryptedJwtToken = encryptionService.decrypt(tokenCookie.getValue());
 
@@ -49,9 +47,7 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void testGeneratesCookieTokenThenDeletesIt(TestInfo testInfo) {
-    var jwtToken = jwtService.generateJwtToken(testInfo.getDisplayName());
-
+  void testGeneratesCookieTokenThenDeletesIt() {
     var tokenCookie =
         cookieService.createTokenCookie(jwtToken, TokenType.ACCESS, Duration.ofHours(DURATION));
     Assertions.assertTrue(StringUtils.isNotBlank(tokenCookie.getValue()));
@@ -67,8 +63,7 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void testAddTokenCookieToHeaderWithDefaultDuration(TestInfo testInfo) {
-    var jwtToken = jwtService.generateJwtToken(testInfo.getDisplayName());
+  void testAddTokenCookieToHeaderWithDefaultDuration() {
     var duration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
 
     var httpHeaders = cookieService.addCookieToHeaders(TokenType.REFRESH, jwtToken);
@@ -76,8 +71,7 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void testAddTokenCookieToHeaderWithNullDuration(TestInfo testInfo) {
-    var jwtToken = jwtService.generateJwtToken(testInfo.getDisplayName());
+  void testAddTokenCookieToHeaderWithNullDuration() {
     var duration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
 
     var httpHeaders = cookieService.addCookieToHeaders(TokenType.REFRESH, jwtToken, null);
@@ -85,8 +79,7 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void testAddTokenCookieToHeaderWithCustomDuration(TestInfo testInfo) {
-    var jwtToken = jwtService.generateJwtToken(testInfo.getDisplayName());
+  void testAddTokenCookieToHeaderWithCustomDuration() {
     var duration = Duration.ofDays(DURATION);
 
     var httpHeaders = cookieService.addCookieToHeaders(TokenType.REFRESH, jwtToken, duration);

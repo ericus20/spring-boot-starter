@@ -1,33 +1,22 @@
 package com.developersboard.web.rest.v1;
 
+import com.developersboard.IntegrationTestUtils;
 import com.developersboard.TestUtils;
-import com.developersboard.backend.service.security.CookieService;
-import com.developersboard.backend.service.security.EncryptionService;
-import com.developersboard.backend.service.security.JwtService;
-import com.developersboard.backend.service.user.UserService;
-import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.enums.RoleType;
 import com.developersboard.enums.TokenType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.web.payload.request.LoginRequest;
 import com.developersboard.web.payload.response.JwtResponseBuilder;
 import java.time.Duration;
-import java.util.Collections;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -35,20 +24,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles(ProfileTypeConstants.DEV)
-class AuthRestApiIntegrationTest {
-
-  @Autowired private transient MockMvc mockMvc;
-
-  @Autowired private transient CookieService cookieService;
-
-  @Autowired private transient UserService userService;
-
-  @Autowired private transient JwtService jwtService;
-
-  @Autowired private transient EncryptionService encryptionService;
+class AuthRestApiIntegrationTest extends IntegrationTestUtils {
 
   private transient String loginUri;
   private transient String logoutUri;
@@ -60,10 +36,9 @@ class AuthRestApiIntegrationTest {
   @BeforeEach
   void setUp() {
     var userDto = UserUtils.createUserDto(true);
-    var password = userDto.getPassword();
-    storedUser = userService.createUser(userDto, Collections.singleton(RoleType.ROLE_ADMIN));
+    storedUser = createAndAssertAdmin(userDto);
 
-    var loginRequest = new LoginRequest(storedUser.getUsername(), password);
+    var loginRequest = new LoginRequest(storedUser.getUsername(), userDto.getPassword());
     loginRequestJson = TestUtils.toJson(loginRequest);
 
     String delimiter = "/";

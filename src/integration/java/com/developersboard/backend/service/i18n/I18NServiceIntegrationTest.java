@@ -1,17 +1,13 @@
 package com.developersboard.backend.service.i18n;
 
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.IntegrationTestUtils;
 import java.util.Locale;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles(value = {ProfileTypeConstants.TEST})
-class I18NServiceIntegrationTest {
+class I18NServiceIntegrationTest extends IntegrationTestUtils {
 
   private static final String MESSAGE_TEST_KEY = "message.test";
 
