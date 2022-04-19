@@ -4,6 +4,7 @@ import com.developersboard.TestUtils;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -128,7 +129,7 @@ class SecurityUtilsTest {
   }
 
   @Test
-  void authenticateUserWithNullUserDetailsDoesNothing() {
+  void authenticateUserWithNullUserDetails() {
     var authManager = Mockito.mock(AuthenticationManager.class);
 
     Assertions.assertAll(
@@ -136,5 +137,40 @@ class SecurityUtilsTest {
           Assertions.assertNotNull(authManager);
           Assertions.assertDoesNotThrow(() -> SecurityUtils.authenticateUser(null));
         });
+  }
+
+  @Test
+  void authenticateUserWithUserDetails() {
+    var userDetails = UserDetailsBuilder.buildUserDetails(UserUtils.createUser(true));
+
+    SecurityUtils.authenticateUser(userDetails);
+
+    Assertions.assertTrue(SecurityUtils.isAuthenticated());
+  }
+
+  @Test
+  void authenticateUserWithNullHttpServletRequestAndUserDetails() {
+    SecurityUtils.authenticateUser(null, null);
+
+    Assertions.assertFalse(SecurityUtils.isAuthenticated());
+  }
+
+  @Test
+  void authenticateUserWithNullHttpServletRequest() {
+    var userDetails = UserDetailsBuilder.buildUserDetails(UserUtils.createUser(true));
+
+    SecurityUtils.authenticateUser(null, userDetails);
+
+    Assertions.assertFalse(SecurityUtils.isAuthenticated());
+  }
+
+  @Test
+  void authenticateUserWithHttpServletRequestAndUserDetails() {
+    var userDetails = UserDetailsBuilder.buildUserDetails(UserUtils.createUser(true));
+    var httpServletRequest = Mockito.mock(HttpServletRequest.class);
+
+    SecurityUtils.authenticateUser(httpServletRequest, userDetails);
+
+    Assertions.assertTrue(SecurityUtils.isAuthenticated());
   }
 }

@@ -54,13 +54,13 @@ class AuditServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void testReturnsAuditLogsForCreatedEntityWithDeletedEntities() {
+  void testReturnsAuditLogsForMostRecentEntityWithDeletedEntities() {
     var userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
 
     userService.deleteUser(userDto.getPublicId());
     Assertions.assertFalse(userService.existsByUsername(userDto.getUsername()));
 
-    var auditLogs = auditService.getAuditLogs(User.class, true, false, true);
+    var auditLogs = auditService.getAuditLogs(User.class, true, true);
     Assertions.assertFalse(auditLogs.isEmpty());
 
     // since we are selecting most recent, the deletion should be the first entry
