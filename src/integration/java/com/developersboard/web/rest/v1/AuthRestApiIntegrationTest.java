@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
     refreshUri =
         String.join(
             delimiter, SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.REFRESH_TOKEN);
-    refreshTokenDuration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
+    refreshTokenDuration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
   }
 
   @Test
@@ -96,7 +97,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   void validRefreshTokenReturnsNewAccessToken() throws Exception {
 
     var jwtToken = jwtService.generateJwtToken(storedUser.getUsername());
-    var cookie = cookieService.createTokenCookie(jwtToken, TokenType.REFRESH);
+    var encryptedJwtToken = encryptionService.encrypt(jwtToken);
+    var cookie = cookieService.createTokenCookie(encryptedJwtToken, TokenType.REFRESH);
 
     MvcResult mvcResult =
         performRequest(
@@ -118,8 +120,20 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void invalidRefreshTokenThrowsException() throws Exception {
-    var cookie = cookieService.createTokenCookie("invalid_token", TokenType.REFRESH);
+  void invalidEncryptedRefreshTokenThrowsException(TestInfo testInfo) throws Exception {
+    var cookie = cookieService.createTokenCookie(testInfo.getDisplayName(), TokenType.REFRESH);
+
+    performRequest(
+            MockMvcRequestBuilders.get(refreshUri).cookie(cookieService.createCookie(cookie)))
+        .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+  }
+
+  @Test
+  void invalidDecryptedJwtRefreshTokenThrowsException(TestInfo testInfo) throws Exception {
+    var badSignatureJwtToken = getTestJwtTokenByType(JwtTokenType.BAD_SIGNATURE, testInfo);
+    var encryptedJwtToken = encryptionService.encrypt(badSignatureJwtToken);
+
+    var cookie = cookieService.createTokenCookie(encryptedJwtToken, TokenType.REFRESH);
 
     performRequest(
             MockMvcRequestBuilders.get(refreshUri).cookie(cookieService.createCookie(cookie)))

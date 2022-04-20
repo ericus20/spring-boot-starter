@@ -4,6 +4,8 @@ import com.developersboard.shared.dto.UserDto;
 import com.developersboard.web.payload.request.mail.EmailRequest;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
+import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import org.springframework.mail.SimpleMailMessage;
 
 /**
@@ -27,15 +29,21 @@ public interface EmailService {
    *
    * @param emailRequest the email format
    * @see EmailRequest
+   * @throws MessagingException the messaging exception
+   * @throws UnsupportedEncodingException the unsupported encoding exception
    */
-  void sendHtmlEmail(HtmlEmailRequest emailRequest);
+  void sendHtmlEmail(HtmlEmailRequest emailRequest)
+      throws MessagingException, UnsupportedEncodingException;
 
   /**
    * Sends an email with the provided details and template for html with an attachment.
    *
    * @param emailRequest the email format
+   * @throws MessagingException the messaging exception
+   * @throws UnsupportedEncodingException the unsupported encoding exception
    */
-  void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest);
+  void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest)
+      throws MessagingException, UnsupportedEncodingException;
 
   /**
    * Sends an email given a feedback Pojo.
@@ -43,7 +51,8 @@ public interface EmailService {
    * @param feedbackRequestBuilder the feedback pojo.
    * @see FeedbackRequest
    */
-  void sendMailWithFeedback(FeedbackRequest feedbackRequestBuilder);
+  void sendMailWithFeedback(FeedbackRequest feedbackRequestBuilder)
+      throws UnsupportedEncodingException;
 
   /**
    * Sends an email to the provided user to verify account.
@@ -51,14 +60,16 @@ public interface EmailService {
    * @param userDto the user
    * @param token the token
    */
-  void sendAccountVerificationEmail(UserDto userDto, String token);
+  void sendAccountVerificationEmail(UserDto userDto, String token)
+      throws MessagingException, UnsupportedEncodingException;
 
   /**
    * Sends an email to the provided user to confirm account activation.
    *
    * @param userDto the user
    */
-  void sendAccountConfirmationEmail(UserDto userDto);
+  void sendAccountConfirmationEmail(UserDto userDto)
+      throws MessagingException, UnsupportedEncodingException;
 
   /**
    * Sends an email to the provided user to reset password.
@@ -66,12 +77,14 @@ public interface EmailService {
    * @param userDto the user
    * @param token the password token
    */
-  void sendPasswordResetEmail(UserDto userDto, String token);
+  void sendPasswordResetEmail(UserDto userDto, String token)
+      throws MessagingException, UnsupportedEncodingException;
 
   /**
    * Send password reset confirmation email to user.
    *
    * @param userDto the user
    */
-  void sendPasswordResetConfirmationEmail(final UserDto userDto);
+  void sendPasswordResetConfirmationEmail(final UserDto userDto)
+      throws MessagingException, UnsupportedEncodingException;
 }

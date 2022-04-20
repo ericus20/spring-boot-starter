@@ -1,7 +1,6 @@
 package com.developersboard.backend.service.security.impl;
 
 import com.developersboard.backend.service.security.CookieService;
-import com.developersboard.backend.service.security.EncryptionService;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
@@ -39,9 +38,8 @@ public class CookieServiceImpl implements CookieService {
       "The token cannot be null or empty";
 
   private final Environment environment;
-  private final EncryptionService encryptionService;
 
-  private final Duration duration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
+  private final Duration duration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
 
   /**
    * Creates a servlet cookie from spring httpCookie.
@@ -109,8 +107,7 @@ public class CookieServiceImpl implements CookieService {
     Validate.notBlank(token, THE_TOKEN_CANNOT_BE_NULL_OR_EMPTY);
     Validate.notNull(tokenType, THE_TOKEN_TYPE_CANNOT_BE_NULL);
 
-    var encryptedToken = encryptionService.encrypt(token);
-    return createCookie(tokenType.getName(), encryptedToken, duration);
+    return createCookie(tokenType.getName(), token, duration);
   }
 
   /**

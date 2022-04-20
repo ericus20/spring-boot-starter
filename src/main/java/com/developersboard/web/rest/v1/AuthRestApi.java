@@ -154,9 +154,10 @@ public class AuthRestApi {
 
     if (!isRefreshValid) {
       var token = jwtService.generateJwtToken(username);
-      var refreshDuration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
+      var refreshDuration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
 
-      cookieService.addCookieToHeaders(headers, TokenType.REFRESH, token, refreshDuration);
+      var encryptedToken = encryptionService.encrypt(token);
+      cookieService.addCookieToHeaders(headers, TokenType.REFRESH, encryptedToken, refreshDuration);
     }
 
     var accessTokenExpiration = DateUtils.addMinutes(new Date(), NUMBER_OF_MINUTES_TO_EXPIRE);
