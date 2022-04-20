@@ -28,8 +28,9 @@ public class MethodLogger {
    */
   @Around("execution(* *(..)) && @annotation(com.developersboard.annotation.Loggable)")
   public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
-    String method = joinPoint.getSignature().toShortString();
-    long start = System.currentTimeMillis();
+    var method = joinPoint.getSignature().toShortString();
+    var start = System.currentTimeMillis();
+
     LOG.info("=> Starting -  {} args: {}", method, joinPoint.getArgs());
     Object response = joinPoint.proceed();
     LOG.info(
@@ -37,6 +38,7 @@ public class MethodLogger {
         method,
         response,
         System.currentTimeMillis() - start);
+
     return response;
   }
 }

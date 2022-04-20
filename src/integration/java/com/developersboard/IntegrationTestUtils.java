@@ -18,9 +18,12 @@ import com.developersboard.task.UserPruningScheduler;
 import com.github.javafaker.Faker;
 import com.icegreen.greenmail.util.GreenMail;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -59,6 +62,18 @@ public abstract class IntegrationTestUtils {
   @MockBean protected transient DateTimeProvider dateTimeProvider;
   // We want to mock just the dateTimeProvider method within the auditHandler
   @SpyBean protected transient AuditingHandler auditingHandler;
+
+  protected enum JwtTokenType {
+    BAD_SIGNATURE,
+    MALFORMED,
+    UNSUPPORTED
+  }
+
+  protected static final int NUM_OF_JWT_PARTS = 3;
+  protected static final int JWT_HEADER_PART = 0;
+  protected static final int JWT_PAYLOAD_PART = 1;
+  protected static final int JWT_SIGNATURE_PART = 2;
+  protected static final String DELIMITER = ".";
 
   /**
    * Creates and verify user with flexible field creation.
@@ -125,5 +140,43 @@ public abstract class IntegrationTestUtils {
       UserUtils.enableUser(userDto);
     }
     return userService.createUser(userDto, roleTypes);
+  }
+
+  /**
+   * Generate an invalid jwt token based on the type provided. Jwt has the format
+   * header(algorithm).payload.signature
+   *
+   * @param jwtTokenType the token type
+   * @param testInfo the testInfo
+   * @return the jwt token
+   */
+  protected String getTestJwtTokenByType(JwtTokenType jwtTokenType, TestInfo testInfo) {
+    var jwtToken = jwtService.generateJwtToken(testInfo.getDisplayName());
+    if (Objects.nonNull(jwtToken)) {
+      var separatedJwtToken = jwtToken.split("\\.");
+      if (separatedJwtToken.length == NUM_OF_JWT_PARTS) {
+        var header = separatedJwtToken[JWT_HEADER_PART];
+        var payload = separatedJwtToken[JWT_PAYLOAD_PART];
+        var signature = separatedJwtToken[JWT_SIGNATURE_PART];
+
+        if (StringUtils.isNotBlank(header)
+            && StringUtils.isNotBlank(payload)
+            && StringUtils.isNotBlank(signature)) {
+
+          if (jwtTokenType == JwtTokenType.BAD_SIGNATURE) {
+            return String.join(
+                DELIMITER,
+                header,
+                payload.substring(payload.length() / JWT_SIGNATURE_PART),
+                signature);
+          } else if (jwtTokenType == JwtTokenType.MALFORMED) {
+            return String.join(DELIMITER, header, payload);
+          } else if (jwtTokenType == JwtTokenType.UNSUPPORTED) {
+            return String.join(DELIMITER, header, payload, "");
+          }
+        }
+      }
+    }
+    return null;
   }
 }

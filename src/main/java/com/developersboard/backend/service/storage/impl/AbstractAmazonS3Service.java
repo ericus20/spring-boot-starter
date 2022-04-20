@@ -1,6 +1,5 @@
 package com.developersboard.backend.service.storage.impl;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
@@ -8,7 +7,6 @@ import com.amazonaws.services.s3.transfer.Upload;
 import com.developersboard.backend.service.storage.AmazonS3Service;
 import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.StorageConstants;
-import com.developersboard.exception.InvalidFileFormatException;
 import com.developersboard.shared.util.core.ValidationUtils;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +15,6 @@ import java.nio.file.Files;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -69,11 +66,8 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
 
     try (OutputStream fos = Files.newOutputStream(file.toPath())) {
       fos.write(multipart.getBytes());
-      if (!file.exists()) {
-        LOG.debug(StorageConstants.FILE_DOES_NOT_EXIST);
-        throw new InvalidFileFormatException(StorageConstants.FILE_DOES_NOT_EXIST);
-      }
     }
+
     return file;
   }
 
@@ -92,24 +86,16 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
       final AmazonS3 s3Client,
       final AwsProperties properties)
       throws InterruptedException {
-    try {
-      var tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
-      // TransferManager processes all transfers asynchronously,
-      // so this call returns immediately.
-      Upload upload = tm.upload(properties.getS3BucketName(), key, resource);
-      LOG.debug("Object upload started asynchronously...");
 
-      // Optionally, wait for the upload to finish before continuing.
-      upload.waitForCompletion();
-      LOG.debug("Object upload completed successfully");
+    var transferManager = TransferManagerBuilder.standard().withS3Client(s3Client).build();
+    // TransferManager processes all transfers asynchronously,
+    // so this call returns immediately.
+    Upload upload = transferManager.upload(properties.getS3BucketName(), key, resource);
+    LOG.debug("Object upload started asynchronously...");
 
-    } catch (AmazonClientException ace) {
-      LOG.error(
-          "A client exception occurred while trying to store the "
-              + "profile image {} on S3. The profile image won't be stored",
-          resource.getAbsolutePath(),
-          ace);
-    }
+    // Optionally, wait for the upload to finish before continuing.
+    upload.waitForCompletion();
+    LOG.debug("Object upload completed successfully");
   }
 
   /**
@@ -122,20 +108,13 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
    * @throws AmazonS3Exception If something goes wrong.
    */
   private String ensureBucketExists(final String bucketName, final AmazonS3 s3Client) {
-    try {
-      if (!s3Client.doesBucketExistV2(bucketName)) {
-        LOG.debug("Bucket {} doesn't exists... Creating one", bucketName);
-        s3Client.createBucket(bucketName);
-        LOG.debug("Created bucket: {}", bucketName);
-      }
-      return s3Client.getBucketLocation(bucketName) + bucketName;
-    } catch (AmazonClientException ace) {
-      LOG.error(
-          "An error occurred while connecting to S3. Will not execute " + "action for bucket: {}",
-          bucketName,
-          ace);
+    if (!s3Client.doesBucketExistV2(bucketName)) {
+      LOG.debug("Bucket {} doesn't exists... Creating one", bucketName);
+      s3Client.createBucket(bucketName);
+      LOG.debug("Created bucket: {}", bucketName);
     }
-    return StringUtils.EMPTY;
+
+    return s3Client.getBucketLocation(bucketName) + bucketName;
   }
 
   /**
@@ -158,21 +137,12 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
       final AwsProperties properties)
       throws InterruptedException {
 
-    if (!resource.exists()) {
-      LOG.error("The file {} does not exist. Throwing an exception", resource.getAbsolutePath());
-      throw new AmazonS3Exception("The file " + resource.getAbsolutePath() + " " + "doesn't exist");
-    }
     String rootBucketUrl = ensureBucketExists(properties.getS3BucketName(), s3Client);
-    if (StringUtils.isEmpty(rootBucketUrl)) {
-      LOG.error(
-          "The bucket {} does not exist and the application was not able "
-              + "to create it. Image won't be stored with the profile",
-          properties.getS3BucketName());
-    } else {
-      String key = path + "/" + fileName + "." + FilenameUtils.getExtension(resource.getName());
-      processObjectTransfer(resource, key, s3Client, properties);
-      return key;
-    }
-    return null;
+    LOG.info("Root bucket URL: {}", rootBucketUrl);
+
+    String key = path + "/" + fileName + "." + FilenameUtils.getExtension(resource.getName());
+    processObjectTransfer(resource, key, s3Client, properties);
+
+    return key;
   }
 }

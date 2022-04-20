@@ -29,11 +29,10 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void testGeneratesEncryptedCookieWithTokenThenDecrypt() {
+  void testGeneratesCookieWithTokenThenDecrypt() {
     var tokenCookie = cookieService.createTokenCookie(jwtToken, TokenType.ACCESS);
-    String decryptedJwtToken = encryptionService.decrypt(tokenCookie.getValue());
 
-    Assertions.assertEquals(jwtToken, decryptedJwtToken);
+    Assertions.assertEquals(jwtToken, tokenCookie.getValue());
   }
 
   @Test
@@ -44,6 +43,25 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
           Duration duration = Duration.ofHours(DURATION);
           cookieService.createTokenCookie(null, TokenType.ACCESS, duration);
         });
+  }
+
+  @Test
+  void testCreateHttpCookie() {
+    var duration = Duration.ofHours(DURATION);
+    var cookie = cookieService.createCookie(TokenType.ACCESS.getName(), jwtToken, duration);
+    Assertions.assertNotNull(cookie);
+
+    assertCookie(cookie.getName(), cookie.toString(), jwtToken, duration);
+  }
+
+  @Test
+  void testCreateHttpCookieWithNullDurationShouldUseDefaultDuration() {
+    Duration duration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
+    var cookie = cookieService.createCookie(TokenType.ACCESS.getName(), jwtToken, null);
+    Assertions.assertNotNull(cookie);
+
+    // creating cookie with null duration should use the default duration
+    assertCookie(cookie.getName(), cookie.toString(), jwtToken, duration);
   }
 
   @Test
@@ -64,7 +82,7 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void testAddTokenCookieToHeaderWithDefaultDuration() {
-    var duration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
+    var duration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
 
     var httpHeaders = cookieService.addCookieToHeaders(TokenType.REFRESH, jwtToken);
     assertAddCookieToHeader(httpHeaders, jwtToken, duration);
@@ -72,7 +90,7 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void testAddTokenCookieToHeaderWithNullDuration() {
-    var duration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
+    var duration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
 
     var httpHeaders = cookieService.addCookieToHeaders(TokenType.REFRESH, jwtToken, null);
     assertAddCookieToHeader(httpHeaders, jwtToken, duration);
@@ -90,11 +108,13 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
     Assertions.assertTrue(httpHeaders.containsKey(HttpHeaders.SET_COOKIE));
 
     var httpCookie = httpHeaders.getFirst(HttpHeaders.SET_COOKIE);
-    Map<String, String> parsedCookies = parseCookies(httpCookie);
+    assertCookie(TokenType.REFRESH.getName(), httpCookie, token, duration);
+  }
 
-    var rawJwt = encryptionService.decrypt(parsedCookies.get(TokenType.REFRESH.getName()));
+  private void assertCookie(String name, String value, String token, Duration duration) {
+    Map<String, String> parsedCookies = parseCookies(value);
 
-    Assertions.assertEquals(rawJwt, token);
+    Assertions.assertEquals(token, parsedCookies.get(name));
     Assertions.assertTrue(parsedCookies.containsKey(HTTP_ONLY));
     Assertions.assertEquals(parsedCookies.get(MAX_AGE), String.valueOf(duration.getSeconds()));
     Assertions.assertEquals(parsedCookies.get(SAME_SITE), SecurityConstants.SAME_SITE);

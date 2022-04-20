@@ -47,9 +47,9 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
    */
   @Override
   public void sendMail(SimpleMailMessage simpleMailMessage) {
-    LOG.debug("Sending mail with content {}", simpleMailMessage);
+    LOG.info("Sending mail with content {}", simpleMailMessage);
     mailSender.send(simpleMailMessage);
-    LOG.debug(EmailConstants.MAIL_SUCCESS_MESSAGE);
+    LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
   }
 
   /**
@@ -57,32 +57,39 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
    *
    * @param emailRequest the email format
    * @see EmailRequest
+   * @throws MessagingException the messaging exception
+   * @throws UnsupportedEncodingException the unsupported encoding exception
    */
   @Override
-  public void sendHtmlEmail(HtmlEmailRequest emailRequest) {
+  public void sendHtmlEmail(HtmlEmailRequest emailRequest)
+      throws MessagingException, UnsupportedEncodingException {
+
     LOG.info("Template used is {}", templateEngine);
     LOG.debug("Sending html email with details {}", emailRequest);
-    try {
-      MimeMessage mimeMessage = prepareMimeMessage(emailRequest, false);
-      mailSender.send(mimeMessage);
-      LOG.debug(EmailConstants.MAIL_SUCCESS_MESSAGE);
-    } catch (MessagingException | UnsupportedEncodingException e) {
-      LOG.error("Unexpected exception sending an html email", e);
-    }
+
+    MimeMessage mimeMessage = prepareMimeMessage(emailRequest, false);
+    mailSender.send(mimeMessage);
+
+    LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
   }
 
   /**
    * Sends an email with the provided details and template for html with an attachment.
    *
    * @param emailRequest the email format
+   * @throws MessagingException the messaging exception
+   * @throws UnsupportedEncodingException the unsupported encoding exception
    */
   @Override
-  public void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest) {
-    try {
-      mailSender.send(prepareMimeMessage(emailRequest, true));
-    } catch (MessagingException | UnsupportedEncodingException e) {
-      LOG.error("Unexpected exception sending an html email", e);
-    }
+  public void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest)
+      throws MessagingException, UnsupportedEncodingException {
+
+    LOG.info("Template used is {}", templateEngine);
+    LOG.debug("Sending html email with details {}", emailRequest);
+
+    mailSender.send(prepareMimeMessage(emailRequest, true));
+
+    LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
   }
 
   /**
@@ -105,7 +112,7 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
     helper.setTo(emailFormat.getTo());
     helper.setSentDate(new Date());
     // Set multiple recipients and cc them as needed
-    if (Objects.nonNull(emailFormat.getRecipients()) && !emailFormat.getRecipients().isEmpty()) {
+    if (!emailFormat.getRecipients().isEmpty()) {
       helper.setCc(emailFormat.getRecipients().toArray(String[]::new));
     }
     String body = templateEngine.process(emailFormat.getTemplate(), emailFormat.getContext());
@@ -114,7 +121,7 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
     // set up the senders address with the given name
     setFromAndReplyTo(emailFormat, helper);
 
-    if (withAttachment && Objects.nonNull(emailFormat.getAttachments())) {
+    if (withAttachment) {
       addAttachments(emailFormat, helper);
     }
     return mimeMessage;
