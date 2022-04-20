@@ -40,7 +40,7 @@ public class Role implements Serializable {
    */
   public Role(RoleType roleType) {
     this.id = roleType.getId();
-    this.name = roleType.name();
+    this.name = roleType.getName();
   }
 
   /**

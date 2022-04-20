@@ -17,6 +17,7 @@ import com.developersboard.shared.util.core.ValidationUtils;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
   public UserDto createUser(UserDto userDto, Set<RoleType> roleTypes) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
-    User localUser = userRepository.findByEmail(userDto.getEmail());
+    var localUser = userRepository.findByEmail(userDto.getEmail());
     if (Objects.nonNull(localUser)) {
       if (!localUser.isEnabled()) {
         LOG.debug(UserConstants.USER_EXIST_BUT_NOT_ENABLED, userDto.getEmail(), localUser);
@@ -195,8 +196,8 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   public List<UserDto> findAllNotEnabledAfterAllowedDays() {
-    var days = LocalDateTime.now(clock).minusDays(UserConstants.DAYS_TO_ALLOW_ACCOUNT_ACTIVATION);
-    List<User> expiredUsers = userRepository.findByEnabledFalseAndCreatedAtBefore(days);
+    var date = LocalDateTime.now(clock).minusDays(UserConstants.DAYS_TO_ALLOW_ACCOUNT_ACTIVATION);
+    List<User> expiredUsers = userRepository.findByEnabledFalseAndCreatedAtBefore(date);
 
     return UserUtils.convertToUserDto(expiredUsers);
   }
@@ -344,20 +345,24 @@ public class UserServiceImpl implements UserService {
    * Transfers user details to a user object then persist to database.
    *
    * @param userDto the userDto
-   * @param roles the roles
+   * @param roleTypes the roleTypes
    * @param historyType the user history type
    * @param isUpdate if the operation is an update
    * @return the userDto
    */
   private UserDto persistUser(
-      UserDto userDto, Set<RoleType> roles, UserHistoryType historyType, boolean isUpdate) {
+      UserDto userDto, Set<RoleType> roleTypes, UserHistoryType historyType, boolean isUpdate) {
+
+    // If no role types are specified, then set the default role type
+    var localRoleTypes = new HashSet<>(roleTypes);
+    if (localRoleTypes.isEmpty()) {
+      localRoleTypes.add(RoleType.ROLE_USER);
+    }
 
     var user = UserUtils.convertToUser(userDto);
-    for (RoleType roleType : roles) {
-      var role = roleService.getRoleByName(roleType.getRole());
-      if (Objects.nonNull(role)) {
-        user.addUserRole(new UserRole(user, role));
-      }
+    for (RoleType roleType : localRoleTypes) {
+      var storedRole = roleService.findByName(roleType.name());
+      user.addUserRole(new UserRole(user, storedRole));
     }
     user.addUserHistory(new UserHistory(UUID.randomUUID().toString(), user, historyType));
 

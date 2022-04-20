@@ -4,10 +4,10 @@ import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.repository.RoleRepository;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.constant.CacheConstants;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,21 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @version 1.0
  * @since 1.0
  */
+@Slf4j
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService {
 
   private final transient RoleRepository roleEntityRepository;
-
-  /**
-   * The controller for injection.
-   *
-   * @param roleEntityRepository the roleEntityRepository
-   */
-  @Autowired
-  public RoleServiceImpl(@NonNull RoleRepository roleEntityRepository) {
-    this.roleEntityRepository = roleEntityRepository;
-  }
 
   /**
    * Create the roleEntity with the roleEntity instance given.
@@ -42,9 +34,12 @@ public class RoleServiceImpl implements RoleService {
    */
   @Override
   @Transactional
-  public Role saveRole(Role roleEntity) {
+  public Role save(Role roleEntity) {
     Validate.notNull(roleEntity, "The roleEntity cannot be null");
-    return roleEntityRepository.save(roleEntity);
+    var persistedRole = roleEntityRepository.save(roleEntity);
+    LOG.info("Role persisted successfully {}", persistedRole);
+
+    return persistedRole;
   }
 
   /**
@@ -54,7 +49,7 @@ public class RoleServiceImpl implements RoleService {
    * @return the role tuple that matches the id given
    */
   @Override
-  public Role getRoleById(Integer id) {
+  public Role findById(Integer id) {
     Validate.notNull(id, "The id cannot be null");
     return roleEntityRepository.findById(id).orElse(null);
   }
@@ -67,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
    */
   @Override
   @Cacheable(CacheConstants.ROLES)
-  public Role getRoleByName(String name) {
+  public Role findByName(String name) {
     Validate.notNull(name, "The name cannot be null");
     return roleEntityRepository.findByName(name);
   }

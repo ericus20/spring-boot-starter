@@ -14,11 +14,8 @@ import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 
 class UserServiceIntegrationTest extends IntegrationTestUtils {
-
-  @Autowired private transient UserService userService;
 
   /**
    * Test attempts to create a user, verify that user has been created successfully by checking
@@ -49,10 +46,10 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   @Test
   void createUserAlreadyExistingAndNotEnabled(TestInfo testInfo) {
     // Create a new user with the test name as username
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     // create another user using the same details from the first user "userDto"
-    var existingUser = createAndAssertUser(userService, userDto);
+    var existingUser = createAndAssertUser(userDto);
 
     // Assert that the existing user is returned as is and not enabled.
     Assertions.assertEquals(userDto, existingUser);
@@ -62,11 +59,11 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   @Test
   void createUserAlreadyExistingAndEnabled(TestInfo testInfo) {
     // Create a new user with the test name as username with enabled set to true
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), true);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), true);
 
     // since the user is enabled, create another user using the same details from the first user
     // should return null as the user already exists.
-    var existingUser = persistUser(userService, true, userDto);
+    var existingUser = persistUser(true, userDto);
 
     Assertions.assertNull(existingUser);
   }
@@ -74,7 +71,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   /** Test checks that an existing user can be retrieved using the username provided. */
   @Test
   void getUserByUsername(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     var storedUser = userService.findByUsername(userDto.getUsername());
     Assertions.assertEquals(userDto, storedUser);
@@ -88,7 +85,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void getUserById(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     var storedUser = userService.findById(userDto.getId());
     Assertions.assertEquals(userDto, storedUser);
@@ -103,7 +100,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void getUserByPublicId(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     var storedUser = userService.findByPublicId(userDto.getPublicId());
     Assertions.assertEquals(userDto, storedUser);
@@ -118,7 +115,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void getUserByEmail(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     var userByEmail = userService.findByEmail(userDto.getEmail());
     Assertions.assertEquals(userDto, userByEmail);
@@ -132,7 +129,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void findAllNotEnabledAfterCreationDays(TestInfo testInfo) {
-    UserDto userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    UserDto userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     List<UserDto> users = userService.findAllNotEnabledAfterAllowedDays();
     // User was just created and should not be returned to be deleted.
@@ -141,7 +138,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void getUserDetails(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     var userDetails = userService.getUserDetails(userDto.getUsername());
     Assertions.assertTrue(userDetails instanceof UserDetailsBuilder);
@@ -149,7 +146,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void existsByUsername(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     var existsByUsername = userService.existsByUsername(userDto.getUsername());
     Assertions.assertTrue(existsByUsername);
@@ -168,7 +165,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void existsByUsernameOrEmailNotEnabled(TestInfo testInfo) {
-    var user = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var user = createAndAssertUser(testInfo.getDisplayName(), false);
 
     Assertions.assertFalse(
         userService.existsByUsernameOrEmailAndEnabled(user.getUsername(), user.getEmail()));
@@ -176,7 +173,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void existsByUsernameOrEmailAndEnabled(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), true);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), true);
 
     Assertions.assertTrue(
         userService.existsByUsernameOrEmailAndEnabled(userDto.getUsername(), userDto.getEmail()));
@@ -184,7 +181,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void updateUser(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
     var previousFirstName = userDto.getFirstName();
     userDto.setFirstName(FAKER.name().firstName());
 
@@ -199,7 +196,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void enableUser(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     // User should not be enabled after creation.
     Assertions.assertFalse(userDto.isEnabled());
@@ -221,7 +218,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void disableUser(TestInfo testInfo) {
-    var userDto = createAndAssertUser(userService, testInfo.getDisplayName(), true);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), true);
 
     // User should be enabled after creation.
     Assertions.assertTrue(userDto.isEnabled());
@@ -243,7 +240,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void deleteUser() {
-    UserDto userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
+    UserDto userDto = createAndAssertUser(UserUtils.createUserDto(false));
     Assertions.assertTrue(userService.existsByUsername(userDto.getUsername()));
 
     userService.deleteUser(userDto.getPublicId());

@@ -38,10 +38,14 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    *
    * @param feedbackRequest the feedback pojo.
    * @see FeedbackRequest
+   * @throws UnsupportedEncodingException if the encoding is not supported.
    */
   @Override
-  public void sendMailWithFeedback(final FeedbackRequest feedbackRequest) {
-    sendMail(prepareSimpleMailMessage(feedbackRequest));
+  public void sendMailWithFeedback(final FeedbackRequest feedbackRequest)
+      throws UnsupportedEncodingException {
+
+    var simpleMailMessage = prepareSimpleMailMessage(feedbackRequest);
+    sendMail(simpleMailMessage);
   }
 
   /**
@@ -49,9 +53,13 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    *
    * @param userDto the userDto
    * @param token the token
+   * @throws MessagingException if the email cannot be sent.
+   * @throws UnsupportedEncodingException if the encoding is not supported.
    */
   @Override
-  public void sendAccountVerificationEmail(UserDto userDto, String token) {
+  public void sendAccountVerificationEmail(UserDto userDto, String token)
+      throws MessagingException, UnsupportedEncodingException {
+
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     var emailRequest =
@@ -69,9 +77,13 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * Sends an email to the provided user to confirm account activation.
    *
    * @param userDto the userDto
+   * @throws MessagingException if the email cannot be sent.
+   * @throws UnsupportedEncodingException if the encoding is not supported.
    */
   @Override
-  public void sendAccountConfirmationEmail(UserDto userDto) {
+  public void sendAccountConfirmationEmail(UserDto userDto)
+      throws MessagingException, UnsupportedEncodingException {
+
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     HtmlEmailRequest emailRequest =
@@ -90,9 +102,13 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    *
    * @param userDto the userDto
    * @param token the password token
+   * @throws MessagingException if the email cannot be sent.
+   * @throws UnsupportedEncodingException if the encoding is not supported.
    */
   @Override
-  public void sendPasswordResetEmail(UserDto userDto, String token) {
+  public void sendPasswordResetEmail(UserDto userDto, String token)
+      throws MessagingException, UnsupportedEncodingException {
+
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     HtmlEmailRequest emailRequest =
@@ -110,9 +126,13 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * Send password reset confirmation email to user.
    *
    * @param userDto the user dto
+   * @throws MessagingException if the email cannot be sent.
+   * @throws UnsupportedEncodingException if the encoding is not supported.
    */
   @Override
-  public void sendPasswordResetConfirmationEmail(UserDto userDto) {
+  public void sendPasswordResetConfirmationEmail(UserDto userDto)
+      throws MessagingException, UnsupportedEncodingException {
+
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     HtmlEmailRequest emailRequest =
@@ -162,7 +182,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @return emailRequest with context
    */
   public static HtmlEmailRequest prepareEmailRequest(final HtmlEmailRequest emailRequest) {
-    Context context = new Context();
+    var context = new Context();
     context.setVariable(EmailConstants.URLS, emailRequest.getUrls());
     // set the appropriate to and from based on the details available
     configureSenderAndReceiverDetails(emailRequest, context);
@@ -183,17 +203,17 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
   /**
    * set the appropriate to and from based on the details available.
    *
-   * @param emailRequest the emailRequest
-   * @param context the context
+   * @param request the emailRequest
+   * @param ctx the context
    */
-  private static void configureSenderAndReceiverDetails(
-      HtmlEmailRequest emailRequest, Context context) {
-    if (Objects.nonNull(emailRequest.getReceiver())) {
-      context.setVariable(UserConstants.USERNAME, emailRequest.getReceiver().getUsername());
-      emailRequest.setTo(emailRequest.getReceiver().getEmail());
+  private static void configureSenderAndReceiverDetails(HtmlEmailRequest request, Context ctx) {
+
+    if (Objects.nonNull(request.getReceiver())) {
+      ctx.setVariable(UserConstants.USERNAME, request.getReceiver().getUsername());
+      request.setTo(request.getReceiver().getEmail());
     }
-    if (Objects.nonNull(emailRequest.getSender())) {
-      emailRequest.setFrom(emailRequest.getSender().getEmail());
+    if (Objects.nonNull(request.getSender())) {
+      request.setFrom(request.getSender().getEmail());
     }
   }
 
@@ -202,8 +222,12 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    *
    * @param feedbackRequest the feedback pojo.
    * @return the simple mail message.
+   * @throws UnsupportedEncodingException the unsupported encoding exception
    */
-  private SimpleMailMessage prepareSimpleMailMessage(final FeedbackRequest feedbackRequest) {
+  private SimpleMailMessage prepareSimpleMailMessage(final FeedbackRequest feedbackRequest)
+      throws UnsupportedEncodingException {
+    LOG.debug("Preparing simpleMailMessage with feedback: {}", feedbackRequest);
+
     var simpleMailMessage = new SimpleMailMessage();
     simpleMailMessage.setSubject(feedbackRequest.getSubject());
     simpleMailMessage.setTo(feedbackRequest.getTo());
@@ -214,6 +238,8 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
 
     // prepare the update the simpleMailMessage with senders name.
     configureInternetAddress(feedbackRequest, simpleMailMessage);
+
+    LOG.debug("Prepared simpleMailMessage: {}", simpleMailMessage);
     return simpleMailMessage;
   }
 
@@ -222,16 +248,17 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    *
    * @param feedback the feedback
    * @param mailMessage the mailMessage
+   * @throws UnsupportedEncodingException the unsupported encoding exception
    */
-  private void configureInternetAddress(FeedbackRequest feedback, SimpleMailMessage mailMessage) {
-    LOG.debug("feedback: {}", feedback);
+  private void configureInternetAddress(FeedbackRequest feedback, SimpleMailMessage mailMessage)
+      throws UnsupportedEncodingException {
+
     ValidationUtils.validateInputs(feedback, feedback.getEmail(), feedback.getName());
-    try {
-      InternetAddress address = new InternetAddress(feedback.getEmail(), feedback.getName());
-      mailMessage.setFrom(String.valueOf(address));
-    } catch (UnsupportedEncodingException e) {
-      LOG.error("Could not create an internet address for the feedback {}", feedback, e);
-    }
+
+    var address = new InternetAddress(feedback.getEmail(), feedback.getName());
+    LOG.debug("InternetAddress for feedback: {}", address);
+
+    mailMessage.setFrom(String.valueOf(address));
   }
 
   /**
@@ -239,9 +266,14 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    *
    * @param emailRequest the emailRequest
    * @param mimeMessageHelper the message helper
+   * @throws MessagingException the messaging exception
    */
-  void addAttachments(HtmlEmailRequest emailRequest, MimeMessageHelper mimeMessageHelper) {
-    emailRequest.getAttachments().forEach(file -> addAttachment(file, mimeMessageHelper));
+  void addAttachments(HtmlEmailRequest emailRequest, MimeMessageHelper mimeMessageHelper)
+      throws MessagingException {
+
+    for (File attachment : emailRequest.getAttachments()) {
+      addAttachment(attachment, mimeMessageHelper);
+    }
   }
 
   /**
@@ -249,17 +281,15 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    *
    * @param file the file
    * @param mimeMessageHelper the message helper
+   * @throws MessagingException the messaging exception
    */
-  private void addAttachment(File file, MimeMessageHelper mimeMessageHelper) {
-    String fileName = file.getName();
-    try {
-      if (!file.exists()) {
-        LOG.error("File does not exist: {}", file);
-      }
-      mimeMessageHelper.addAttachment(fileName, file);
-      LOG.debug("Added a file attachment: {}", fileName);
-    } catch (MessagingException ex) {
-      LOG.error("Failed to add a file attachment: {}", fileName, ex);
+  private void addAttachment(File file, MimeMessageHelper mimeMessageHelper)
+      throws MessagingException {
+
+    if (!file.exists()) {
+      LOG.error("File does not exist: {}", file);
     }
+    mimeMessageHelper.addAttachment(file.getName(), file);
+    LOG.debug("Added a file attachment: {}", file.getName());
   }
 }

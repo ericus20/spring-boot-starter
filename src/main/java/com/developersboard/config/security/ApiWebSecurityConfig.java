@@ -56,7 +56,7 @@ public class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING)
         .permitAll()
         .anyRequest()
-        .hasRole(RoleType.ROLE_ADMIN.getName());
+        .hasAuthority(RoleType.ROLE_ADMIN.getName());
 
     http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
   }

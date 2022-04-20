@@ -2,10 +2,6 @@ package com.developersboard.web.rest.v1;
 
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.TestUtils;
-import com.developersboard.backend.service.security.CookieService;
-import com.developersboard.backend.service.security.EncryptionService;
-import com.developersboard.backend.service.security.JwtService;
-import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
 import com.developersboard.shared.dto.UserDto;
@@ -18,13 +14,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -32,18 +25,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@AutoConfigureMockMvc
 class AuthRestApiIntegrationTest extends IntegrationTestUtils {
-
-  @Autowired private transient MockMvc mockMvc;
-
-  @Autowired private transient CookieService cookieService;
-
-  @Autowired private transient UserService userService;
-
-  @Autowired private transient JwtService jwtService;
-
-  @Autowired private transient EncryptionService encryptionService;
 
   private transient String loginUri;
   private transient String logoutUri;
@@ -53,9 +35,9 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   private transient Duration refreshTokenDuration;
 
   @BeforeEach
-  void setUp(TestInfo testInfo) {
-    var userDto = UserUtils.createUserDto(testInfo.getDisplayName(), true);
-    storedUser = createAndAssertUser(userService, userDto);
+  void setUp() {
+    var userDto = UserUtils.createUserDto(true);
+    storedUser = createAndAssertAdmin(userDto);
 
     var loginRequest = new LoginRequest(storedUser.getUsername(), userDto.getPassword());
     loginRequestJson = TestUtils.toJson(loginRequest);
@@ -68,7 +50,7 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
     refreshUri =
         String.join(
             delimiter, SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.REFRESH_TOKEN);
-    refreshTokenDuration = Duration.ofDays(SecurityConstants.REFRESH_TOKEN_DURATION);
+    refreshTokenDuration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
   }
 
   @Test
@@ -115,7 +97,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   void validRefreshTokenReturnsNewAccessToken() throws Exception {
 
     var jwtToken = jwtService.generateJwtToken(storedUser.getUsername());
-    var cookie = cookieService.createTokenCookie(jwtToken, TokenType.REFRESH);
+    var encryptedJwtToken = encryptionService.encrypt(jwtToken);
+    var cookie = cookieService.createTokenCookie(encryptedJwtToken, TokenType.REFRESH);
 
     MvcResult mvcResult =
         performRequest(
@@ -137,8 +120,20 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void invalidRefreshTokenThrowsException() throws Exception {
-    var cookie = cookieService.createTokenCookie("invalid_token", TokenType.REFRESH);
+  void invalidEncryptedRefreshTokenThrowsException(TestInfo testInfo) throws Exception {
+    var cookie = cookieService.createTokenCookie(testInfo.getDisplayName(), TokenType.REFRESH);
+
+    performRequest(
+            MockMvcRequestBuilders.get(refreshUri).cookie(cookieService.createCookie(cookie)))
+        .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+  }
+
+  @Test
+  void invalidDecryptedJwtRefreshTokenThrowsException(TestInfo testInfo) throws Exception {
+    var badSignatureJwtToken = getTestJwtTokenByType(JwtTokenType.BAD_SIGNATURE, testInfo);
+    var encryptedJwtToken = encryptionService.encrypt(badSignatureJwtToken);
+
+    var cookie = cookieService.createTokenCookie(encryptedJwtToken, TokenType.REFRESH);
 
     performRequest(
             MockMvcRequestBuilders.get(refreshUri).cookie(cookieService.createCookie(cookie)))

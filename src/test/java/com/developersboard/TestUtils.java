@@ -33,7 +33,7 @@ public class TestUtils {
   private static final String[] USER_EQUALS_FIELDS = {"publicId", "username", "email"};
 
   public static final String ANONYMOUS_USER = "anonymousUser";
-  public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS";
+  public static final String ANONYMOUS_ROLE = "ROLE_ANONYMOUS";
   public static final String ROLE_USER = "ROLE_USER";
 
   public static Collection<String> getBaseEqualsAndHashCodeFields() {

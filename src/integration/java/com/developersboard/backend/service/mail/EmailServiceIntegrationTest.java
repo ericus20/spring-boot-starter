@@ -1,16 +1,12 @@
 package com.developersboard.backend.service.mail;
 
 import com.developersboard.IntegrationTestUtils;
-import com.developersboard.backend.service.security.JwtService;
-import com.developersboard.config.properties.SystemProperties;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
-import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -25,7 +21,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -33,12 +28,6 @@ import org.springframework.mail.SimpleMailMessage;
 class EmailServiceIntegrationTest extends IntegrationTestUtils {
 
   public static final String PROFILE_IMAGE_JPEG = "/profileImage.jpeg";
-
-  @Autowired private transient SystemProperties systemProperties;
-  @Autowired private transient EmailService emailService;
-  @Autowired private transient JwtService jwtService;
-
-  @Autowired private transient GreenMail greenMail;
 
   private transient String body;
   private transient String subject;
@@ -87,7 +76,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendEmailWithFeedback() {
+  void sendEmailWithFeedback() throws Exception {
 
     var feedback = new FeedbackRequest();
     feedback.setMessage(body);
@@ -111,7 +100,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendHtmlEmail(TestInfo testInfo) {
+  void sendHtmlEmail(TestInfo testInfo) throws Exception {
 
     var userDto = UserUtils.createUserDto(false);
 
@@ -121,6 +110,9 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
     emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
     emailRequest.setReceiver(userDto);
     emailRequest.setFrom(userDto.getEmail());
+    emailRequest.setMessage(body);
+    emailRequest.setSender(userDto);
+    emailRequest.getRecipients().add(FAKER.internet().emailAddress());
     emailRequest.setTo(userDto.getEmail());
     emailRequest.setSubject(subject);
     emailRequest.setMessage(testInfo.getDisplayName());
@@ -131,11 +123,11 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
 
     emailService.sendHtmlEmail(emailRequest);
 
-    assertEmailResponse(false);
+    assertEmailResponse(false, 2);
   }
 
   @Test
-  void sendHtmlEmailWithAttachment(TestInfo testInfo) throws IOException {
+  void sendHtmlEmailWithAttachment(TestInfo testInfo) throws Exception {
 
     var uploadFileResource = new ClassPathResource(PROFILE_IMAGE_JPEG, getClass());
     var file = uploadFileResource.getFile();
@@ -148,7 +140,6 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
     var emailRequest = new HtmlEmailRequest();
     emailRequest.setUrls(links);
     emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
-    emailRequest.setReceiver(userDto);
     emailRequest.setFrom(userDto.getEmail());
     emailRequest.setTo(userDto.getEmail());
     emailRequest.setSubject(subject);
@@ -165,7 +156,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendAccountVerificationEmail() {
+  void sendAccountVerificationEmail() throws Exception {
 
     var userDto = UserUtils.createUserDto(false);
     var token = jwtService.generateJwtToken(userDto.getUsername());
@@ -178,7 +169,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendAccountConfirmationEmail() {
+  void sendAccountConfirmationEmail() throws Exception {
 
     var userDto = UserUtils.createUserDto(false);
     subject = EmailConstants.CONFIRMATION_SUCCESS_EMAIL_SUBJECT;
@@ -190,7 +181,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendPasswordResetEmail() {
+  void sendPasswordResetEmail() throws Exception {
 
     var userDto = UserUtils.createUserDto(false);
     var token = jwtService.generateJwtToken(userDto.getUsername());
@@ -203,7 +194,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendPasswordResetConfirmationEmail() {
+  void sendPasswordResetConfirmationEmail() throws Exception {
 
     var userDto = UserUtils.createUserDto(false);
     subject = EmailConstants.PASSWORD_RESET_SUCCESS_SUBJECT;
@@ -220,6 +211,16 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
    * @param isMultipart {@code true} if the email is multipart, {@code false} otherwise
    */
   private void assertEmailResponse(boolean isMultipart) {
+    assertEmailResponse(isMultipart, 1);
+  }
+
+  /**
+   * Asserts the email response.
+   *
+   * @param isMultipart {@code true} if the email is multipart, {@code false} otherwise
+   * @param numberOfMessages the number of messages
+   */
+  private void assertEmailResponse(boolean isMultipart, int numberOfMessages) {
     // Retrieve using GreenMail API
     Message[] messages = greenMail.getReceivedMessages();
 
@@ -234,7 +235,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
 
     Assertions.assertAll(
         () -> {
-          Assertions.assertEquals(1, messages.length);
+          Assertions.assertEquals(numberOfMessages, messages.length);
           Assertions.assertEquals(subject, messages[0].getSubject());
 
           // The email is reformatted as internet address Example <"John Doe" <johndoe@hotmail.com>>

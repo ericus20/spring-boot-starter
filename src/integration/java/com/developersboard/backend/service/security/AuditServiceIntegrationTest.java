@@ -2,32 +2,22 @@ package com.developersboard.backend.service.security;
 
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.backend.persistent.domain.user.User;
-import com.developersboard.backend.service.user.UserService;
-import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.envers.RevisionType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 class AuditServiceIntegrationTest extends IntegrationTestUtils {
 
-  @Autowired private transient AuditService auditService;
-
-  @Autowired private transient UserService userService;
-
-  private transient UserDto userDto;
+  private transient UserDto storedUserDto;
 
   @BeforeEach
   void setUp() {
-    Set<RoleType> adminRoleType = Collections.singleton(RoleType.ROLE_ADMIN);
-
-    userDto = userService.createUser(UserUtils.createUserDto(false), adminRoleType);
+    UserDto userDto = UserUtils.createUserDto(false);
+    storedUserDto = createAndAssertUser(userDto);
   }
 
   @Test
@@ -50,17 +40,17 @@ class AuditServiceIntegrationTest extends IntegrationTestUtils {
     // Can directly access user entity since we asked for audit logs for entities only
     User user = (User) auditLogsWithRevision.get(0);
     Assertions.assertNotNull(user);
-    Assertions.assertEquals(userDto.getId(), user.getId());
+    Assertions.assertEquals(storedUserDto.getId(), user.getId());
   }
 
   @Test
-  void testReturnsAuditLogsForCreatedEntityWithDeletedEntities() {
-    var userDto = createAndAssertUser(userService, UserUtils.createUserDto(false));
+  void testReturnsAuditLogsForMostRecentEntityWithDeletedEntities() {
+    var userDto = createAndAssertUser(UserUtils.createUserDto(false));
 
     userService.deleteUser(userDto.getPublicId());
     Assertions.assertFalse(userService.existsByUsername(userDto.getUsername()));
 
-    var auditLogs = auditService.getAuditLogs(User.class, true, false, true);
+    var auditLogs = auditService.getAuditLogs(User.class, true, true);
     Assertions.assertFalse(auditLogs.isEmpty());
 
     // since we are selecting most recent, the deletion should be the first entry

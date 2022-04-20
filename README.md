@@ -7,7 +7,7 @@
 
 # Spring Boot Starter
 
-A highly opinionated and complete starter for Spring Boot projects ready for production.
+A highly opinionated and complete starter for Spring Boot production ready projects.
 
 ![Java CI with Gradle](https://github.com/ericus20/spring-boot-starter/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
@@ -50,7 +50,6 @@ A highly opinionated and complete starter for Spring Boot projects ready for pro
 - [Authentication and Authorization with JWT](documents/AUTHENTICATION.MD)
 - [User Profiles](documents/USER_PROFILES.MD)
 - [User Roles](documents/USER_ROLES.MD)
-- [API](documents/API.md)
 - [Internationalization (i18n)](documents/INTERNATIONALIZATION.MD)
 - [Email Service with HTML and attachment support](documents/EMAIL_SERVICE.md)
 - [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
