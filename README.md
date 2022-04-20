@@ -50,7 +50,6 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 - [Authentication and Authorization with JWT](documents/AUTHENTICATION.MD)
 - [User Profiles](documents/USER_PROFILES.MD)
 - [User Roles](documents/USER_ROLES.MD)
-- [API](documents/API.md)
 - [Internationalization (i18n)](documents/INTERNATIONALIZATION.MD)
 - [Email Service with HTML and attachment support](documents/EMAIL_SERVICE.md)
 - [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
