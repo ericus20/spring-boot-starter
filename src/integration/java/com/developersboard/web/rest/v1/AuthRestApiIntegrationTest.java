@@ -166,7 +166,6 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
     return mockMvc.perform(
         request
             .with(SecurityMockMvcRequestPostProcessors.csrf())
-            .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:8080")
             .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, HttpMethod.POST)
             .contentType(MediaType.APPLICATION_JSON)
             .content(loginRequestJson));

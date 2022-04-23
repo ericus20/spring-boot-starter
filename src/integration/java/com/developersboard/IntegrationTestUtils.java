@@ -17,6 +17,7 @@ import com.developersboard.shared.util.UserUtils;
 import com.developersboard.task.UserPruningScheduler;
 import com.github.javafaker.Faker;
 import com.icegreen.greenmail.util.GreenMail;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -178,5 +179,17 @@ public abstract class IntegrationTestUtils {
       }
     }
     return null;
+  }
+
+  protected MockMultipartFile getMultipartFile(String fileName) {
+    return getMultipartFile(fileName, false);
+  }
+
+  protected MockMultipartFile getMultipartFile(String fileName, boolean empty) {
+    return new MockMultipartFile(
+        fileName,
+        String.format("%s.png", fileName),
+        "image",
+        empty ? "".getBytes(StandardCharsets.UTF_8) : fileName.getBytes(StandardCharsets.UTF_8));
   }
 }

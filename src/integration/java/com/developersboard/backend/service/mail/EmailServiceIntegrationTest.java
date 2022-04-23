@@ -7,8 +7,9 @@ import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
 import com.icegreen.greenmail.util.GreenMailUtil;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Objects;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
@@ -19,7 +20,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -100,22 +100,20 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendHtmlEmail(TestInfo testInfo) throws Exception {
+  void sendHtmlEmail() throws Exception {
 
     var userDto = UserUtils.createUserDto(false);
+    var links = WebUtils.getDefaultEmailUrls();
 
-    Map<String, String> links = WebUtils.getDefaultEmailUrls();
-    HtmlEmailRequest emailRequest = new HtmlEmailRequest();
+    var emailRequest = new HtmlEmailRequest();
     emailRequest.setUrls(links);
-    emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
-    emailRequest.setReceiver(userDto);
-    emailRequest.setFrom(userDto.getEmail());
-    emailRequest.setMessage(body);
     emailRequest.setSender(userDto);
-    emailRequest.getRecipients().add(FAKER.internet().emailAddress());
-    emailRequest.setTo(userDto.getEmail());
     emailRequest.setSubject(subject);
-    emailRequest.setMessage(testInfo.getDisplayName());
+    emailRequest.setReceiver(userDto);
+    emailRequest.setTo(userDto.getEmail());
+    emailRequest.setFrom(userDto.getEmail());
+    emailRequest.getRecipients().add(FAKER.internet().emailAddress());
+    emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
 
     sender = emailRequest.getFrom();
     recipient = emailRequest.getTo();
@@ -127,24 +125,46 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendHtmlEmailWithAttachment(TestInfo testInfo) throws Exception {
+  void sendHtmlEmailWithInvalidAttachmentThrowsException() {
+    var file = new File(StringUtils.EMPTY);
+
+    var userDto = UserUtils.createUserDto(true);
+    var links = WebUtils.getDefaultEmailUrls();
+
+    var emailRequest = new HtmlEmailRequest();
+    emailRequest.setUrls(links);
+    emailRequest.setSubject(subject);
+    emailRequest.setTo(userDto.getEmail());
+    emailRequest.setFrom(userDto.getEmail());
+    emailRequest.setAttachments(Collections.singleton(file));
+    emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
+
+    sender = emailRequest.getFrom();
+    recipient = emailRequest.getTo();
+    subject = emailRequest.getSubject();
+
+    Assertions.assertThrows(
+        FileNotFoundException.class, () -> emailService.sendHtmlEmailWithAttachment(emailRequest));
+  }
+
+  @Test
+  void sendHtmlEmailWithAttachment() throws Exception {
 
     var uploadFileResource = new ClassPathResource(PROFILE_IMAGE_JPEG, getClass());
     var file = uploadFileResource.getFile();
     Assertions.assertTrue(file.exists());
     Assertions.assertNotNull(file);
 
-    var userDto = UserUtils.createUserDto(testInfo.getDisplayName(), true);
+    var userDto = UserUtils.createUserDto(true);
     var links = WebUtils.getDefaultEmailUrls();
 
     var emailRequest = new HtmlEmailRequest();
     emailRequest.setUrls(links);
-    emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
-    emailRequest.setFrom(userDto.getEmail());
-    emailRequest.setTo(userDto.getEmail());
     emailRequest.setSubject(subject);
-    emailRequest.setMessage(testInfo.getDisplayName());
+    emailRequest.setTo(userDto.getEmail());
+    emailRequest.setFrom(userDto.getEmail());
     emailRequest.setAttachments(Collections.singleton(file));
+    emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
 
     sender = emailRequest.getFrom();
     recipient = emailRequest.getTo();

@@ -25,7 +25,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * BaseEntity class is to allow an entity to inherit common properties from it.
+ * BaseEntity class allows an entity to inherit common properties from it.
  *
  * @author Eric Opoku
  * @version 1.0
