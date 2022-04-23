@@ -1,2 +1,2 @@
-/** Package containing DTO shared resources within layers the application. */
+/** Package containing shared DTO resources within layers the application. */
 package com.developersboard.shared.dto;
