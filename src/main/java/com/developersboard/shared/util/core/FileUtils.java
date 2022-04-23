@@ -20,8 +20,6 @@ import org.apache.commons.io.FilenameUtils;
  */
 @Slf4j
 public final class FileUtils {
-
-  private static final String STREAM_ERROR = "There is a call to close an already closed stream";
   private static final int IMG_WIDTH = 600;
   private static final int IMG_HEIGHT = 600;
 
@@ -50,9 +48,10 @@ public final class FileUtils {
    * @throws IOException if there is an issue with resizing
    */
   public static File resize(final File file, int width, int height) throws IOException {
-    BufferedImage originalImage = ImageIO.read(file);
-    int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-    BufferedImage resizedBufferedImage = resize(originalImage, width, height, type);
+    var image = ImageIO.read(file);
+
+    var resizedBufferedImage = resize(image, width, height, image.getType());
+
     ImageIO.write(resizedBufferedImage, FilenameUtils.getExtension(file.getName()), file);
     return file;
   }
