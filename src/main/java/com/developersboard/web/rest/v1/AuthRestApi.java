@@ -72,7 +72,7 @@ public class AuthRestApi {
       @CookieValue(required = false) String refreshToken,
       @Valid @RequestBody LoginRequest loginRequest) {
 
-    String username = loginRequest.getUsername();
+    var username = loginRequest.getUsername();
     // Authentication will fail if the credentials are invalid and throw exception.
     SecurityUtils.authenticateUser(authenticationManager, username, loginRequest.getPassword());
 
@@ -101,6 +101,7 @@ public class AuthRestApi {
   @GetMapping(SecurityConstants.REFRESH_TOKEN)
   public ResponseEntity<JwtResponseBuilder> refreshToken(
       @CookieValue String refreshToken, HttpServletRequest request) {
+
     var decryptedRefreshToken = encryptionService.decrypt(refreshToken);
     boolean refreshTokenValid = jwtService.isValidJwtToken(decryptedRefreshToken);
 

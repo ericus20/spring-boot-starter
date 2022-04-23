@@ -1,2 +1,4 @@
 Dockerfile text eol=lf
 gradlew text eol=lf
+src/main/scripts/start.sh text eol=lf
+src/main/scripts/wait-for-it.sh text eol=lf
