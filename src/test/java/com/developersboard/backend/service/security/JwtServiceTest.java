@@ -8,13 +8,14 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(properties = {"jwt.secret=secret"})
 @ContextConfiguration(classes = {JwtServiceTest.ContextConfiguration.class})
 class JwtServiceTest {

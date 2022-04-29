@@ -1,6 +1,8 @@
 package com.developersboard.backend.service.security;
 
-import com.developersboard.IntegrationTestUtils;
+import com.developersboard.backend.service.security.impl.CookieServiceImpl;
+import com.developersboard.backend.service.security.impl.JwtServiceImpl;
+import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
 import java.time.Duration;
@@ -11,9 +13,25 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-class CookieServiceIntegrationTest extends IntegrationTestUtils {
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles(ProfileTypeConstants.TEST)
+@TestPropertySource(properties = {"jwt.secret=secret"})
+@ContextConfiguration(classes = {CookieServiceTest.ContextConfiguration.class})
+class CookieServiceTest {
+
+  @Autowired private transient JwtService jwtService;
+
+  @Autowired private transient CookieService cookieService;
 
   private static final int LENGTH_OF_KEY_VALUE_PAIR = 2;
   private static final int DURATION = 1;
@@ -22,6 +40,18 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   private static final String SAME_SITE = "SameSite";
 
   private transient String jwtToken;
+
+  public static class ContextConfiguration {
+    @Bean
+    JwtService jwtService() {
+      return new JwtServiceImpl();
+    }
+
+    @Bean
+    CookieService cookieService(Environment environment) {
+      return new CookieServiceImpl(environment);
+    }
+  }
 
   @BeforeEach
   void setUp(TestInfo testInfo) {
