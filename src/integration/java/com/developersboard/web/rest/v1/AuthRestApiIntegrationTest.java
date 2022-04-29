@@ -13,9 +13,11 @@ import com.developersboard.web.payload.response.JwtResponseBuilder;
 import java.time.Duration;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -27,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+@TestInstance(Lifecycle.PER_CLASS)
 class AuthRestApiIntegrationTest extends IntegrationTestUtils {
 
   private transient String loginUri;
@@ -36,8 +39,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   private transient UserDto storedUser;
   private transient Duration refreshTokenDuration;
 
-  @BeforeEach
-  void setUp() {
+  @BeforeAll
+  void beforeAll() {
     var userDto = UserUtils.createUserDto(true);
     storedUser = createAndAssertAdmin(userDto);
 

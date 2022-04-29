@@ -1,5 +1,6 @@
 package com.developersboard;
 
+import com.developersboard.backend.service.i18n.I18NService;
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.backend.service.security.AuditService;
 import com.developersboard.backend.service.security.CookieService;
@@ -47,6 +48,7 @@ public abstract class IntegrationTestUtils {
   @Autowired protected transient CookieService cookieService;
   @Autowired protected transient JwtService jwtService;
   @Autowired protected transient EncryptionService encryptionService;
+  @Autowired protected transient I18NService i18NService;
   @Autowired protected transient UserService userService;
   @Autowired protected transient RoleServiceImpl roleService;
   @Autowired protected transient UserPruningScheduler userPruningScheduler;

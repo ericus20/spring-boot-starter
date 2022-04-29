@@ -43,7 +43,6 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
 
   @BeforeAll
   void setup() {
-    greenMail.start();
     // Use random content to avoid potential residual lingering problems
     subject = GreenMailUtil.random();
     body = GreenMailUtil.random();

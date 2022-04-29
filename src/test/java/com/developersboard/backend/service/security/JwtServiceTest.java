@@ -6,27 +6,21 @@ import com.developersboard.shared.util.core.JwtUtils.JwtTokenType;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.test.util.ReflectionTestUtils;
 
-@ExtendWith(SpringExtension.class)
-@TestPropertySource(properties = {"jwt.secret=secret"})
-@ContextConfiguration(classes = {JwtServiceTest.ContextConfiguration.class})
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JwtServiceTest {
 
-  @Autowired private transient JwtService jwtService;
+  private transient JwtService jwtService;
 
-  public static class ContextConfiguration {
-    @Bean
-    JwtService jwtService() {
-      return new JwtServiceImpl();
-    }
+  @BeforeAll
+  void beforeAll() {
+    jwtService = new JwtServiceImpl();
+    ReflectionTestUtils.setField(jwtService, "jwtSecret", "secret");
   }
 
   @Test

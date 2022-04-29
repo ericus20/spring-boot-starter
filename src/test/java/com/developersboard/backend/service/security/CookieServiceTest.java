@@ -10,28 +10,22 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.mock.env.MockEnvironment;
+import org.springframework.test.util.ReflectionTestUtils;
 
-@ExtendWith(SpringExtension.class)
-@ActiveProfiles(ProfileTypeConstants.TEST)
-@TestPropertySource(properties = {"jwt.secret=secret"})
-@ContextConfiguration(classes = {CookieServiceTest.ContextConfiguration.class})
+@TestInstance(Lifecycle.PER_CLASS)
 class CookieServiceTest {
 
-  @Autowired private transient JwtService jwtService;
+  private transient JwtService jwtService;
 
-  @Autowired private transient CookieService cookieService;
+  private transient CookieService cookieService;
 
   private static final int LENGTH_OF_KEY_VALUE_PAIR = 2;
   private static final int DURATION = 1;
@@ -41,16 +35,15 @@ class CookieServiceTest {
 
   private transient String jwtToken;
 
-  public static class ContextConfiguration {
-    @Bean
-    JwtService jwtService() {
-      return new JwtServiceImpl();
-    }
+  @BeforeAll
+  void beforeAll() {
+    jwtService = new JwtServiceImpl();
+    ReflectionTestUtils.setField(jwtService, "jwtSecret", "secret");
 
-    @Bean
-    CookieService cookieService(Environment environment) {
-      return new CookieServiceImpl(environment);
-    }
+    var environment = new MockEnvironment();
+    environment.addActiveProfile(ProfileTypeConstants.TEST);
+
+    cookieService = new CookieServiceImpl(environment);
   }
 
   @BeforeEach

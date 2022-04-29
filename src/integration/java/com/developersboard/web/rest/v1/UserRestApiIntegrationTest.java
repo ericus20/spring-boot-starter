@@ -13,8 +13,10 @@ import com.developersboard.web.payload.response.JwtResponseBuilder;
 import java.util.UUID;
 import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -25,13 +27,14 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+@TestInstance(Lifecycle.PER_CLASS)
 class UserRestApiIntegrationTest extends IntegrationTestUtils {
 
   private transient String loginUri;
   private transient String loginRequestJson;
 
-  @BeforeEach
-  void setUp() {
+  @BeforeAll
+  void beforeAll() {
     var adminDto = UserUtils.createUserDto(true);
     createAndAssertAdmin(adminDto);
 
