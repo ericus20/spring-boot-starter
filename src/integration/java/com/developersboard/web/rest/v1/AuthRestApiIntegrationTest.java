@@ -6,6 +6,8 @@ import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
+import com.developersboard.shared.util.core.JwtUtils;
+import com.developersboard.shared.util.core.JwtUtils.JwtTokenType;
 import com.developersboard.web.payload.request.LoginRequest;
 import com.developersboard.web.payload.response.JwtResponseBuilder;
 import java.time.Duration;
@@ -130,7 +132,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void invalidDecryptedJwtRefreshTokenThrowsException(TestInfo testInfo) throws Exception {
-    var badSignatureJwtToken = getTestJwtTokenByType(JwtTokenType.BAD_SIGNATURE, testInfo);
+    var jwt = jwtService.generateJwtToken(testInfo.getDisplayName());
+    var badSignatureJwtToken = JwtUtils.generateTestJwtToken(jwt, JwtTokenType.BAD_SIGNATURE);
     var encryptedJwtToken = encryptionService.encrypt(badSignatureJwtToken);
 
     var cookie = cookieService.createTokenCookie(encryptedJwtToken, TokenType.REFRESH);
