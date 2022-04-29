@@ -8,10 +8,14 @@ JWT tokens can be traced within the application logs as such:
 
 ```bash
 # Access and Refresh tokens generated in the raw form as JWT
-Token successfully created as eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY1MTIxNTA0OCwiZXhwIjoxNjUxMzAxNDQ4fQ.meeXEZ_urOZzY80EPzUo8Ud-9d8G8UhpMFAkIL95LyEslROwOLI55ZfHKJxxR0J1QABOEjSzbqCaynu_0R_ntA
+Token successfully created as eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY1MTIxNTA0OCwiZXhwIjoxNjUxMzAxNDQ4fQ.EPDxQIlW_qv9j2ra9DInxfDlfXCKB4gOrjkmSQ_6Vefh2x_q1twdMPqnaewPdvRjMccC-Ky6DFJtJzp_iLhelw
 Token successfully created as eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY1MTIxNTA0OSwiZXhwIjoxNjUxMjE2ODQ5fQ.iqKT4LAyvJuQrGGA2volDeAE0w_HkVCly8ZVrrgrtT710aNLX5Dy7kdS2wO9NA5t7uuOYABsqSpKDA-lfLtkxA
 
 ```
+
+* This can be viewed in jwt.io to view the content of the payload. The username can be seen in the payload.
+
+![img_1.png](images/auth-jwt.png)
 
 But the response object returned will be encrypted.
 Below is an example of a successful authentication response.
