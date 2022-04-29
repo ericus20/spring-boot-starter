@@ -7,8 +7,9 @@ import com.developersboard.shared.util.UserUtils;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,6 +22,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JwtAuthTokenFilterTest {
 
   private static final String bearerToken = "Bearer 260bce87-6be9-4897-add7-b3b675952538";
@@ -40,12 +42,12 @@ class JwtAuthTokenFilterTest {
   private transient MockHttpServletRequest request;
   private transient MockHttpServletResponse response;
 
-  @BeforeEach
-  void setUp() throws Exception {
+  @BeforeAll
+  void beforeAll() throws Exception {
     try (var mocks = MockitoAnnotations.openMocks(this)) {
       Assertions.assertNotNull(mocks);
 
-      UserDetailsBuilder userDetails = UserDetailsBuilder.buildUserDetails(UserUtils.createUser());
+      var userDetails = UserDetailsBuilder.buildUserDetails(UserUtils.createUser());
       Mockito.when(userDetailsService.loadUserByUsername(ArgumentMatchers.anyString()))
           .thenReturn(userDetails);
       Mockito.when(encryptionService.decrypt(ArgumentMatchers.anyString())).thenReturn(bearerToken);

@@ -7,15 +7,18 @@ import com.developersboard.shared.util.UserUtils;
 import java.util.List;
 import org.hibernate.envers.RevisionType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 class AuditServiceIntegrationTest extends IntegrationTestUtils {
 
   private transient UserDto storedUserDto;
 
-  @BeforeEach
-  void setUp() {
+  @BeforeAll
+  void beforeAll() {
     UserDto userDto = UserUtils.createUserDto(false);
     storedUserDto = createAndAssertUser(userDto);
   }
