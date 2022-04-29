@@ -140,9 +140,6 @@ jacocoTestReport {
 }
 
 spotless {
-    // only format files which have changed since origin/develop
-    ratchetFrom 'origin/develop'
-
     format 'misc', {
         // define the files to apply `misc` to
         target '*.gradle', '*.md', '.gitignore'

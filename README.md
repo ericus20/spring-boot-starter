@@ -41,6 +41,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Features
 
+- [Advanced CORS Configuration](documents/advanced-cors-configuration.md)
 - [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Fully Covered Equals, HashCode, ToString Testing](documents/TESTS.md#equals-hashcode-and-tostring)
 - [Amazon S3 Implementation](documents/S3.md#amazon-s3-implementation)

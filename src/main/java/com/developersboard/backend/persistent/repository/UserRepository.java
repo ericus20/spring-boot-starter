@@ -20,7 +20,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
   @RestResource(exported = false)
-  @NonNull Optional<User> findById(Long id);
+  @NonNull
+  Optional<User> findById(Long id);
 
   /**
    * Find user by email.

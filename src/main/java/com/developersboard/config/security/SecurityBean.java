@@ -1,10 +1,12 @@
 package com.developersboard.config.security;
 
+import com.developersboard.config.properties.CorsConfigProperties;
 import com.developersboard.constant.SecurityConstants;
 import java.time.Duration;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.tomcat.util.http.LegacyCookieProcessor;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -48,7 +50,7 @@ public class SecurityBean {
    */
   @Bean
   public PersistentTokenRepository persistentRepository(DataSource dataSource) {
-    JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+    var jdbcTokenRepository = new JdbcTokenRepositoryImpl();
     jdbcTokenRepository.setDataSource(dataSource);
 
     return jdbcTokenRepository;
@@ -60,14 +62,16 @@ public class SecurityBean {
    * @return CorsConfigurationSource
    */
   @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
+  public CorsConfigurationSource corsConfigurationSource(final CorsConfigProperties props) {
 
     var corsConfiguration = new CorsConfiguration();
-    corsConfiguration.setAllowCredentials(true);
-    corsConfiguration.setMaxAge(Duration.ofHours(1));
-    corsConfiguration.setAllowedHeaders(SecurityConstants.ALLOWED_HTTP_HEADERS);
-    corsConfiguration.setAllowedMethods(SecurityConstants.ALLOWED_HTTP_METHODS);
-    corsConfiguration.setExposedHeaders(List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.SET_COOKIE));
+    corsConfiguration.setAllowCredentials(props.isAllowCredentials());
+    corsConfiguration.setMaxAge(Duration.ofHours(props.getMaxAge()));
+
+    setExposedHeaders(props, corsConfiguration);
+    setAllowedHeaders(props, corsConfiguration);
+    setAllowedMethods(props, corsConfiguration);
+    corsConfiguration.setAllowedOrigins(props.getAllowedOrigins());
 
     var source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration(SecurityConstants.API_ROOT_URL_MAPPING, corsConfiguration);
@@ -86,5 +90,76 @@ public class SecurityBean {
     return tomcatServletWebServerFactory ->
         tomcatServletWebServerFactory.addContextCustomizers(
             context -> context.setCookieProcessor(new LegacyCookieProcessor()));
+  }
+
+  /**
+   * Set the list of response headers other than simple headers (i.e. {@code Cache-Control}, {@code
+   * Content-Language}, {@code Content-Type}, {@code Expires}, {@code Last-Modified}, or {@code
+   * Pragma}) that an actual response might have and can be exposed.
+   *
+   * <p>The special value {@code "*"} allows all headers to be exposed for non-credentialed
+   * requests.
+   *
+   * <p>By default this is not set.
+   *
+   * @param props CorsConfigProperties
+   * @param corsConfig CorsConfiguration
+   */
+  private void setExposedHeaders(CorsConfigProperties props, CorsConfiguration corsConfig) {
+    if (CollectionUtils.isEmpty(props.getExposedHeaders())) {
+      corsConfig.setExposedHeaders(List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.SET_COOKIE));
+    } else {
+      corsConfig.setExposedHeaders(props.getExposedHeaders());
+    }
+  }
+
+  /**
+   * Set the list of headers that a pre-flight request can list as allowed for use during an actual
+   * request.
+   *
+   * <p>The special value {@code "*"} allows actual requests to send any header.
+   *
+   * <p>A header name is not required to be listed if it is one of: {@code Cache-Control}, {@code
+   * Content-Language}, {@code Expires}, {@code Last-Modified}, or {@code Pragma}.
+   *
+   * <p>By default this is not set.
+   *
+   * @param props CorsConfigProperties
+   * @param corsConfig CorsConfiguration
+   */
+  private void setAllowedHeaders(CorsConfigProperties props, CorsConfiguration corsConfig) {
+    if (CollectionUtils.isEmpty(props.getAllowedHeaders())) {
+      corsConfig.setAllowedHeaders(SecurityConstants.ALLOWED_HTTP_HEADERS);
+    } else {
+      corsConfig.setAllowedHeaders(props.getAllowedHeaders());
+    }
+  }
+
+  /**
+   * Set the HTTP methods to allow, e.g. {@code "GET"}, {@code "POST"}, {@code "PUT"}, etc.
+   *
+   * <p>The special value {@code "*"} allows all methods.
+   *
+   * <p>If not set, only {@code "GET"} and {@code "HEAD"} are allowed.
+   *
+   * <p>By default this is not set.
+   *
+   * <p><strong>Note:</strong> CORS checks use values from "Forwarded"
+   *
+   * <p>(<a href="https://tools.ietf.org/html/rfc7239">RFC 7239</a>), "X-Forwarded-Host",
+   * "X-Forwarded-Port", and "X-Forwarded-Proto" headers, if present, in order to reflect the
+   * client-originated address. Consider using the {@code ForwardedHeaderFilter} in order to choose
+   * from a central place whether to extract and use, or to discard such headers. See the Spring
+   * Framework reference for more on this filter.
+   *
+   * @param props CorsConfigProperties
+   * @param corsConfig CorsConfiguration
+   */
+  private void setAllowedMethods(CorsConfigProperties props, CorsConfiguration corsConfig) {
+    if (CollectionUtils.isEmpty(props.getAllowedMethods())) {
+      corsConfig.setAllowedMethods(SecurityConstants.ALLOWED_HTTP_METHODS);
+    } else {
+      corsConfig.setAllowedMethods(props.getAllowedMethods());
+    }
   }
 }
