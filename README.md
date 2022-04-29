@@ -30,30 +30,28 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 * [Liquibase](https://liquibase.org/) - Rapidly manage database schema changes.
 * [Spotless](https://github.com/diffplug/spotless/) - Spotless is a general-purpose formatting
   plugin.
-* [Spring Security](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-security)
-* [Java Mail Sender](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-email)
-* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#configuration-metadata-annotation-processor)
-* [Rest Repositories](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#howto-use-exposing-spring-data-repositories-rest-endpoint)
-* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#production-ready)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-jpa-and-spring-data)
-* [Validation](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#boot-features-validation)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.5/reference/htmlsingle/#using-boot-devtools)
+* [Hibernate Envers](https://hibernate.org/orm/envers/) - Detailed Auditing of CRUD operations.
+* [Spring Security](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-security)
+* [Java Mail Sender](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-email)
+* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#configuration-metadata-annotation-processor)
+* [Rest Repositories](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#howto-use-exposing-spring-data-repositories-rest-endpoint)
+* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#production-ready)
+* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-jpa-and-spring-data)
+* [Validation](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-validation)
+* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#using-boot-devtools)
 
 ## Features
 
-- [Advanced CORS Configuration](documents/advanced-cors-configuration.md)
 - [OpenApi3 Swagger](documents/SWAGGER.md)
+- [Unit and Integration Tests](documents/TESTS.md)
+- [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
+- [Advanced CORS Configuration](documents/advanced-cors-configuration.md)
 - [Fully Covered Equals, HashCode, ToString Testing](documents/TESTS.md#equals-hashcode-and-tostring)
 - [Amazon S3 Implementation](documents/S3.md#amazon-s3-implementation)
 - [Local AmazonS3 Integration Tests with S3Mock](documents/TESTS.md#local-amazons3-integration-tests)
-- [Unit and Integration Tests](documents/TESTS.md)
 - [Production Ready Folder Structure](README.md#production-ready-folder-structure)
 - [Authentication and Authorization with JWT](documents/AUTHENTICATION.MD)
-- [User Profiles](documents/USER_PROFILES.MD)
-- [User Roles](documents/USER_ROLES.MD)
-- [Internationalization (i18n)](documents/INTERNATIONALIZATION.MD)
 - [Email Service with HTML and attachment support](documents/EMAIL_SERVICE.md)
-- [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
 
 
 ## Sample *ongoing* project using this template
