@@ -25,8 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AdminConstants.API_V1_USERS_ROOT_URL)
-@PreAuthorize(
-    "isFullyAuthenticated() && hasAuthority(T(com.developersboard.enums.RoleType).ROLE_ADMIN.name)")
+@PreAuthorize("isFullyAuthenticated() && hasRole(T(com.developersboard.enums.RoleType).ROLE_ADMIN)")
 public class UserRestApi {
 
   private final UserService userService;

@@ -25,7 +25,7 @@ POST: /api/v1/auth/login
 
 ![img_1.png](images/auth-rest-login-request.png)
 
-```
+```json
 {
   "username": "admin",
   "password": "password"
