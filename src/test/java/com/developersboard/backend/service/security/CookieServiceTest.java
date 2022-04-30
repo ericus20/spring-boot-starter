@@ -1,6 +1,8 @@
 package com.developersboard.backend.service.security;
 
-import com.developersboard.IntegrationTestUtils;
+import com.developersboard.backend.service.security.impl.CookieServiceImpl;
+import com.developersboard.backend.service.security.impl.JwtServiceImpl;
+import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
 import java.time.Duration;
@@ -8,12 +10,22 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpHeaders;
+import org.springframework.mock.env.MockEnvironment;
+import org.springframework.test.util.ReflectionTestUtils;
 
-class CookieServiceIntegrationTest extends IntegrationTestUtils {
+@TestInstance(Lifecycle.PER_CLASS)
+class CookieServiceTest {
+
+  private transient JwtService jwtService;
+
+  private transient CookieService cookieService;
 
   private static final int LENGTH_OF_KEY_VALUE_PAIR = 2;
   private static final int DURATION = 1;
@@ -22,6 +34,17 @@ class CookieServiceIntegrationTest extends IntegrationTestUtils {
   private static final String SAME_SITE = "SameSite";
 
   private transient String jwtToken;
+
+  @BeforeAll
+  void beforeAll() {
+    jwtService = new JwtServiceImpl();
+    ReflectionTestUtils.setField(jwtService, "jwtSecret", "secret");
+
+    var environment = new MockEnvironment();
+    environment.addActiveProfile(ProfileTypeConstants.TEST);
+
+    cookieService = new CookieServiceImpl(environment);
+  }
 
   @BeforeEach
   void setUp(TestInfo testInfo) {

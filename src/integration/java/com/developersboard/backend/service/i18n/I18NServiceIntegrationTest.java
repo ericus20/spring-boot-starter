@@ -4,14 +4,11 @@ import com.developersboard.IntegrationTestUtils;
 import java.util.Locale;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 class I18NServiceIntegrationTest extends IntegrationTestUtils {
 
   private static final String MESSAGE_TEST_KEY = "message.test";
-
-  @Autowired protected transient I18NService i18NService;
 
   @Test
   void getMessage() {

@@ -19,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
-import org.springframework.mock.web.MockMultipartFile;
 
 class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
 
@@ -151,17 +150,5 @@ class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
     try (InputStream storedImageUrl = amazonS3Service.getFile(newKey)) {
       Assertions.assertNotNull(storedImageUrl);
     }
-  }
-
-  private MockMultipartFile getMultipartFile(String fileName) {
-    return getMultipartFile(fileName, false);
-  }
-
-  private MockMultipartFile getMultipartFile(String fileName, boolean empty) {
-    return new MockMultipartFile(
-        fileName,
-        String.format("%s.png", fileName),
-        "image",
-        empty ? "".getBytes(StandardCharsets.UTF_8) : fileName.getBytes(StandardCharsets.UTF_8));
   }
 }

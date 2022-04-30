@@ -10,10 +10,10 @@ import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import lombok.extern.slf4j.Slf4j;
@@ -55,10 +55,11 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @param token the token
    * @throws MessagingException if the email cannot be sent.
    * @throws UnsupportedEncodingException if the encoding is not supported.
+   * @throws FileNotFoundException if the specified attachment file is not found
    */
   @Override
   public void sendAccountVerificationEmail(UserDto userDto, String token)
-      throws MessagingException, UnsupportedEncodingException {
+      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
 
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
@@ -79,10 +80,11 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @param userDto the userDto
    * @throws MessagingException if the email cannot be sent.
    * @throws UnsupportedEncodingException if the encoding is not supported.
+   * @throws FileNotFoundException if the specified attachment file is not found
    */
   @Override
   public void sendAccountConfirmationEmail(UserDto userDto)
-      throws MessagingException, UnsupportedEncodingException {
+      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
 
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
@@ -104,10 +106,11 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @param token the password token
    * @throws MessagingException if the email cannot be sent.
    * @throws UnsupportedEncodingException if the encoding is not supported.
+   * @throws FileNotFoundException if the specified attachment file is not found
    */
   @Override
   public void sendPasswordResetEmail(UserDto userDto, String token)
-      throws MessagingException, UnsupportedEncodingException {
+      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
 
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
@@ -128,10 +131,11 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @param userDto the user dto
    * @throws MessagingException if the email cannot be sent.
    * @throws UnsupportedEncodingException if the encoding is not supported.
+   * @throws FileNotFoundException if the specified attachment file is not found
    */
   @Override
   public void sendPasswordResetConfirmationEmail(UserDto userDto)
-      throws MessagingException, UnsupportedEncodingException {
+      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
 
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
@@ -167,11 +171,12 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
       links.put(EmailConstants.EMAIL_LINK, WebUtils.getGenericUri(path));
     }
 
-    HtmlEmailRequest emailRequest = new HtmlEmailRequest();
+    var emailRequest = new HtmlEmailRequest();
     emailRequest.setTemplate(template);
     emailRequest.setUrls(links);
     emailRequest.setReceiver(userDto);
     emailRequest.setSubject(subject);
+
     return emailRequest;
   }
 
@@ -184,8 +189,8 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
   public static HtmlEmailRequest prepareEmailRequest(final HtmlEmailRequest emailRequest) {
     var context = new Context();
     context.setVariable(EmailConstants.URLS, emailRequest.getUrls());
-    // set the appropriate to and from based on the details available
-    configureSenderAndReceiverDetails(emailRequest, context);
+    context.setVariable(UserConstants.USERNAME, emailRequest.getReceiver().getUsername());
+    emailRequest.setTo(emailRequest.getReceiver().getEmail());
     emailRequest.setSubject(emailRequest.getSubject());
 
     if (emailRequest.getUrls().containsKey(EmailConstants.EMAIL_LINK)) {
@@ -193,28 +198,9 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
           EmailConstants.EMAIL_LINK, emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
       LOG.info(emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
     }
-    if (Objects.nonNull(emailRequest.getMessage())) {
-      context.setVariable(EmailConstants.MESSAGE, emailRequest.getMessage());
-    }
     emailRequest.setContext(context);
+
     return emailRequest;
-  }
-
-  /**
-   * set the appropriate to and from based on the details available.
-   *
-   * @param request the emailRequest
-   * @param ctx the context
-   */
-  private static void configureSenderAndReceiverDetails(HtmlEmailRequest request, Context ctx) {
-
-    if (Objects.nonNull(request.getReceiver())) {
-      ctx.setVariable(UserConstants.USERNAME, request.getReceiver().getUsername());
-      request.setTo(request.getReceiver().getEmail());
-    }
-    if (Objects.nonNull(request.getSender())) {
-      request.setFrom(request.getSender().getEmail());
-    }
   }
 
   /**
@@ -267,9 +253,10 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @param emailRequest the emailRequest
    * @param mimeMessageHelper the message helper
    * @throws MessagingException the messaging exception
+   * @throws FileNotFoundException if the file is not found
    */
   void addAttachments(HtmlEmailRequest emailRequest, MimeMessageHelper mimeMessageHelper)
-      throws MessagingException {
+      throws MessagingException, FileNotFoundException {
 
     for (File attachment : emailRequest.getAttachments()) {
       addAttachment(attachment, mimeMessageHelper);
@@ -282,12 +269,14 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @param file the file
    * @param mimeMessageHelper the message helper
    * @throws MessagingException the messaging exception
+   * @throws FileNotFoundException if the file is not found
    */
   private void addAttachment(File file, MimeMessageHelper mimeMessageHelper)
-      throws MessagingException {
+      throws MessagingException, FileNotFoundException {
 
     if (!file.exists()) {
       LOG.error("File does not exist: {}", file);
+      throw new FileNotFoundException("File does not exist: " + file);
     }
     mimeMessageHelper.addAttachment(file.getName(), file);
     LOG.debug("Added a file attachment: {}", file.getName());

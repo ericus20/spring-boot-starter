@@ -5,6 +5,7 @@ import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.web.payload.request.mail.EmailRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -14,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -59,15 +61,16 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
    * @see EmailRequest
    * @throws MessagingException the messaging exception
    * @throws UnsupportedEncodingException the unsupported encoding exception
+   * @throws FileNotFoundException the file not found exception
    */
   @Override
   public void sendHtmlEmail(HtmlEmailRequest emailRequest)
-      throws MessagingException, UnsupportedEncodingException {
+      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
 
     LOG.info("Template used is {}", templateEngine);
     LOG.debug("Sending html email with details {}", emailRequest);
 
-    MimeMessage mimeMessage = prepareMimeMessage(emailRequest, false);
+    MimeMessage mimeMessage = prepareMimeMessage(emailRequest);
     mailSender.send(mimeMessage);
 
     LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
@@ -79,15 +82,16 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
    * @param emailRequest the email format
    * @throws MessagingException the messaging exception
    * @throws UnsupportedEncodingException the unsupported encoding exception
+   * @throws FileNotFoundException if the specified attachment file is not found
    */
   @Override
   public void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest)
-      throws MessagingException, UnsupportedEncodingException {
+      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
 
     LOG.info("Template used is {}", templateEngine);
     LOG.debug("Sending html email with details {}", emailRequest);
 
-    mailSender.send(prepareMimeMessage(emailRequest, true));
+    mailSender.send(prepareMimeMessage(emailRequest));
 
     LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
   }
@@ -96,15 +100,16 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
    * Prepares a MimeMessage with provided EmailFormat.
    *
    * @param emailFormat the emailFormat
-   * @param withAttachment true if attachment is required
    * @return MimeMessage the MimeMessage
    */
-  private MimeMessage prepareMimeMessage(HtmlEmailRequest emailFormat, boolean withAttachment)
-      throws MessagingException, UnsupportedEncodingException {
+  private MimeMessage prepareMimeMessage(HtmlEmailRequest emailFormat)
+      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
 
-    Context context = new Context();
+    var context = new Context();
     context.setVariable(EmailConstants.URLS, emailFormat.getUrls());
     emailFormat.setContext(context);
+
+    var withAttachment = CollectionUtils.isNotEmpty(emailFormat.getAttachments());
 
     MimeMessage mimeMessage = mailSender.createMimeMessage();
     MimeMessageHelper helper =

@@ -3,6 +3,8 @@ package com.developersboard.backend.persistent.repository;
 import com.developersboard.backend.persistent.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
@@ -16,6 +18,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
+  @RestResource(exported = false)
+  @NonNull
+  Optional<User> findById(Long id);
 
   /**
    * Find user by email.

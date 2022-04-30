@@ -25,7 +25,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * BaseEntity class is to allow an entity to inherit common properties from it.
+ * BaseEntity class allows an entity to inherit common properties from it.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -38,11 +38,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity<T extends Serializable> {
 
-  private static final String SEQUENCE_NAME = "CentralizedBlogSequence";
+  private static final String SEQUENCE_NAME = "SpringBootStarterSequence";
   private static final String SEQUENCE_INITIAL_VALUE = "1";
   private static final String STRATEGY =
       "com.developersboard.backend.persistent.domain.base.AssignedSequenceStyleGenerator";
-  private static final String SEQUENCE_GENERATOR_NAME = "CentralizedBlogSequenceGenerator";
+  private static final String SEQUENCE_GENERATOR_NAME = "SpringBootStarterSequenceGenerator";
 
   /**
    * Sequence Style Generator to auto generate ID based on the choices in the parameters.

@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+
+  # Postgres database
+  postgres-db:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: spring_boot_starter
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  # App backend service
+  spring-boot-starter:
+    image: ericus20/spring-boot-starter
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    restart: always
+    depends_on:
+      - postgres-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/spring_boot_starter
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQL95Dialect
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+# Volumes
+volumes:
+  postgres-data:
+    driver: local

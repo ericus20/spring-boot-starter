@@ -6,14 +6,18 @@ import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
+import com.developersboard.shared.util.core.JwtUtils;
+import com.developersboard.shared.util.core.JwtUtils.JwtTokenType;
 import com.developersboard.web.payload.request.LoginRequest;
 import com.developersboard.web.payload.response.JwtResponseBuilder;
 import java.time.Duration;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -25,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+@TestInstance(Lifecycle.PER_CLASS)
 class AuthRestApiIntegrationTest extends IntegrationTestUtils {
 
   private transient String loginUri;
@@ -34,8 +39,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   private transient UserDto storedUser;
   private transient Duration refreshTokenDuration;
 
-  @BeforeEach
-  void setUp() {
+  @BeforeAll
+  void beforeAll() {
     var userDto = UserUtils.createUserDto(true);
     storedUser = createAndAssertAdmin(userDto);
 
@@ -130,7 +135,8 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void invalidDecryptedJwtRefreshTokenThrowsException(TestInfo testInfo) throws Exception {
-    var badSignatureJwtToken = getTestJwtTokenByType(JwtTokenType.BAD_SIGNATURE, testInfo);
+    var jwt = jwtService.generateJwtToken(testInfo.getDisplayName());
+    var badSignatureJwtToken = JwtUtils.generateTestJwtToken(jwt, JwtTokenType.BAD_SIGNATURE);
     var encryptedJwtToken = encryptionService.encrypt(badSignatureJwtToken);
 
     var cookie = cookieService.createTokenCookie(encryptedJwtToken, TokenType.REFRESH);
@@ -166,7 +172,6 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
     return mockMvc.perform(
         request
             .with(SecurityMockMvcRequestPostProcessors.csrf())
-            .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:8080")
             .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, HttpMethod.POST)
             .contentType(MediaType.APPLICATION_JSON)
             .content(loginRequestJson));
