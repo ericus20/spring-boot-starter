@@ -1,11 +1,13 @@
 package com.developersboard.config;
 
+import com.developersboard.config.properties.OpenApiProperties;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.beans.factory.annotation.Value;
+import io.swagger.v3.oas.models.security.SecurityScheme.Type;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
@@ -18,23 +20,10 @@ import org.springframework.util.StringUtils;
  * @since 1.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class OpenApi30Config {
 
-  private final transient String moduleName;
-  private final transient String apiVersion;
-
-  /**
-   * Constructs a new instance of {@link OpenApi30Config}.
-   *
-   * @param moduleName the name of the module
-   * @param apiVersion the version of the API
-   */
-  public OpenApi30Config(
-      @Value("${module-name}") String moduleName, @Value("${api-version}") String apiVersion) {
-
-    this.moduleName = moduleName;
-    this.apiVersion = apiVersion;
-  }
+  private final OpenApiProperties properties;
 
   /**
    * Configures the OpenApi 3.0 bean.
@@ -44,18 +33,26 @@ public class OpenApi30Config {
   @Bean
   public OpenAPI customOpenAPI() {
     final String securitySchemeName = "bearerAuth";
-    final String apiTitle = String.format("%s API", StringUtils.capitalize(moduleName));
+    final String apiTitle = String.format("%s API", StringUtils.capitalize(properties.getName()));
+
+    var info =
+        new Info()
+            .title(apiTitle)
+            .version(properties.getVersion())
+            .description(properties.getDescription());
+
+    var securityScheme =
+        new SecurityScheme()
+            .name(securitySchemeName)
+            .type(Type.HTTP)
+            .scheme("bearer")
+            .bearerFormat("JWT");
+
+    var components = new Components().addSecuritySchemes(securitySchemeName, securityScheme);
+
     return new OpenAPI()
         .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-        .components(
-            new Components()
-                .addSecuritySchemes(
-                    securitySchemeName,
-                    new SecurityScheme()
-                        .name(securitySchemeName)
-                        .type(SecurityScheme.Type.HTTP)
-                        .scheme("bearer")
-                        .bearerFormat("JWT")))
-        .info(new Info().title(apiTitle).version(apiVersion));
+        .components(components)
+        .info(info);
   }
 }
