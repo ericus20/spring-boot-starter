@@ -12,16 +12,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up JDK 17
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
     - name: Grant execute permissions for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
+      uses: gradle/gradle-build-action@v2
       with:
         arguments: clean build
         build-root-directory: .
@@ -31,19 +31,21 @@ jobs:
       with:
         paths: ${{github.workspace}}/build/reports/jacoco/test/jacocoTestReport.xml
         token: ${{secrets.GITHUB_TOKEN}}
-        min-coverage-overall: 60
-        min-coverage-changed-files: 50
+        min-coverage-overall: 95
+        min-coverage-changed-files: 95
+
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
         jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
+
     - name: Log coverage percentage
       run: |
         echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
         echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
     - name: Commit and push the badge (if it changed)
-      uses: EndBug/add-and-commit@v7
+      uses: EndBug/add-and-commit@v9
       with:
         default_author: github_actions
         message: 'commit badge'
