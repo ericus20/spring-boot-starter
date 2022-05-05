@@ -11,10 +11,6 @@ plugins {
     id 'pmd'
 }
 
-configurations.all {
-    resolutionStrategy.force 'commons-io:commons-io:2.11.0'
-}
-
 group = 'com.developersboard'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
@@ -57,31 +53,24 @@ dependencies {
     implementation 'org.ehcache:ehcache-transactions'
 
     // Utilities
-    implementation 'commons-io:commons-io'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'commons-validator:commons-validator:1.7'
-    implementation 'com.fasterxml.jackson:jackson-bom:2.13.2.1'
-    implementation('com.fasterxml.jackson.core:jackson-databind') {
-        version {
-            strictly '2.13.2.1'
-        }
-    }
 
     // Documentation and API Tools
     implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
     implementation "org.springdoc:springdoc-openapi-javadoc:${springDocVersion}"
     implementation "org.springdoc:springdoc-openapi-security:${springDocVersion}"
     implementation "org.springdoc:springdoc-openapi-data-rest:${springDocVersion}"
-    implementation "com.github.therapi:therapi-runtime-javadoc-scribe:0.13.0"
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:0.13.0"
 
     // Database and File Storage Tools
+    implementation 'com.h2database:h2:'
     runtimeOnly 'org.postgresql:postgresql'
-    implementation 'com.h2database:h2:2.1.212'
+    implementation 'org.liquibase:liquibase-core'
     implementation 'org.hibernate:hibernate-envers'
-    implementation 'org.liquibase:liquibase-core:4.9.1'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.206'
 
     // MapStruct for Object Mapping
