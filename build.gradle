@@ -28,7 +28,7 @@ repositories {
 
 ext {
     mapstructVersion = '1.4.2.Final'
-    springDocVersion = '1.6.7'
+    springDocVersion = '1.6.8'
 }
 
 dependencies {
@@ -71,7 +71,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.liquibase:liquibase-core'
     implementation 'org.hibernate:hibernate-envers'
-    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.206'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.220'
 
     // MapStruct for Object Mapping
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
@@ -93,7 +93,7 @@ dependencies {
 
     testImplementation 'org.mockito:mockito-inline'
     testImplementation 'io.findify:s3mock_2.13:0.2.6'
-    testImplementation 'com.icegreen:greenmail-junit5:1.6.8'
+    testImplementation 'com.icegreen:greenmail-junit5:1.6.9'
     testImplementation 'com.jparams:to-string-verifier:1.4.8'
     testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.10'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
