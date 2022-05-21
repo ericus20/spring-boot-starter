@@ -56,7 +56,9 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 
 ## Sample *ongoing* project using this template
-- [A Simple E-Commerce Application](https://github.com/ericus20/e-commerce)
+<!-- - [A Simple E-Commerce Application](https://github.com/ericus20/e-commerce) -->
+TBD
+
 
 
 ## Production Ready Folder Structure
