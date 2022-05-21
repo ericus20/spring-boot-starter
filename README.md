@@ -18,7 +18,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Built With
 
-* [Spring Boot](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
+* [Spring Boot 2.7.0](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
 * [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) - HTML, CSS, and
   JavaScript framework
 * [Thymeleaf](https://www.thymeleaf.org/) - Modern server-side Java template engine
@@ -52,6 +52,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 - [Production Ready Folder Structure](README.md#production-ready-folder-structure)
 - [Authentication and Authorization with JWT](documents/AUTHENTICATION.MD)
 - [Email Service with HTML and attachment support](documents/EMAIL_SERVICE.md)
+- [Security Configuration Without WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#ldap-authentication)
 
 
 ## Sample *ongoing* project using this template

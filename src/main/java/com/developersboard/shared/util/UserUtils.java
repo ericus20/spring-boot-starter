@@ -9,11 +9,11 @@ import com.developersboard.constant.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.dto.mapper.UserDtoMapper;
-import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import net.datafaker.Faker;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.validator.routines.EmailValidator;
 

@@ -2,12 +2,12 @@ package com.developersboard;
 
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.util.UserUtils;
-import com.github.javafaker.Faker;
 import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import net.datafaker.Faker;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

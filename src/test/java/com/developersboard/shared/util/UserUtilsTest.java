@@ -1,15 +1,15 @@
 package com.developersboard.shared.util;
 
+import com.developersboard.TestUtils;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
-import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.platform.commons.util.ReflectionUtils;
 
-class UserUtilsTest {
+class UserUtilsTest extends TestUtils {
 
   @Test
   void callingConstructorShouldThrowException() {
@@ -43,13 +43,12 @@ class UserUtilsTest {
 
   @Test
   void createUserWithFourParameters() {
-    Faker faker = new Faker();
 
     UserDto userDto =
         UserUtils.createUserDto(
-            faker.name().username(),
-            faker.elderScrolls().city(),
-            faker.pokemon().name(),
+            FAKER.name().username(),
+            FAKER.elderScrolls().city(),
+            FAKER.pokemon().name(),
             Boolean.TRUE);
 
     Assertions.assertAll(

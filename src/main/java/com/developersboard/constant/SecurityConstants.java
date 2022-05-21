@@ -23,7 +23,7 @@ public final class SecurityConstants {
   public static final String BEARER_PREFIX = "Bearer ";
   public static final String H2_CONSOLE_URL_MAPPING = "/console/*";
   public static final String JSESSIONID = "JSESSIONID";
-  public static final String LOGIN_LOGOUT = "/?logout";
+  public static final String LOGIN_LOGOUT = "/login?logout";
   public static final String LOGOUT = "/logout";
   public static final String LOGIN = "/login";
   public static final String REFRESH_TOKEN = "/refresh-token";

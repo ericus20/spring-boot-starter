@@ -3,10 +3,11 @@ package com.developersboard.config.security;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.shared.util.core.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -21,7 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Configuration
 @RequiredArgsConstructor
-public class FormLoginSecurityConfig extends WebSecurityConfigurerAdapter {
+public class FormLoginSecurityConfig {
 
   private final Environment environment;
   private final PersistentTokenRepository persistentRepository;
@@ -33,8 +34,8 @@ public class FormLoginSecurityConfig extends WebSecurityConfigurerAdapter {
    * @param http the {@link HttpSecurity} to modify.
    * @throws Exception thrown when error happens during authentication.
    */
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
     SecurityUtils.configureDevEnvironmentAccess(http, environment);
@@ -55,5 +56,7 @@ public class FormLoginSecurityConfig extends WebSecurityConfigurerAdapter {
         .deleteCookies(SecurityConstants.REMEMBER_ME)
         .permitAll();
     http.rememberMe().tokenRepository(persistentRepository);
+
+    return http.build();
   }
 }

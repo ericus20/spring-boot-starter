@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -23,14 +22,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @version 1.0
  * @since 1.0
  */
-@Order(1)
 @Configuration
 @RequiredArgsConstructor
-public class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class ApiWebSecurityConfig {
 
   private final Environment environment;
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
+
+  private final ApplicationAuthenticationManager authenticationManager;
 
   /**
    * Override this method to configure the {@link HttpSecurity}. Typically, subclasses should not
@@ -39,8 +39,9 @@ public class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
    * @param http the {@link HttpSecurity} to modify.
    * @throws Exception thrown when error happens during authentication.
    */
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  @Order(1)
+  public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
     SecurityUtils.configureDevEnvironmentAccess(http, environment);
@@ -59,11 +60,9 @@ public class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
         .hasAuthority(RoleType.ROLE_ADMIN.getName());
 
     http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
-  }
 
-  @Bean
-  @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
+    http.authenticationManager(authenticationManager);
+
+    return http.build();
   }
 }
