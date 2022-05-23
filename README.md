@@ -43,6 +43,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 ## Features
 
 - [OpenApi3 Swagger](documents/SWAGGER.md)
+- [Form Validation](https://formvalidation.io/)
 - [Unit and Integration Tests](documents/TESTS.md)
 - [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
 - [Advanced CORS Configuration](documents/advanced-cors-configuration.md)

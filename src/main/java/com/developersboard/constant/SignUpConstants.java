@@ -24,7 +24,7 @@ public final class SignUpConstants {
   public static final String SIGN_UP_VERIFY_MAPPING = "/verify";
 
   /** View Name Constants. */
-  public static final String SIGN_UP_VIEW_NAME = "user/register";
+  public static final String SIGN_UP_VIEW_NAME = "user/sign-up";
 
   /** Model Key Constants. */
   public static final String USERNAME_OR_EMAIL_EXISTS_KEY = "usernameOrEmailExists";
