@@ -1,6 +1,6 @@
 package com.developersboard.shared.util.core;
 
-import com.developersboard.constant.SignUpConstants;
+import com.developersboard.constant.user.SignUpConstants;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;

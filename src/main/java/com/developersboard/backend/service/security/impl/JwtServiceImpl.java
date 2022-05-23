@@ -2,7 +2,7 @@ package com.developersboard.backend.service.security.impl;
 
 import com.developersboard.backend.service.security.JwtService;
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.TokenType;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

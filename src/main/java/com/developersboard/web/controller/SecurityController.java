@@ -2,7 +2,7 @@ package com.developersboard.web.controller;
 
 import com.developersboard.constant.HomeConstants;
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.util.core.SecurityUtils;
 import com.developersboard.web.payload.request.LoginRequest;
 import org.springframework.stereotype.Controller;

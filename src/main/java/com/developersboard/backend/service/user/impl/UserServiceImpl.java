@@ -8,15 +8,18 @@ import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.constant.CacheConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
+import com.developersboard.exception.UserNotFoundException;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.dto.UserHistoryDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.ValidationUtils;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -164,7 +167,7 @@ public class UserServiceImpl implements UserService {
   public UserDto findByUsername(String username) {
     Validate.notNull(username, UserConstants.BLANK_USERNAME);
 
-    User storedUser = userRepository.findByUsername(username);
+    var storedUser = userRepository.findByUsername(username);
     if (Objects.isNull(storedUser)) {
       return null;
     }
@@ -245,6 +248,27 @@ public class UserServiceImpl implements UserService {
 
     return userRepository.existsByUsernameAndEnabledTrueOrEmailAndEnabledTrueOrderById(
         username, email);
+  }
+
+  /**
+   * Returns all user histories for the given email.
+   *
+   * @param email the email
+   * @return list of histories
+   */
+  @Override
+  public List<UserHistoryDto> getUserHistoriesByEmail(String email) {
+    ValidationUtils.validateInputs(email);
+
+    final User user = userRepository.findByEmail(email);
+    if (Objects.nonNull(user)) {
+      var userHistoryDtos = UserUtils.getUserHistoryDto(user.getUserHistories());
+      userHistoryDtos.sort(Comparator.comparing(UserHistoryDto::getCreatedAt).reversed());
+
+      return userHistoryDtos;
+    }
+    LOG.debug("No user found for the email specified {}", email);
+    throw new UserNotFoundException("No user found for the email specified" + email);
   }
 
   /**
@@ -355,7 +379,7 @@ public class UserServiceImpl implements UserService {
 
     // If no role types are specified, then set the default role type
     var localRoleTypes = new HashSet<>(roleTypes);
-    if (localRoleTypes.isEmpty()) {
+    if (localRoleTypes.isEmpty() && !isUpdate) {
       localRoleTypes.add(RoleType.ROLE_USER);
     }
 

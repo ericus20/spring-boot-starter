@@ -5,6 +5,7 @@ import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
 import java.util.List;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -16,7 +17,9 @@ import org.mapstruct.factory.Mappers;
  * @version 1.0
  * @since 1.0
  */
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
+    imports = {com.developersboard.shared.util.UserUtils.class})
 public interface UserDtoMapper {
 
   /** The Dto mapper instance. */
@@ -28,6 +31,8 @@ public interface UserDtoMapper {
    * @param user the user
    * @return the userDto
    */
+  @Mapping(target = "role", expression = "java(UserUtils.getTopmostRole(user))")
+  @Mapping(target = "profileImage", expression = "java(UserUtils.getUserProfileImage(user))")
   UserDto toUserDto(User user);
 
   /**

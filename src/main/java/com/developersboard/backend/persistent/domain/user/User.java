@@ -1,7 +1,7 @@
 package com.developersboard.backend.persistent.domain.user;
 
 import com.developersboard.backend.persistent.domain.base.BaseEntity;
-import com.developersboard.constant.ErrorConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serial;
 import java.io.Serializable;
@@ -39,24 +39,25 @@ public class User extends BaseEntity<Long> implements Serializable {
   @Serial private static final long serialVersionUID = 7538542321562810251L;
 
   @Column(unique = true, nullable = false)
-  @NotBlank(message = ErrorConstants.BLANK_USERNAME)
-  @Size(min = 3, max = 50, message = ErrorConstants.USERNAME_SIZE)
+  @NotBlank(message = UserConstants.BLANK_USERNAME)
+  @Size(min = 3, max = 50, message = UserConstants.USERNAME_SIZE)
   private String username;
 
   @Column(unique = true, nullable = false)
-  @NotBlank(message = ErrorConstants.BLANK_EMAIL)
-  @Email(message = ErrorConstants.INVALID_EMAIL)
+  @NotBlank(message = UserConstants.BLANK_EMAIL)
+  @Email(message = UserConstants.INVALID_EMAIL)
   private String email;
 
   @JsonIgnore
   @ToString.Exclude
-  @NotBlank(message = ErrorConstants.BLANK_PASSWORD)
+  @NotBlank(message = UserConstants.BLANK_PASSWORD)
   private String password;
 
   private String firstName;
   private String middleName;
   private String lastName;
   private String phone;
+  private String profileImage;
   private String verificationToken;
 
   private boolean enabled;

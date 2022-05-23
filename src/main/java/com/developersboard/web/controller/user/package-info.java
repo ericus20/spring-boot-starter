@@ -1,4 +1,2 @@
-/**
- * Package for related user related controllers.
- */
+/** Package for related user related controllers. */
 package com.developersboard.web.controller.user;

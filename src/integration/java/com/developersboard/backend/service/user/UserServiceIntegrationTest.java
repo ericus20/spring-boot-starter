@@ -189,6 +189,8 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
     Assertions.assertNotNull(updatedUserDto.getId());
     Assertions.assertNotEquals(previousFirstName, updatedUserDto.getFirstName());
     Assertions.assertEquals(updatedUserDto.getId(), userDto.getId());
+    Assertions.assertFalse(updatedUserDto.getUserRoles().isEmpty());
+    Assertions.assertEquals(updatedUserDto.getUserRoles().size(), userDto.getUserRoles().size());
 
     Assertions.assertTrue(updatedUserDto.getVersion() > userDto.getVersion());
     Assertions.assertTrue(updatedUserDto.getUpdatedAt().isAfter(updatedUserDto.getCreatedAt()));

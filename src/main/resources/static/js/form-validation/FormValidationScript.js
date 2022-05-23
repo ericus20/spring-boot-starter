@@ -4,14 +4,14 @@
  *
  * @see https://formvalidation.io/guide/getting-started/usage
  */
-document.addEventListener('DOMContentLoaded', () => {
+const main = () => {
 
   const loginForm = document.getElementById('login-form');
 
   if (loginForm) {
     /* Login form validation starts */
     FormValidation.formValidation(
-        document.getElementById('login-form'),
+        loginForm,
         {
           fields: {
             username: {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 stringLength: {
                   min: 3,
                   max: 50,
-                  message: 'The username must be more than 3 and less than 50 characters long'
+                  message: 'The username must be more than 3 and less than 50 characters'
                 }
               }
             },
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 stringLength: {
                   min: 4,
-                  message: 'The password must be more than 3 characters long'
+                  message: 'The password must be more than 3 characters'
                 }
               }
             },
@@ -64,9 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const signUpForm = document.getElementById('sign-up-form');
   if (signUpForm) {
-    /* Login form validation starts */
+    /* Sign up form validation starts */
     FormValidation.formValidation(
-        document.querySelector('#sign-up-form'),
+        signUpForm,
         {
           fields: {
             username: {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 stringLength: {
                   min: 3,
                   max: 50,
-                  message: 'The username must be more than 3 and less than 50 characters long'
+                  message: 'The username must be more than 3 and less than 50 characters'
                 }
               }
             },
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 stringLength: {
                   min: 4,
-                  message: 'The password must be more than 3 characters long'
+                  message: 'The password must be more than 3 characters'
                 }
               }
             },
@@ -128,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }),
           },
         }
-    ); /* Login form validation ends */
+    ); /* Sign up form validation ends */
   }
-});
+};
+
+$(document).ready(main);

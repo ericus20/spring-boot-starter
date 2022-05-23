@@ -1,4 +1,6 @@
-package com.developersboard.constant;
+package com.developersboard.constant.user;
+
+import com.developersboard.constant.ErrorConstants;
 
 /**
  * This class holds all constants used in SignUpController implementations.
@@ -31,7 +33,7 @@ public final class SignUpConstants {
 
   public static final String DUPLICATED_EMAIL_KEY = "duplicatedEmail";
   public static final String SIGN_UP_SUCCESS_KEY = "signedUp";
-  public static final String SIGN_UP_PENDING_KEY = "verify";
+  public static final String SIGN_UP_PENDING_KEY = "pendingVerify";
   public static final String SIGN_UP_ERROR = "signUpError";
 
   private SignUpConstants() {
