@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<th:block
+    th:replace="common/template :: common-head(title='Sign Up', formValidation=true, togglePassword=true)"/>
+
+<body>
+
+<!-- Container starts-->
+<main class="container">
+
+  <!-- Row starts-->
+  <div class="row">
+    <!-- Col starts-->
+    <div class="col-md-4 offset-md-4 mt-4">
+      <div class="mt-4 mb-2 text-center">
+        <div class="bg-warning" th:if="${error}" th:text="${error}"></div>
+        <div class="bg-success text-white" th:if="${pendingVerify}" th:text="#{signup.verify.text}"></div>
+      </div>
+
+      <form id="sign-up-form" method="post" th:action="@{/sign-up}"
+            th:object="${user}">
+        <fieldset>
+          <legend th:text="#{sign-up.text}"></legend>
+
+          <!-- Username input starts-->
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" class="form-control rounded" th:field="*{username}"
+                     th:placeholder="#{form.username}"
+                     aria-label="Username" aria-describedby="username" required autofocus>
+            </div>
+          </div>
+          <!-- Username input ends -->
+          <!-- Email input starts-->
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-at"></i></span>
+              <input type="email" class="form-control rounded" th:field="*{email}"
+                     th:placeholder="#{form.email}"
+                     aria-label="Username" aria-describedby="username" required>
+            </div>
+          </div>
+          <!-- Email input ends -->
+          <!-- Password input starts -->
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              <input type="password" class="form-control rounded" th:field="*{password}"
+                     th:placeholder="#{form.password}"
+                     aria-label="Password" aria-describedby="password" required>
+              <button id="toggle-password" type="button" class="d-none"
+                      aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+              </button>
+            </div>
+          </div>
+          <!-- Password input ends -->
+          <!-- Terms and conditions starts -->
+          <div class="input-group mb-3 text-primary">
+            <a href="#" th:text="#{sign-up.terms-and-conditions}"></a>
+          </div>
+          <div class="mb-3 form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+            <label class="form-check-label" for="terms"
+                   th:text="#{sign-up.terms-and-conditions.description}"></label>
+          </div>
+          <!-- Terms and conditions ends-->
+          <!-- Sign up button starts -->
+          <div class="mb-3 d-grid gap-2 mx-auto">
+            <button class="btn btn-primary" type="submit" th:text="#{sign-up.text}"></button>
+          </div>
+          <!-- Sign in button ends -->
+        </fieldset>
+      </form>
+
+      <hr/>
+
+      <div class="mb-3">
+        <div class="input-group text-primary" th:text="#{sign-up.already.have.account}"></div>
+
+        <!-- Sign in button starts -->
+        <div class="d-grid gap-2 mx-auto">
+          <a class="btn btn-info" th:href="@{/login}" type="submit" th:text="#{sign-in.text}"></a>
+        </div>
+        <!-- Sign in button ends -->
+      </div>
+    </div>
+    <!-- Col ends-->
+  </div>
+  <!-- Row ends -->
+
+</main>
+<!-- Container ends-->
+
+
+<!--Common Body Scripts-->
+<th:block th:replace="common/template :: common-scripts(formValidation=true, togglePassword=true)"/>
+
+</body>
+</html>

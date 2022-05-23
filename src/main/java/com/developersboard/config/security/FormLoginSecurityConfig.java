@@ -1,5 +1,6 @@
 package com.developersboard.config.security;
 
+import com.developersboard.constant.HomeConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.shared.util.core.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,11 @@ public class FormLoginSecurityConfig {
         .authorizeRequests()
         .anyRequest()
         .authenticated();
-    http.formLogin();
+    http.formLogin()
+        .loginPage(SecurityConstants.LOGIN)
+        .failureUrl(SecurityConstants.LOGIN_FAILURE_URL)
+        .defaultSuccessUrl(HomeConstants.INDEX_URL_MAPPING)
+        .permitAll();
     http.logout()
         .logoutRequestMatcher(new AntPathRequestMatcher(SecurityConstants.LOGOUT))
         .logoutSuccessUrl(SecurityConstants.LOGIN_LOGOUT)

@@ -2,18 +2,24 @@ package com.developersboard.shared.util;
 
 import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.domain.user.User;
+import com.developersboard.backend.persistent.domain.user.UserHistory;
 import com.developersboard.backend.persistent.domain.user.UserRole;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.constant.ErrorConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.ProfileConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.dto.UserHistoryDto;
 import com.developersboard.shared.dto.mapper.UserDtoMapper;
+import com.developersboard.shared.dto.mapper.UserHistoryDtoMapper;
+import com.developersboard.shared.util.core.ValidationUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import net.datafaker.Faker;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -231,6 +237,18 @@ public final class UserUtils {
   }
 
   /**
+   * Transfers data from entity to returnable object.
+   *
+   * @param userHistories stored userHistories details
+   * @return userHistories dto
+   */
+  public static List<UserHistoryDto> getUserHistoryDto(final Set<UserHistory> userHistories) {
+    ValidationUtils.validateInputs(userHistories);
+
+    return UserHistoryDtoMapper.MAPPER.toUserHistoryDto(userHistories);
+  }
+
+  /**
    * Enables and unlocks a user.
    *
    * @param userDto the userDto
@@ -268,5 +286,41 @@ public final class UserUtils {
       }
     }
     return roles;
+  }
+
+  /**
+   * Returns the role with the highest precedence if user has multiple roles.
+   *
+   * @param user the user
+   * @return the role
+   */
+  public static String getTopmostRole(User user) {
+    ValidationUtils.validateInputs(user);
+
+    if (Objects.isNull(user.getUserRoles())) {
+      return null;
+    }
+
+    List<String> roles = getRoles(user.getUserRoles());
+
+    if (roles.contains(RoleType.ROLE_ADMIN.getName())) {
+      return RoleType.ROLE_ADMIN.getName();
+    }
+
+    return RoleType.ROLE_USER.getName();
+  }
+
+  /**
+   * Returns the user profile or random image if not found.
+   *
+   * @param user the user
+   * @return profile image
+   */
+  public static String getUserProfileImage(User user) {
+    if (StringUtils.isBlank(user.getProfileImage())) {
+      return ProfileConstants.PIC_SUM_PHOTOS_150_RANDOM;
+    }
+
+    return user.getProfileImage();
   }
 }

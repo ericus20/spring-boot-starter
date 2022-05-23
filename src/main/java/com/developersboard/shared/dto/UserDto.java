@@ -2,7 +2,7 @@ package com.developersboard.shared.dto;
 
 import com.developersboard.backend.persistent.domain.user.UserHistory;
 import com.developersboard.backend.persistent.domain.user.UserRole;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.UserConstants;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -45,7 +45,10 @@ public class UserDto extends BaseDto implements Serializable {
   @Email(message = UserConstants.INVALID_EMAIL)
   private String email;
 
+  private String role;
   private String phone;
+  private String profileImage;
+
   private boolean enabled;
   private boolean accountNonExpired;
   private boolean accountNonLocked;

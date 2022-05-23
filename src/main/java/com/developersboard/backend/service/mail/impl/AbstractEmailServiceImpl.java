@@ -2,8 +2,8 @@ package com.developersboard.backend.service.mail.impl;
 
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.constant.EmailConstants;
-import com.developersboard.constant.SignUpConstants;
-import com.developersboard.constant.UserConstants;
+import com.developersboard.constant.user.SignUpConstants;
+import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.core.ValidationUtils;
 import com.developersboard.shared.util.core.WebUtils;
@@ -67,7 +67,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
         prepareHtmlEmailRequest(
             userDto,
             token,
-            SignUpConstants.SIGN_UP_MAPPING,
+            SignUpConstants.SIGN_UP_MAPPING + SignUpConstants.SIGN_UP_VERIFY_MAPPING,
             EmailConstants.EMAIL_VERIFY_TEMPLATE,
             EmailConstants.CONFIRMATION_PENDING_EMAIL_SUBJECT);
     // prepare the email request then send it.

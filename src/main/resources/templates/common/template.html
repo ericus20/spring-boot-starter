@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="common-head (title)">
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap-datetimepicker/css/datetimepicker.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}" type="text/css">
-    <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
-    <link rel="stylesheet" th:if="${formValidation}" th:href="@{/css/formValidation.min.css}" type="text/css">
-    <!--/*@thymesVar id="togglePassword" type="java.lang.Boolean"*/-->
-    <link rel="stylesheet" th:if="${togglePassword}" th:href="@{/css/show-password-toggle.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}"
+        type="text/css">
 
-    <title th:text="${title} ? '..:: Spring Boot Starter | ' + ${title} + ' ::..' : _">..:: Spring Boot Starter ::..</title>
+  <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
+  <link rel="stylesheet" th:if="${formValidation}" th:href="@{/css/formValidation.min.css}" type="text/css">
+
+  <!--/*@thymesVar id="togglePassword" type="java.lang.Boolean"*/-->
+  <link rel="stylesheet" th:if="${togglePassword}" th:href="@{/css/show-password-toggle.min.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
+
+  <title th:text="${title} ? '..:: Spring Boot Starter | ' + ${title} + ' ::..' : _">..:: Spring
+    Boot Starter ::..</title>
 </head>
 
 
@@ -23,26 +26,26 @@
 <div th:fragment="common-navbar"></div>
 
 
-<div th:fragment="common-scripts">
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
-    <script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/webjars/bootbox/bootbox.js}"></script>
+<th:block th:fragment="common-scripts">
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
 
-    <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
-    <script th:if="${formValidation}" th:src="@{/js/form-validation/FormValidation.min.js}"></script>
-    <script th:if="${formValidation}" th:src="@{/js/form-validation/Bootstrap5.min.js}"></script>
-    <script th:if="${formValidation}" th:src="@{/js/form-validation/FormValidationScript.js}"></script>
+  <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
+  <th:block th:if="${formValidation}">
+    <script th:src="@{/js/form-validation/FormValidation.min.js}"></script>
+    <script th:src="@{/js/form-validation/Bootstrap5.min.js}"></script>
+    <script th:src="@{/js/form-validation/FormValidationScript.js}"></script>
+  </th:block>
 
-    <!--/*@thymesVar id="togglePassword" type="java.lang.Boolean"*/-->
-    <script th:if="${togglePassword}" th:src="@{/js/show-password-toggle.min.js}"></script>
+  <!--/*@thymesVar id="togglePassword" type="java.lang.Boolean"*/-->
+  <script th:if="${togglePassword}" th:src="@{/js/show-password-toggle.min.js}"></script>
 
-    <script th:src="@{/js/main.js}"></script>
-</div>
+  <script th:src="@{/js/main.js}"></script>
+</th:block>
 
 
 </html>

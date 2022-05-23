@@ -1,5 +1,6 @@
 package com.developersboard.constant;
 
+import com.developersboard.constant.user.SignUpConstants;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,10 +27,13 @@ public final class SecurityConstants {
   public static final String LOGIN_LOGOUT = "/login?logout";
   public static final String LOGOUT = "/logout";
   public static final String LOGIN = "/login";
+  public static final String LOGIN_FAILURE_URL = "/login?error";
   public static final String REFRESH_TOKEN = "/refresh-token";
   public static final String REMEMBER_ME = "remember-me";
   public static final String ROOT_PATH = "/";
   public static final String SAME_SITE = "strict";
+
+  public static final String LOGIN_VIEW_NAME = "user/login";
 
   public static final int DEFAULT_TOKEN_DURATION = 7;
 
@@ -47,7 +51,8 @@ public final class SecurityConstants {
     "/actuator/health",
     "/v3/api-docs/**",
     "/swagger-ui/**",
-    "/swagger-ui.html"
+    "/swagger-ui.html",
+    String.join("/", SignUpConstants.SIGN_UP_MAPPING, "**")
   };
 
   public static final List<String> ALLOWED_HTTP_METHODS =

@@ -18,6 +18,9 @@ public final class CacheConstants {
   /** Constant for the cache key for user details */
   public static final String USER_DETAILS = "userDetails";
 
+  /** Constant for the cache key for the user histories */
+  public static final String USER_HISTORIES = "userHistories";
+
   private CacheConstants() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
   }
