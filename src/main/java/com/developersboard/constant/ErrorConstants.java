@@ -18,8 +18,7 @@ public final class ErrorConstants {
   public static final String INVALID_TOKEN = "Invalid token";
 
   /** Unauthorized Access detected. When the user is not authorized to access the resource. */
-  public static final String UNAUTHORIZED_ACCESS_MESSAGE =
-      "Unauthorized Access detected... Returning to login page.";
+  public static final String UNAUTHORIZED_ACCESS = "Unauthorized Access detected...";
 
   /** Null elements not allowed. */
   public static final String NULL_ELEMENTS_NOT_ALLOWED = "Null elements not allowed!";

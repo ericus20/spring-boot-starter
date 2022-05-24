@@ -2,6 +2,7 @@ package com.developersboard.backend.service.mail.impl;
 
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.constant.EmailConstants;
+import com.developersboard.constant.user.PasswordConstants;
 import com.developersboard.constant.user.SignUpConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.dto.UserDto;
@@ -118,7 +119,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
         prepareHtmlEmailRequest(
             userDto,
             token,
-            "/reset-password-path",
+            PasswordConstants.PASSWORD_RESET_ROOT_MAPPING + PasswordConstants.PASSWORD_CHANGE_PATH,
             EmailConstants.PASSWORD_RESET_TEMPLATE,
             EmailConstants.PASSWORD_RESET_EMAIL_SUBJECT);
     // prepare the email request then send it.

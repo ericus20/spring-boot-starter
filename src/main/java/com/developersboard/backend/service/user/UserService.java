@@ -117,6 +117,15 @@ public interface UserService {
   boolean existsByUsernameOrEmailAndEnabled(String username, String email);
 
   /**
+   * Validates the username exists and the token belongs to the user with the username.
+   *
+   * @param username the username
+   * @param token the token
+   * @return if token is valid
+   */
+  boolean isValidUsernameAndToken(String username, String token);
+
+  /**
    * Returns all user histories for the given email.
    *
    * @param email the email
