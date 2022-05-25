@@ -30,8 +30,6 @@ public class ApiWebSecurityConfig {
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
-  private final ApplicationAuthenticationManager authenticationManager;
-
   /**
    * Override this method to configure the {@link HttpSecurity}. Typically, subclasses should not
    * call super as it may override their configuration.
@@ -60,8 +58,6 @@ public class ApiWebSecurityConfig {
         .hasAuthority(RoleType.ROLE_ADMIN.getName());
 
     http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-    http.authenticationManager(authenticationManager);
 
     return http.build();
   }
