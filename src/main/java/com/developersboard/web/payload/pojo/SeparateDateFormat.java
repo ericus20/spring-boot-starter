@@ -22,4 +22,6 @@ public class SeparateDateFormat implements Serializable {
   private long minutes;
   private long hours;
   private long days;
+  private long weeks;
+  private long months;
 }
