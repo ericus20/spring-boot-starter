@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
@@ -39,6 +40,23 @@ class PasswordControllerIntegrationTest extends IntegrationTestUtils {
   @AfterEach
   void tearDown() {
     greenMail.stop();
+  }
+
+  @Test
+  void startingForgotPasswordWithUserNotExisting(TestInfo testInfo) throws Exception {
+
+    this.mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(PasswordConstants.PASSWORD_RESET_ROOT_MAPPING)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .param("email", testInfo.getDisplayName()))
+        .andExpect(
+            MockMvcResultMatchers.model()
+                .attributeDoesNotExist(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY))
+        .andExpect(
+            MockMvcResultMatchers.model()
+                .attribute(ErrorConstants.ERROR, UserConstants.USER_NOT_FOUND))
+        .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
