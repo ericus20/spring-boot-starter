@@ -14,8 +14,9 @@
     <!-- Col starts-->
     <div class="col-md-4 offset-md-4 mt-4">
       <div class="mt-4 mb-2 text-center">
-        <div class="bg-warning" th:if="${param.error}" th:text="#{login.error.message}"></div>
-        <div class="bg-success text-white" th:if="${param.logout}" th:text="#{login.logout.success}"></div>
+        <div class="bg-warning p-2" th:if="${param.error}" th:text="#{login.error.message}"></div>
+        <div class="bg-success text-white p-2" th:if="${param.logout}" th:text="#{login.logout.success}"></div>
+        <div th:if="${passwordResetSuccess}" class="bg-success text-white p-2" th:text="#{reset.password.email.sent.success}"></div>
       </div>
 
       <form id="login-form" method="post" th:action="@{/login}"
@@ -65,7 +66,7 @@
       <hr/>
 
       <div class="input-group mb-3">
-        <a th:href="'#'" th:text="#{login.forgot.password}"></a>
+        <a th:href="@{/password-reset}" th:text="#{login.forgot.password}"></a>
       </div>
       <!-- Sign in button starts -->
       <div class="d-grid gap-2 mx-auto mb-3">

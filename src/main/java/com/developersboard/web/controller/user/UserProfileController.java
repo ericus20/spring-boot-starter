@@ -8,9 +8,11 @@ import com.developersboard.constant.user.ProfileConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.dto.UserHistoryDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.SecurityUtils;
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +60,9 @@ public class UserProfileController {
       return HomeConstants.REDIRECT_TO_LOGIN;
     }
 
-    var userHistoryDtos = userService.getUserHistoriesByEmail(userDto.getEmail());
+    var userHistoryDtos = UserUtils.getUserHistoryDto(userDto.getUserHistories());
+    userHistoryDtos.sort(Comparator.comparing(UserHistoryDto::getCreatedAt).reversed());
+
     model.addAttribute(ProfileConstants.USER_HISTORIES, userHistoryDtos);
 
     // set default to true if no new account or update is requested.

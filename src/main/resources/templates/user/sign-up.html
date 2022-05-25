@@ -14,8 +14,8 @@
     <!-- Col starts-->
     <div class="col-md-4 offset-md-4 mt-4">
       <div class="mt-4 mb-2 text-center">
-        <div class="bg-warning" th:if="${error}" th:text="${error}"></div>
-        <div class="bg-success text-white" th:if="${pendingVerify}" th:text="#{signup.verify.text}"></div>
+        <div class="bg-warning p-2" th:if="${error}" th:text="${error}"></div>
+        <div class="bg-success text-white p-2" th:if="${pendingVerify}" th:text="#{signup.verify.text}"></div>
       </div>
 
       <form id="sign-up-form" method="post" th:action="@{/sign-up}"

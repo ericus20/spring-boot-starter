@@ -4,7 +4,6 @@ import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
-import com.developersboard.shared.dto.UserHistoryDto;
 import java.util.List;
 import java.util.Set;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -117,12 +116,13 @@ public interface UserService {
   boolean existsByUsernameOrEmailAndEnabled(String username, String email);
 
   /**
-   * Returns all user histories for the given email.
+   * Validates the username exists and the token belongs to the user with the username.
    *
-   * @param email the email
-   * @return list of histories
+   * @param username the username
+   * @param token the token
+   * @return if token is valid
    */
-  List<UserHistoryDto> getUserHistoriesByEmail(String email);
+  boolean isValidUsernameAndToken(String username, String token);
 
   /**
    * Update the user with the user instance given and the update type for record.

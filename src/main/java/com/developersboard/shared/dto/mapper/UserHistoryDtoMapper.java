@@ -42,6 +42,6 @@ public interface UserHistoryDtoMapper {
   @Mapping(
       target = "separateDateFormat",
       expression =
-          "java(com.developersboard.shared.util.core.DateUtils.getTimeElapse(userHistory.getCreatedAt()))")
+          "java(com.developersboard.shared.util.core.DateUtils.getTimeElapsed(userHistory.getCreatedAt()))")
   UserHistoryDto toUserHistoryDto(UserHistory userHistory);
 }
