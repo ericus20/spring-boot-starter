@@ -179,7 +179,7 @@ public final class SecurityUtils {
   public static UserDetailsBuilder getAuthorizedUserDetails() {
     var userDetails = getAuthenticatedUserDetails();
     if (Objects.isNull(userDetails)) {
-      LOG.warn(ErrorConstants.UNAUTHORIZED_ACCESS_MESSAGE);
+      LOG.warn(ErrorConstants.UNAUTHORIZED_ACCESS);
       return null;
     }
     return userDetails;

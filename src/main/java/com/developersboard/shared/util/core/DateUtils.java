@@ -27,7 +27,7 @@ public interface DateUtils {
    * @return the formatter
    */
   static DateTimeFormatter formatter() {
-    return DateTimeFormatter.ofPattern(DATE_FORMAT).withLocale(Locale.US);
+    return DateTimeFormatter.ofPattern(DATE_FORMAT).withLocale(Locale.getDefault());
   }
 
   /**
@@ -71,24 +71,14 @@ public interface DateUtils {
   }
 
   /**
-   * Format the birthday in the format MM/dd/yyyy.
-   *
-   * @param date the date
-   * @return the formatted date
-   */
-  static String formatBirthDay(Date date) {
-    return formatter().format(toLocalDate(date));
-  }
-
-  /**
    * Get difference between two days.
    *
-   * @param now the period now
-   * @param then the period then
+   * @param from the period now
+   * @param to the period then
    * @return the number of days
    */
-  static long getDifferenceDays(LocalDateTime now, LocalDateTime then) {
-    return now.until(then, ChronoUnit.DAYS);
+  static long getDifferenceInDays(LocalDateTime from, LocalDateTime to) {
+    return Math.abs(from.until(to, ChronoUnit.DAYS));
   }
 
   /**
@@ -98,52 +88,10 @@ public interface DateUtils {
    * @param to day 2
    * @return the number of days
    */
-  static long getDifferenceDays(Date from, Date to) {
+  static long getDifferenceInDays(Date from, Date to) {
     long diff = to.getTime() - from.getTime();
     long numberOfDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     return Math.abs(numberOfDays);
-  }
-
-  /**
-   * Get the number of hours from the time given.
-   *
-   * @param localDateTime the localDateTime
-   * @return the hours
-   */
-  static long getHoursFromNow(LocalDateTime localDateTime) {
-    return Math.abs(localDateTime.until(LocalDateTime.now(), ChronoUnit.HOURS));
-  }
-
-  /**
-   * Return a string representation of low long, either days, minutes, hours or seconds an interval
-   * is.
-   *
-   * @param separateDateFormat the separateDate
-   * @return the description
-   */
-  static String getTimeElapsedDescription(SeparateDateFormat separateDateFormat) {
-    int thirtyDays = 30;
-    if (separateDateFormat.getDays() > thirtyDays) {
-      return "Months ago";
-    } else {
-
-      int oneDay = 1;
-      if (separateDateFormat.getDays() < thirtyDays && separateDateFormat.getDays() > oneDay) {
-        return String.format("%s days ago", separateDateFormat.getDays());
-      } else if (separateDateFormat.getHours() > 0) {
-        return String.format("%s hours ago", separateDateFormat.getHours());
-      } else if (separateDateFormat.getMinutes() > 0) {
-        return String.format("%s minutes ago", separateDateFormat.getMinutes());
-      } else {
-
-        int fiveSeconds = 5;
-        if (separateDateFormat.getSeconds() < fiveSeconds) {
-          return "now";
-        } else {
-          return String.format("%s seconds ago", separateDateFormat.getSeconds());
-        }
-      }
-    }
   }
 
   /**
@@ -154,7 +102,39 @@ public interface DateUtils {
    * @return the description
    */
   static String getTimeElapsedDescription(LocalDateTime localDateTime) {
-    return getTimeElapsedDescription(getTimeElapse(localDateTime));
+    return getTimeElapsedDescription(getTimeElapsed(localDateTime));
+  }
+
+  /**
+   * Return a string representation of low long, either days, minutes, hours or seconds an interval
+   * is.
+   *
+   * @param separateDateFormat the separateDate
+   * @return the description
+   */
+  static String getTimeElapsedDescription(SeparateDateFormat separateDateFormat) {
+
+    int monthsInYear = 12;
+    if (separateDateFormat.getMonths() > monthsInYear) {
+      return String.format("%d years ago", separateDateFormat.getMonths() / monthsInYear);
+    } else if (separateDateFormat.getMonths() > 0) {
+      return String.format("%d months ago", separateDateFormat.getMonths());
+    } else if (separateDateFormat.getWeeks() > 0) {
+      return String.format("%d weeks ago", separateDateFormat.getWeeks());
+    } else if (separateDateFormat.getDays() > 0) {
+      return String.format("%d days ago", separateDateFormat.getDays());
+    } else if (separateDateFormat.getHours() > 0) {
+      return String.format("%d hours ago", separateDateFormat.getHours());
+    } else if (separateDateFormat.getMinutes() > 0) {
+      return String.format("%d minutes ago", separateDateFormat.getMinutes());
+    } else {
+      int seconds = 5;
+      if (separateDateFormat.getSeconds() > seconds) {
+        return String.format("%d seconds ago", separateDateFormat.getSeconds());
+      } else {
+        return "just now";
+      }
+    }
   }
 
   /**
@@ -163,19 +143,22 @@ public interface DateUtils {
    * @param dateTillNow the date
    * @return the separateDateFormat
    */
-  static SeparateDateFormat getTimeElapse(LocalDateTime dateTillNow) {
-    Date d1 = toDate(dateTillNow);
-    Date d2 = new Date();
-    long diff = d2.getTime() - d1.getTime();
-    long seconds = diff / 1000 % 60;
-    long minutes = diff / (60 * 1000) % 60;
-    long hours = diff / (60 * 60 * 1000) % 24;
-    long days = diff / (24 * 60 * 60 * 1000);
+  static SeparateDateFormat getTimeElapsed(LocalDateTime dateTillNow) {
+    LocalDateTime now = LocalDateTime.now();
+    long seconds = dateTillNow.until(now, ChronoUnit.SECONDS);
+    long minutes = dateTillNow.until(now, ChronoUnit.MINUTES);
+    long hours = dateTillNow.until(now, ChronoUnit.HOURS);
+    long days = dateTillNow.until(now, ChronoUnit.DAYS);
+    long weeks = dateTillNow.until(now, ChronoUnit.WEEKS);
+    long months = dateTillNow.until(now, ChronoUnit.MONTHS);
+
     return SeparateDateFormat.builder()
         .seconds(Math.abs(seconds))
         .minutes(Math.abs(minutes))
         .hours(Math.abs(hours))
         .days(Math.abs(days))
+        .weeks(Math.abs(weeks))
+        .months(Math.abs(months))
         .build();
   }
 }

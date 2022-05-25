@@ -1,5 +1,6 @@
 package com.developersboard.constant;
 
+import com.developersboard.constant.user.PasswordConstants;
 import com.developersboard.constant.user.SignUpConstants;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,7 +53,8 @@ public final class SecurityConstants {
     "/v3/api-docs/**",
     "/swagger-ui/**",
     "/swagger-ui.html",
-    String.join("/", SignUpConstants.SIGN_UP_MAPPING, "**")
+    String.join("/", SignUpConstants.SIGN_UP_MAPPING, "**"),
+    String.join("/", PasswordConstants.PASSWORD_RESET_ROOT_MAPPING, "**"),
   };
 
   public static final List<String> ALLOWED_HTTP_METHODS =

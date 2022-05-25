@@ -130,6 +130,97 @@ const main = () => {
         }
     ); /* Sign up form validation ends */
   }
+
+  const passwordResetStartForm = document.getElementById('password-reset-start-form');
+  if (passwordResetStartForm) {
+    /* Sign up form validation starts */
+    FormValidation.formValidation(
+        passwordResetStartForm,
+        {
+          fields: {
+            email: {
+              validators: {
+                notEmpty: {
+                  message: 'The email is required'
+                },
+                emailAddress: {
+                  message: 'The input is not a valid email address'
+                },
+                different: {
+                  field: 'username',
+                  message: "The username and email must be different"
+                }
+              }
+            }
+          },
+          plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+              rowSelector: '.mb-3',
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            icon: new FormValidation.plugins.Icon({
+              valid: 'fa fa-check',
+              invalid: 'fa fa-times',
+              validating: 'fa fa-refresh'
+            }),
+          },
+        }
+    ); /* Sign up form validation ends */
+  }
+
+  const passwordResetCompleteForm = document.getElementById('password-reset-complete-form');
+  if (passwordResetCompleteForm) {
+    /* Sign up form validation starts */
+    const fv = FormValidation.formValidation(
+        passwordResetCompleteForm,
+        {
+          fields: {
+            password: {
+              validators: {
+                notEmpty: {
+                  message: 'The password is required',
+                },
+                stringLength: {
+                  message: 'Password must be at least 4 characters long',
+                  min: 4
+                }
+              },
+            },
+            confirmPassword: {
+              validators: {
+                identical: {
+                  compare: function () {
+                    return passwordResetCompleteForm.querySelector('[name="password"]').value;
+                  },
+                  message: 'The password and its confirm are not the same',
+                },
+              },
+            },
+          },
+          plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+              rowSelector: '.mb-3',
+            }),
+            submitButton: new FormValidation.plugins.SubmitButton(),
+            defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+            icon: new FormValidation.plugins.Icon({
+              valid: 'fa fa-check',
+              invalid: 'fa fa-times',
+              validating: 'fa fa-refresh'
+            }),
+          },
+        }
+    ); /* Sign up form validation ends */
+
+    // Revalidate the confirmation password when changing the password
+    passwordResetCompleteForm.querySelector('[name="password"]').addEventListener('input', function () {
+      fv.revalidateField('confirmPassword');
+    });
+  }
+
 };
 
 $(document).ready(main);

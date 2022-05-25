@@ -11,15 +11,12 @@ import com.developersboard.constant.CacheConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
-import com.developersboard.exception.UserNotFoundException;
 import com.developersboard.shared.dto.UserDto;
-import com.developersboard.shared.dto.UserHistoryDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.ValidationUtils;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -182,6 +179,7 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
+  @Cacheable(CacheConstants.USERS)
   public UserDto findByEmail(String email) {
     Validate.notNull(email, UserConstants.BLANK_EMAIL);
 
@@ -251,24 +249,17 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
-   * Returns all user histories for the given email.
+   * Validates the username exists and the token belongs to the user with the username.
    *
-   * @param email the email
-   * @return list of histories
+   * @param username the username
+   * @param token the token
+   * @return if token is valid
    */
   @Override
-  public List<UserHistoryDto> getUserHistoriesByEmail(String email) {
-    ValidationUtils.validateInputs(email);
+  public boolean isValidUsernameAndToken(String username, String token) {
+    Validate.notNull(username, UserConstants.BLANK_USERNAME);
 
-    final User user = userRepository.findByEmail(email);
-    if (Objects.nonNull(user)) {
-      var userHistoryDtos = UserUtils.getUserHistoryDto(user.getUserHistories());
-      userHistoryDtos.sort(Comparator.comparing(UserHistoryDto::getCreatedAt).reversed());
-
-      return userHistoryDtos;
-    }
-    LOG.debug("No user found for the email specified {}", email);
-    throw new UserNotFoundException("No user found for the email specified" + email);
+    return userRepository.existsByUsernameAndVerificationTokenOrderById(username, token);
   }
 
   /**
@@ -284,7 +275,8 @@ public class UserServiceImpl implements UserService {
   @Caching(
       evict = {
         @CacheEvict(value = CacheConstants.USERS, key = "#userDto.username"),
-        @CacheEvict(value = CacheConstants.USERS, key = "#userDto.publicId")
+        @CacheEvict(value = CacheConstants.USERS, key = "#userDto.publicId"),
+        @CacheEvict(value = CacheConstants.USERS, key = "#userDto.email")
       })
   public UserDto updateUser(UserDto userDto, UserHistoryType userHistoryType) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);

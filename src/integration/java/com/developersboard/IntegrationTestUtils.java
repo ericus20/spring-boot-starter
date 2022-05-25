@@ -16,6 +16,7 @@ import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.task.UserPruningScheduler;
+import com.developersboard.web.controller.user.PasswordController;
 import com.icegreen.greenmail.util.GreenMail;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
@@ -55,6 +56,8 @@ public abstract class IntegrationTestUtils {
   @Autowired protected transient SystemProperties systemProperties;
   @Autowired protected transient EmailService emailService;
   @Autowired protected transient GreenMail greenMail;
+
+  @Autowired protected transient PasswordController passwordController;
 
   @Mock protected transient MockMultipartFile multipartFile;
 
