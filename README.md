@@ -9,6 +9,10 @@
 
 A highly opinionated and complete starter for Spring Boot production ready projects.
 
+## Running Instance on Heroku
+
+https://spring-boot-starter.herokuapp.com/
+
 ![Java CI with Gradle](https://github.com/ericus20/spring-boot-starter/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
 
@@ -96,10 +100,6 @@ TBD
         `-- resources
 
 ```
-
-## Running Instance on Heroku
-
-https://spring-boot-starter.herokuapp.com/
 
 Configuration properties required to deploy to Heroku:
 ![img.png](documents/images/heroku-deploy-properties.png)
