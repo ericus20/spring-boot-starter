@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!-- Head -->
 <th:block th:replace="common/template :: common-head(title='Profile')"/>
@@ -7,8 +7,12 @@
 <body>
 
 <!-- Container starts-->
-<div class="container">
-  <div class="main-body">
+<main class="container">
+
+  <!--Common Body Scripts-->
+  <nav th:replace="common/template :: common-navbar"></nav>
+
+  <div class="main-body mt-lg-5">
     <div class="row">
       <div class="col-lg-4">
         <div class="card">
@@ -201,7 +205,7 @@
       </div>
     </div>
   </div>
-</div>
+</main>
 <!-- Container ends-->
 
 <!--Common Body Scripts-->
