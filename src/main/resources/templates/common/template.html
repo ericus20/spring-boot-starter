@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="common-head (title)">
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -27,14 +28,7 @@
 <!-- Navbar -->
 <nav th:fragment="common-navbar" class="navbar navbar-expand-lg fixed-top bg-light navbar-light">
   <div class="container">
-    <a class="navbar-brand" href="#"
-    ><img
-        id="MDB-logo"
-        src="https://mdbcdn.b-cdn.net/wp-content/uploads/2018/06/logo-mdb-jquery-small.png"
-        alt="MDB Logo"
-        draggable="false"
-        height="30"
-    /></a>
+    <a class="navbar-brand" th:href="@{/}">Spring Boot Starter</a>
     <button
         class="navbar-toggler"
         type="button"
@@ -58,16 +52,21 @@
           <a class="nav-link mx-2" href="#!"><i class="fas fa-heart pe-2"></i>Trips</a>
         </li>
         <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">
             <span sec:authentication="name"></span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" th:href="@{/profile}"><i class="ti-user"></i> My Profile</a></li>
-            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')" th:href="@{/users/stuff}"><i
+            <li><a class="dropdown-item" th:href="@{/profile}"><i class="ti-user"></i> My
+              Profile</a></li>
+            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')"
+                   th:href="@{/users/stuff}"><i
                 class="ti-user"></i> User Stuff</a></li>
-            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/stuff}"><i
+            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
+                   th:href="@{/admin/stuff}"><i
                 class="ti-user"></i> Admin Stuff</a></li>
-            <li><a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-power-off"></i> Logout</a></li>
+            <li><a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-power-off"></i> Logout</a>
+            </li>
           </ul>
         </li>
       </ul>

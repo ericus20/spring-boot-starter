@@ -138,6 +138,7 @@ public class PasswordController {
    * Processes the post request after the new password has been submitted to change the user's
    * password.
    *
+   * @param model the model
    * @param userDto the parameters with user's password details
    * @param redirectAttributes the redirect attribute.
    * @return the change password view name
@@ -168,7 +169,7 @@ public class PasswordController {
         return HomeConstants.REDIRECT_TO_LOGIN;
       }
 
-      emailService.sendPasswordResetConfirmationEmail(userDto);
+      emailService.sendPasswordResetConfirmationEmail(storedUserDto);
       redirectAttributes.addFlashAttribute(PasswordConstants.PASSWORD_RESET_SUCCESS, true);
     } catch (Exception e) {
       LOG.error(PasswordConstants.PASSWORD_UPDATE_ERROR, e);
