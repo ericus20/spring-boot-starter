@@ -163,11 +163,19 @@ TBD
   functionalities.
     - Datasource must be provided for production profile for the application to run.
 
+*NB: Windows users must use **gradlew** instead of **./gradlew***
 
-* Start Spring Boot application using - **./gradlew bootRun**
+* Start Spring Boot application using on linux/unix - **./gradlew bootRun**
 * Run unit tests using - **./gradlew test**
 * Run integration tests using - **./gradlew integrationTest**
 * Run all tests using - **./gradlew testAll**
+* * Access application on *http://localhost:8080/*
 * Access in-memory database on *http://localhost:8080/console*
 * Run owasp dependency check - **./gradlew  dependencyCheckAnalyze --info**
 * Access Swagger UI - **http://localhost:8080/swagger-ui/index.html**
+
+## Running on Docker (Assuming docker is installed)
+* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose up**
+
+## Stop running application on Docker
+* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose down**
