@@ -171,6 +171,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     } else if (StringUtils.isNotBlank(path)) {
       links.put(EmailConstants.EMAIL_LINK, WebUtils.getGenericUri(path));
     }
+    links.put(UserConstants.USERNAME, userDto.getUsername());
 
     var emailRequest = new HtmlEmailRequest();
     emailRequest.setTemplate(template);
