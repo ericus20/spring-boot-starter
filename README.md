@@ -101,9 +101,12 @@ TBD
 
 ```
 
-## Running Instance on AWS
+## Running Instance on Heroku
 
-TBD
+https://spring-boot-starter.herokuapp.com/
+
+Configuration properties required to deploy to Heroku:
+![img.png](documents/images/heroku-deploy-properties.png)
 
 ## Contributing
 

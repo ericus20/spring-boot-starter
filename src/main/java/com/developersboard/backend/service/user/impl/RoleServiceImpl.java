@@ -39,7 +39,7 @@ public class RoleServiceImpl implements RoleService {
     Validate.notNull(roleEntity, "The roleEntity cannot be null");
 
     Role storedRole = roleRepository.findByName(roleEntity.getName());
-    if ( Objects.nonNull(storedRole) ) {
+    if (Objects.nonNull(storedRole)) {
       LOG.warn("The role with the name {} already exists", roleEntity.getName());
       return storedRole;
     }
