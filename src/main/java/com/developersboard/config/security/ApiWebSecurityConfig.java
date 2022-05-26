@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,8 +30,7 @@ public class ApiWebSecurityConfig {
   private final Environment environment;
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
-
-  private final ApplicationAuthenticationManager authenticationManager;
+  private final AuthenticationManager authenticationManager;
 
   /**
    * Override this method to configure the {@link HttpSecurity}. Typically, subclasses should not
