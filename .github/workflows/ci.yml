@@ -50,6 +50,7 @@ jobs:
         default_author: github_actions
         message: 'commit badge'
         add: '*.svg'
+        new_branch: badges
   docker:
     needs: build
     runs-on: ubuntu-latest
