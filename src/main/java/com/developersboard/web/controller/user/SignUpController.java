@@ -82,7 +82,7 @@ public class SignUpController {
 
         var savedUserDto = userService.createUser(userDto);
         if (Objects.isNull(savedUserDto)) {
-          LOG.error(UserConstants.COULD_NOT_CREATE_USER, userDto);
+          LOG.error(UserConstants.COULD_NOT_CREATE_USER + "{}", userDto);
           model.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_CREATE_USER);
         } else {
           var encryptedToken = encryptionService.encrypt(verificationToken);
@@ -93,7 +93,7 @@ public class SignUpController {
         }
       }
     } catch (final Exception e) {
-      LOG.error(UserConstants.COULD_NOT_CREATE_USER, userDto, e);
+      LOG.error(UserConstants.COULD_NOT_CREATE_USER + "{}", userDto, e);
       model.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_CREATE_USER);
     }
     model.addAttribute(UserConstants.USER_MODEL_KEY, new SignUpRequest());
@@ -133,6 +133,7 @@ public class SignUpController {
       redirectAttributes.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_VERIFY_USER);
     }
 
+    redirectAttributes.addAttribute(UserConstants.USER_MODEL_KEY, new SignUpRequest());
     return SignUpConstants.SIGN_UP_VIEW_NAME;
   }
 
@@ -149,6 +150,7 @@ public class SignUpController {
 
       if (Objects.nonNull(userDto) && token.equals(userDto.getVerificationToken())) {
         if (userDto.getUsername().equals(username) && userDto.isEnabled()) {
+          LOG.debug(SignUpConstants.ACCOUNT_EXISTS);
           model.addAttribute(ErrorConstants.ERROR, SignUpConstants.ACCOUNT_EXISTS);
         } else if (userDto.getUsername().equals(username) && !userDto.isEnabled()) {
           UserUtils.enableUser(userDto);
@@ -157,6 +159,7 @@ public class SignUpController {
         }
       }
     }
+    LOG.debug(ErrorConstants.INVALID_TOKEN);
     model.addAttribute(ErrorConstants.ERROR, ErrorConstants.INVALID_TOKEN);
 
     return null;

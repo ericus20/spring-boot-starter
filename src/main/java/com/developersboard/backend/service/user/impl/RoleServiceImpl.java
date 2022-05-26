@@ -4,6 +4,7 @@ import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.repository.RoleRepository;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.constant.CacheConstants;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService {
 
-  private final transient RoleRepository roleEntityRepository;
+  private final transient RoleRepository roleRepository;
 
   /**
    * Create the roleEntity with the roleEntity instance given.
@@ -36,7 +37,14 @@ public class RoleServiceImpl implements RoleService {
   @Transactional
   public Role save(Role roleEntity) {
     Validate.notNull(roleEntity, "The roleEntity cannot be null");
-    var persistedRole = roleEntityRepository.save(roleEntity);
+
+    Role storedRole = roleRepository.findByName(roleEntity.getName());
+    if ( Objects.nonNull(storedRole) ) {
+      LOG.warn("The role with the name {} already exists", roleEntity.getName());
+      return storedRole;
+    }
+
+    var persistedRole = roleRepository.save(roleEntity);
     LOG.info("Role persisted successfully {}", persistedRole);
 
     return persistedRole;
@@ -51,7 +59,7 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public Role findById(Integer id) {
     Validate.notNull(id, "The id cannot be null");
-    return roleEntityRepository.findById(id).orElse(null);
+    return roleRepository.findById(id).orElse(null);
   }
 
   /**
@@ -64,6 +72,6 @@ public class RoleServiceImpl implements RoleService {
   @Cacheable(CacheConstants.ROLES)
   public Role findByName(String name) {
     Validate.notNull(name, "The name cannot be null");
-    return roleEntityRepository.findByName(name);
+    return roleRepository.findByName(name);
   }
 }
