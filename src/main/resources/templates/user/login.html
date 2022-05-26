@@ -17,6 +17,7 @@
         <div class="bg-warning p-2" th:if="${param.error}" th:text="#{login.error.message}"></div>
         <div class="bg-success text-white p-2" th:if="${param.logout}" th:text="#{login.logout.success}"></div>
         <div th:if="${passwordResetSuccess}" class="bg-success text-white p-2" th:text="#{reset.password.email.sent.success}"></div>
+        <div th:if="${error}" class="bg-warning p-2" th:text="${error}"></div>
       </div>
 
       <form id="login-form" method="post" th:action="@{/login}"

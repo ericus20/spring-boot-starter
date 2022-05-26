@@ -2,9 +2,6 @@ package com.developersboard.backend.service.security.impl;
 
 import com.developersboard.backend.service.security.EncryptionService;
 import com.developersboard.exception.EncryptionException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -27,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriUtils;
 
 /**
  * This is the implementation of the encryption service.
@@ -132,29 +130,18 @@ public class EncryptionServiceImpl implements EncryptionService {
 
   @Override
   public String encode(String text) {
-    try {
-      if (StringUtils.isBlank(text)) {
-        return null;
-      }
-      return URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
-    } catch (UnsupportedEncodingException e) {
-      LOG.debug(ERROR_DECRYPTING_DATA, e);
-      throw new EncryptionException(e);
+    if (StringUtils.isBlank(text)) {
+      return null;
     }
+    return UriUtils.encode(text, StandardCharsets.UTF_8.name());
   }
 
   @Override
   public String decode(String encodedTest) {
-    try {
-      if (StringUtils.isBlank(encodedTest)) {
-        return null;
-      }
-      return URLDecoder.decode(encodedTest, StandardCharsets.UTF_8.toString())
-          .replaceAll("\\s+", "+");
-    } catch (UnsupportedEncodingException e) {
-      LOG.debug(ERROR_DECRYPTING_DATA, e);
-      throw new EncryptionException(e);
+    if (StringUtils.isBlank(encodedTest)) {
+      return null;
     }
+    return UriUtils.decode(encodedTest, StandardCharsets.UTF_8.name());
   }
 
   private SecretKey getKeyFromPassword() {

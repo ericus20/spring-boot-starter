@@ -1,7 +1,6 @@
 package com.developersboard.web.controller.user;
 
 import com.developersboard.constant.user.PasswordConstants;
-import com.developersboard.constant.user.UserConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +27,6 @@ class PasswordControllerTest {
   void testResetStartPathAndViewName() throws Exception {
     mockMvc
         .perform(MockMvcRequestBuilders.get(PasswordConstants.PASSWORD_RESET_ROOT_MAPPING))
-        .andExpect(MockMvcResultMatchers.model().attributeExists(UserConstants.USER_MODEL_KEY))
         .andExpect(
             MockMvcResultMatchers.view().name(PasswordConstants.PASSWORD_RESET_START_VIEW_NAME))
         .andExpect(MockMvcResultMatchers.status().isOk());
