@@ -25,32 +25,6 @@ jobs:
       with:
         arguments: clean build
         build-root-directory: .
-    - name: Add coverage to PR
-      id: jacoco
-      uses: madrapps/jacoco-report@v1.2
-      with:
-        paths: ${{github.workspace}}/build/reports/jacoco/test/jacocoTestReport.xml
-        token: ${{secrets.GITHUB_TOKEN}}
-        min-coverage-overall: 95
-        min-coverage-changed-files: 95
-
-    - name: Generate JaCoCo Badge
-      uses: cicirello/jacoco-badge-generator@v2
-      with:
-        generate-branches-badge: true
-        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
-
-    - name: Log coverage percentage
-      run: |
-        echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
-        echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
-    - name: Commit and push the badge (if it changed)
-      uses: EndBug/add-and-commit@v9
-      with:
-        default_author: github_actions
-        message: 'commit badge'
-        add: '*.svg'
-        new_branch: badges
   docker:
     needs: build
     runs-on: ubuntu-latest
