@@ -139,6 +139,7 @@ TBD
         ENCRYPTION_SECRET_SALT=salt
         ENCRYPTION_SECRET_PASSWORD=password
         JWT_SECRET=salt
+        SPRING_PROFILES_ACTIVE=dev
 
 - The AWS Properties and defaults are:
 
@@ -153,7 +154,7 @@ TBD
         EMAIL_HOST=smtp.gmail.com
         EMAIL_PORT=587
         EMAIL_USERNAME
-        EMAIL_PASSWORD
+        EMAIL_PASSWORD # If using gmail, this must be a 2 step verification enabled app password
 
 * Default profile for the application is **dev**, **test** and **prod** to test out production
   functionalities.

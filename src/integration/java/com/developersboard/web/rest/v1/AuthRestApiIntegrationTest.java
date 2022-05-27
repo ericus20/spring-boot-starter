@@ -93,6 +93,16 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
     Assertions.assertTrue(jwtService.isValidJwtToken(originalAccessToken));
   }
 
+  @Test
+  void loginPathWithInvalidCredentialsReturnsUnauthorized(TestInfo testInfo) throws Exception {
+
+    var loginRequest = new LoginRequest(storedUser.getUsername(), testInfo.getDisplayName());
+    var invalidLoginRequestJson = TestUtils.toJson(loginRequest);
+
+    performRequest(MockMvcRequestBuilders.post(loginUri), invalidLoginRequestJson)
+        .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+  }
+
   /**
    * Refreshing with a valid refresh token returns a new access token.
    *
@@ -169,6 +179,18 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
    * @return the result actions
    */
   private ResultActions performRequest(MockHttpServletRequestBuilder request) throws Exception {
+    return performRequest(request, loginRequestJson);
+  }
+
+  /**
+   * Performs mockMvc request with the specified request details and content.
+   *
+   * @param request the request
+   * @return the result actions
+   */
+  private ResultActions performRequest(
+      MockHttpServletRequestBuilder request, String loginRequestJson) throws Exception {
+
     return mockMvc.perform(
         request
             .with(SecurityMockMvcRequestPostProcessors.csrf())
