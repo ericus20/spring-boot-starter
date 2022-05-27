@@ -114,8 +114,9 @@ class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
     var preSignedUrl = amazonS3Service.generatePreSignedUrl(imageUrl);
     var expectedUrl =
         String.format(
-            "%s/spring-boot-starter/profileImages/%s/profileImage.png",
+            "%s/%s/profileImages/%s/profileImage.png",
             awsProperties.getServiceEndpoint(),
+            awsProperties.getS3BucketName(),
             URLEncoder.encode(testInfo.getDisplayName(), StandardCharsets.UTF_8));
 
     Assertions.assertEquals(expectedUrl, preSignedUrl);

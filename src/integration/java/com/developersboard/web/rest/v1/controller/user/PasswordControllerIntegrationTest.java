@@ -73,7 +73,10 @@ class PasswordControllerIntegrationTest extends IntegrationTestUtils {
 
     // Retrieve using GreenMail API
     Message[] messages = greenMail.getReceivedMessages();
+    String passwordResetEmailBody = messages[0].getContent().toString();
 
+    Assertions.assertTrue(
+        passwordResetEmailBody.contains("http://localhost/password-reset/change?token="));
     Assertions.assertEquals(EmailConstants.PASSWORD_RESET_EMAIL_SUBJECT, messages[0].getSubject());
     Assertions.assertTrue(
         messages[0].getRecipients(RecipientType.TO)[0].toString().contains(storedUser.getEmail()));
