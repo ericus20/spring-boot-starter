@@ -28,7 +28,7 @@
 <!-- Navbar -->
 <nav th:fragment="common-navbar" class="navbar navbar-expand-lg fixed-top bg-light navbar-light">
   <div class="container">
-    <a class="navbar-brand" th:href="@{/}">Spring Boot Starter</a>
+    <a class="navbar-brand" th:href="@{/}" th:text="#{navbar.logo.text}"></a>
     <button
         class="navbar-toggler"
         type="button"
@@ -43,13 +43,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item">
-          <a class="nav-link mx-2" href="#!"><i class="fas fa-plus-circle pe-2"></i>Post</a>
+          <a class="nav-link mx-2" th:href="@{/contact}">
+            <i class="fas fa-mail-bulk pe-2"></i> <span th:text="#{navbar.contact.text}"></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link mx-2" href="#!"><i class="fas fa-bell pe-2"></i>Alerts</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#!"><i class="fas fa-heart pe-2"></i>Trips</a>
+          <select class="nav-link mx-2" id="locale" data-width="fit">
+            <option th:selected="__${#locale}__== 'en'" value="en" data-content='<i class="fas fa-flag-usa"></i> English'>English</option>
+            <option th:selected="__${#locale}__== 'es'" value="es"  data-content='<i class="flag-icon flag-icon-mx"></i> Español'>Español</option>
+          </select>
         </li>
         <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -57,15 +58,16 @@
             <span sec:authentication="name"></span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" th:href="@{/profile}"><i class="ti-user"></i> My
-              Profile</a></li>
-            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')"
-                   th:href="@{/users/stuff}"><i
-                class="ti-user"></i> User Stuff</a></li>
-            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
-                   th:href="@{/admin/stuff}"><i
-                class="ti-user"></i> Admin Stuff</a></li>
-            <li><a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-power-off"></i> Logout</a>
+            <li><a class="dropdown-item" th:href="@{/profile}">
+              <i class="ti-user"></i> <span th:text="#{navbar.user.profile.text}"></span></a>
+            </li>
+            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')" th:href="@{/users/stuff}">
+              <i class="ti-user"></i> <span th:text="#{navbar.user.stuff.text}"></span></a>
+            </li>
+            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/stuff}">
+              <i class="ti-user"></i> <span th:text="#{navbar.admin.stuff.text}"></span></a></li>
+            <li><a class="dropdown-item" th:href="@{/logout}">
+              <i class="fa fa-power-off"></i> <span th:text="#{navbar.logout.text}"></span></a>
             </li>
           </ul>
         </li>

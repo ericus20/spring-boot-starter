@@ -25,4 +25,8 @@ $(document).ready(function () {
         control: "#showPassword"
     });
 
+    $('#locale').change(function () {
+        window.location.search = '?locale=' + $(this).val();
+    });
+
 });

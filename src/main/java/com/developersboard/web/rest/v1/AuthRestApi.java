@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -67,7 +68,7 @@ public class AuthRestApi {
    */
   @Loggable
   @SecurityRequirements
-  @PostMapping(SecurityConstants.LOGIN)
+  @PostMapping(value = SecurityConstants.LOGIN, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<JwtResponseBuilder> authenticateUser(
       @CookieValue(required = false) String refreshToken,
       @Valid @RequestBody LoginRequest loginRequest) {
@@ -98,7 +99,7 @@ public class AuthRestApi {
    */
   @Loggable
   @SecurityRequirements
-  @GetMapping(SecurityConstants.REFRESH_TOKEN)
+  @GetMapping(value = SecurityConstants.REFRESH_TOKEN, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<JwtResponseBuilder> refreshToken(
       @CookieValue String refreshToken, HttpServletRequest request) {
 
@@ -132,7 +133,7 @@ public class AuthRestApi {
    */
   @Loggable
   @SecurityRequirements
-  @DeleteMapping(SecurityConstants.LOGOUT)
+  @DeleteMapping(value = SecurityConstants.LOGOUT, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<LogoutResponse> logout(
       HttpServletRequest request, HttpServletResponse response) {
     SecurityUtils.logout(request, response);
