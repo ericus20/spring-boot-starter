@@ -48,9 +48,14 @@
         </li>
         <li class="nav-item">
           <select class="nav-link mx-2" id="locale" data-width="fit">
-            <option th:selected="__${#locale}__== 'en'" value="en" data-content='<i class="fas fa-flag-usa"></i> English'>English</option>
+            <option th:selected="__${#locale}__== 'en'" value="en" data-content='<span class="fa-regular fa-flag-usa"></span> English'>English</option>
             <option th:selected="__${#locale}__== 'es'" value="es"  data-content='<i class="flag-icon flag-icon-mx"></i> Español'>Español</option>
           </select>
+        </li>
+        <li class="nav-item" sec:authorize="isAnonymous()">
+          <a class="dropdown-item" th:href="@{/login}">
+            <i class="fa fa-sign-in"></i> <span th:text="#{login.text}"></span>
+          </a>
         </li>
         <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
