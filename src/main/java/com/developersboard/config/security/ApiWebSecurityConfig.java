@@ -59,6 +59,8 @@ public class ApiWebSecurityConfig {
         .anyRequest()
         .hasAuthority(RoleType.ROLE_ADMIN.getName());
 
+    http.authenticationManager(authenticationManager);
+
     http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

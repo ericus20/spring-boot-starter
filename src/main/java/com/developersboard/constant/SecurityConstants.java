@@ -53,6 +53,7 @@ public final class SecurityConstants {
     "/v3/api-docs/**",
     "/swagger-ui/**",
     "/swagger-ui.html",
+    ROOT_PATH,
     String.join("/", SignUpConstants.SIGN_UP_MAPPING, "**"),
     String.join("/", PasswordConstants.PASSWORD_RESET_ROOT_MAPPING, "**"),
   };
