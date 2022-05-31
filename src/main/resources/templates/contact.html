@@ -24,7 +24,7 @@
     <div class="row">
 
       <div class="col-md-6 mt-4 mb-4 text-center">
-        <div class="bg-success text-white p-2" th:if="${feedbackSuccess}">Message submitted successfully!</div>
+        <div class="bg-success text-white p-2" th:if="${feedbackSuccess}" th:text="#{contact.form.success.text}"></div>
         <div th:if="${error}" class="bg-warning p-2" th:text="${error}"></div>
       </div>
 
@@ -63,7 +63,7 @@
             <div class="col-md-12">
               <div class="md-form mb-0">
                 <input type="text" id="subject" name="subject" class="form-control">
-                <label for="subject" class="">Subject</label>
+                <label for="subject" class="" th:text="#{contact.form.subject}"></label>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@
               <div class="md-form">
                 <textarea type="text" id="message" name="message" rows="2"
                           class="form-control md-textarea"></textarea>
-                <label for="message">Your message</label>
+                <label for="message" th:text="#{contact.form.feedback}"></label>
               </div>
 
             </div>
@@ -98,11 +98,11 @@
       <div class="col-md-3 text-center">
         <ul class="list-unstyled mb-0">
           <li><i class="fas fa-map-marker-alt fa-2x"></i>
-            <p>San Francisco, CA 94126, USA</p>
+            <p th:text="${@systemProperties.address}"></p>
           </li>
 
           <li><i class="fas fa-phone mt-4 fa-2x"></i>
-            <p>+ 01 234 567 89</p>
+            <p th:text="${@systemProperties.phone}"></p>
           </li>
 
           <li><i class="fas fa-envelope mt-4 fa-2x"></i>
