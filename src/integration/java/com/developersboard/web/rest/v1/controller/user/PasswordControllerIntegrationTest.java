@@ -4,7 +4,6 @@ import com.developersboard.IntegrationTestUtils;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.user.PasswordConstants;
-import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import javax.mail.Message;
@@ -52,10 +51,7 @@ class PasswordControllerIntegrationTest extends IntegrationTestUtils {
                 .param("email", testInfo.getDisplayName()))
         .andExpect(
             MockMvcResultMatchers.model()
-                .attributeDoesNotExist(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY))
-        .andExpect(
-            MockMvcResultMatchers.model()
-                .attribute(ErrorConstants.ERROR, UserConstants.USER_NOT_FOUND))
+                .attributeExists(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY))
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
@@ -67,7 +63,6 @@ class PasswordControllerIntegrationTest extends IntegrationTestUtils {
             MockMvcRequestBuilders.post(PasswordConstants.PASSWORD_RESET_ROOT_MAPPING)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .param("email", storedUser.getEmail()))
-        .andExpect(MockMvcResultMatchers.model().attributeExists(UserConstants.USER_MODEL_KEY))
         .andExpect(
             MockMvcResultMatchers.model()
                 .attributeExists(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY))
@@ -78,7 +73,10 @@ class PasswordControllerIntegrationTest extends IntegrationTestUtils {
 
     // Retrieve using GreenMail API
     Message[] messages = greenMail.getReceivedMessages();
+    String passwordResetEmailBody = messages[0].getContent().toString();
 
+    Assertions.assertTrue(
+        passwordResetEmailBody.contains("http://localhost/password-reset/change?token="));
     Assertions.assertEquals(EmailConstants.PASSWORD_RESET_EMAIL_SUBJECT, messages[0].getSubject());
     Assertions.assertTrue(
         messages[0].getRecipients(RecipientType.TO)[0].toString().contains(storedUser.getEmail()));

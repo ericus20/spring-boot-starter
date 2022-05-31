@@ -48,13 +48,10 @@ public class PasswordController {
   /**
    * Processes the password reset form.
    *
-   * @param model the model
    * @return the view name of password reset form.
    */
   @GetMapping
-  public String passwordReset(Model model) {
-    model.addAttribute(UserConstants.USER_MODEL_KEY, new UserDto());
-
+  public String passwordReset() {
     return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
   }
 
@@ -81,16 +78,16 @@ public class PasswordController {
         var encryptedToken = encryptionService.encrypt(token);
         var encodedToken = encryptionService.encode(encryptedToken);
         emailService.sendPasswordResetEmail(userDto, encodedToken);
-        model.addAttribute(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY, true);
       } else {
-        LOG.debug(UserConstants.USER_NOT_FOUND, email);
-        model.addAttribute(ErrorConstants.ERROR, UserConstants.USER_NOT_FOUND);
+        LOG.debug(UserConstants.USER_NOT_FOUND + " email: {}", email);
       }
+
+      model.addAttribute(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY, true);
     } catch (Exception e) {
-      LOG.error(PasswordConstants.RESET_ERROR, e);
-      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.RESET_ERROR);
+      LOG.error(PasswordConstants.PASSWORD_UPDATE_ERROR, e);
+      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
     }
-    model.addAttribute(UserConstants.USER_MODEL_KEY, new UserDto());
+
     return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
   }
 
@@ -104,8 +101,6 @@ public class PasswordController {
   @GetMapping(PasswordConstants.PASSWORD_CHANGE_PATH)
   public String changePassword(@RequestParam final String token, Model model) {
     try {
-      model.addAttribute(UserConstants.USER_MODEL_KEY, new UserDto());
-
       if (SecurityUtils.isAuthenticated()) {
         // if the user is already logged in, abort the process.
         LOG.debug(PasswordConstants.ACCOUNT_IN_SESSION);
@@ -130,12 +125,10 @@ public class PasswordController {
         return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
       }
 
-      var userDto = new UserDto();
-      userDto.setUsername(username);
-      model.addAttribute(UserConstants.USER_MODEL_KEY, userDto);
+      model.addAttribute(UserConstants.USERNAME, username);
     } catch (Exception e) {
-      LOG.error(PasswordConstants.RESET_ERROR, e);
-      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.RESET_ERROR);
+      LOG.error(PasswordConstants.PASSWORD_UPDATE_ERROR, e);
+      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
     }
 
     return PasswordConstants.PASSWORD_RESET_COMPLETE_VIEW_NAME;
@@ -145,41 +138,43 @@ public class PasswordController {
    * Processes the post request after the new password has been submitted to change the user's
    * password.
    *
+   * @param model the model
    * @param userDto the parameters with user's password details
-   * @param redirectAttributes the redirectAttributes.
+   * @param redirectAttributes the redirect attribute.
    * @return the change password view name
    */
   @PostMapping(PasswordConstants.PASSWORD_CHANGE_PATH)
-  public String changeUserPassword(
-      @ModelAttribute UserDto userDto, RedirectAttributes redirectAttributes) {
-
+  public String changePassword(
+      @ModelAttribute UserDto userDto, Model model, RedirectAttributes redirectAttributes) {
     try {
       var storedUserDto = userService.findByUsername(userDto.getUsername());
-      if (Objects.nonNull(storedUserDto)) {
-        // check if user's new password is the same as the current one
-        if (!passwordEncoder.matches(userDto.getPassword(), storedUserDto.getPassword())) {
-          // Update the password of the user with encoded password of the new one.
-          storedUserDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-          var updatedUserDto =
-              userService.updateUser(storedUserDto, UserHistoryType.PASSWORD_UPDATE);
-          if (Objects.nonNull(updatedUserDto)) {
-            emailService.sendPasswordResetConfirmationEmail(userDto);
-            redirectAttributes.addFlashAttribute(PasswordConstants.PASSWORD_RESET_SUCCESS, true);
-          }
-        } else {
-          redirectAttributes.addAttribute(ErrorConstants.ERROR, PasswordConstants.SAME_PASSWORD);
-        }
-      } else {
-        LOG.debug(UserConstants.USER_NOT_FOUND, userDto.getEmail());
-        redirectAttributes.addAttribute(ErrorConstants.ERROR, UserConstants.USER_NOT_FOUND);
+      if (Objects.isNull(storedUserDto)) {
+        LOG.debug(UserConstants.USER_NOT_FOUND + " username: {}", userDto.getUsername());
+        redirectAttributes.addFlashAttribute(ErrorConstants.ERROR, UserConstants.USER_NOT_FOUND);
+        return HomeConstants.REDIRECT_TO_LOGIN;
       }
+      // check if user's new password is the same as the current one
+      if (passwordEncoder.matches(userDto.getPassword(), storedUserDto.getPassword())) {
+        model.addAttribute(ErrorConstants.ERROR, PasswordConstants.SAME_PASSWORD);
+        model.addAttribute(UserConstants.USERNAME, userDto.getUsername());
+        return PasswordConstants.PASSWORD_RESET_COMPLETE_VIEW_NAME;
+      }
+
+      storedUserDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+      var updatedUserDto = userService.updateUser(storedUserDto, UserHistoryType.PASSWORD_UPDATE);
+      if (Objects.isNull(updatedUserDto)) {
+        LOG.debug(PasswordConstants.PASSWORD_UPDATE_ERROR);
+        redirectAttributes.addAttribute(
+            ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
+        return HomeConstants.REDIRECT_TO_LOGIN;
+      }
+
+      emailService.sendPasswordResetConfirmationEmail(storedUserDto);
+      redirectAttributes.addFlashAttribute(PasswordConstants.PASSWORD_RESET_SUCCESS, true);
     } catch (Exception e) {
-      LOG.error(PasswordConstants.RESET_ERROR, e);
-      redirectAttributes.addAttribute(ErrorConstants.ERROR, PasswordConstants.RESET_ERROR);
-    }
-    if (redirectAttributes.containsAttribute(ErrorConstants.ERROR)) {
-      return PasswordConstants.PASSWORD_RESET_COMPLETE_VIEW_NAME;
+      LOG.error(PasswordConstants.PASSWORD_UPDATE_ERROR, e);
+      redirectAttributes.addAttribute(
+          ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
     }
 
     return HomeConstants.REDIRECT_TO_LOGIN;

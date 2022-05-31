@@ -9,6 +9,10 @@
 
 A highly opinionated and complete starter for Spring Boot production ready projects.
 
+## Running Instance on Heroku
+
+https://spring-boot-starter.herokuapp.com/
+
 ![Java CI with Gradle](https://github.com/ericus20/spring-boot-starter/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
 
@@ -97,10 +101,6 @@ TBD
 
 ```
 
-## Running Instance on Heroku
-
-https://spring-boot-starter.herokuapp.com/
-
 Configuration properties required to deploy to Heroku:
 ![img.png](documents/images/heroku-deploy-properties.png)
 
@@ -139,6 +139,7 @@ TBD
         ENCRYPTION_SECRET_SALT=salt
         ENCRYPTION_SECRET_PASSWORD=password
         JWT_SECRET=salt
+        SPRING_PROFILES_ACTIVE=dev
 
 - The AWS Properties and defaults are:
 
@@ -153,7 +154,7 @@ TBD
         EMAIL_HOST=smtp.gmail.com
         EMAIL_PORT=587
         EMAIL_USERNAME
-        EMAIL_PASSWORD
+        EMAIL_PASSWORD # If using gmail, this must be a 2 step verification enabled app password
 
 * Default profile for the application is **dev**, **test** and **prod** to test out production
   functionalities.

@@ -127,13 +127,13 @@
           <td align="center" bgcolor="#ffffff"
               style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Poppins', sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 2px; line-height: 48px;"
               valign="top">
-            <th:block th:if="${username}">
+            <th:block th:if="${urls.get('username')}">
               <h1 style="font-size: 42px; font-weight: 400; margin: 0;"><span
                   th:text="${salutation}"></span>
-                <span style="text-transform: capitalize;" th:text="${username}"></span>
+                <span style="text-transform: capitalize;" th:text="${urls.get('username')}"></span>
               </h1>
             </th:block>
-            <th:block th:unless="${username}">
+            <th:block th:unless="${urls.get('username')}">
               <h1 style="font-size: 42px; font-weight: 400; margin: 0;"
                   th:text="${salutation}"></h1>
             </th:block>
@@ -192,7 +192,7 @@
               style="padding: 30px 30px 30px 30px; color: #aaaaaa; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 400; line-height: 18px;">
             <p style="margin: 0;">
               <a style="color: #999999; font-weight: 700;" target="_blank"
-                 th:href="@{${urls.get('accountOverviewLink')}}">Home</a>
+                 th:href="@{${urls.get('home')}}">Home</a>
               -
               <a style="color: #999999; font-weight: 700;" target="_blank"
                  th:href="@{${urls.get('aboutUsLink')}}">About Us</a>

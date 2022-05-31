@@ -6,15 +6,23 @@
 <body>
 
 <!-- Container starts-->
-<div class="container">
+<main class="container">
 
-    <!-- Row starts-->
-    <div class="row">
-        <h1>Spring Boot Starter</h1>
+  <!--Common Body Scripts-->
+  <nav th:replace="common/template :: common-navbar"></nav>
+
+  <!-- Row starts-->
+  <div class="row">
+    <div class="container bg-secondary text-light p-5 rounded">
+      <div class="container bg-secondary p-5 text-center">
+        <h1 class="display-4" th:text="#{navbar.logo.text}"></h1>
+        <hr>
+      </div>
     </div>
-    <!-- Row ends -->
+  </div>
+  <!-- Row ends -->
 
-</div>
+</main>
 <!-- Container ends-->
 
 

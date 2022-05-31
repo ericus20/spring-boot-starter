@@ -28,8 +28,8 @@ public final class PasswordConstants {
   /** Model Key Constant message. */
   public static final String ACCOUNT_IN_SESSION = "Account is currently in session!";
 
-  public static final String RESET_ERROR = "An error occurred while processing password reset";
   public static final String SAME_PASSWORD = "New password is the same as current one";
+  public static final String PASSWORD_UPDATE_ERROR = "An error occurred while updating password";
 
   /** Constructor for Password Token Constants made private. */
   private PasswordConstants() {

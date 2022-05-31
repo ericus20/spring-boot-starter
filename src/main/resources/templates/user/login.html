@@ -9,14 +9,18 @@
 <!-- Container starts-->
 <main class="container">
 
+  <!--Common Body Scripts-->
+  <nav th:replace="common/template :: common-navbar"></nav>
+
   <!-- Row starts-->
-  <div class="row">
+  <div class="row mt-5">
     <!-- Col starts-->
     <div class="col-md-4 offset-md-4 mt-4">
       <div class="mt-4 mb-2 text-center">
         <div class="bg-warning p-2" th:if="${param.error}" th:text="#{login.error.message}"></div>
         <div class="bg-success text-white p-2" th:if="${param.logout}" th:text="#{login.logout.success}"></div>
         <div th:if="${passwordResetSuccess}" class="bg-success text-white p-2" th:text="#{reset.password.email.sent.success}"></div>
+        <div th:if="${error}" class="bg-warning p-2" th:text="${error}"></div>
       </div>
 
       <form id="login-form" method="post" th:action="@{/login}"

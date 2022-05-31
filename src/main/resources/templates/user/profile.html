@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!-- Head -->
 <th:block th:replace="common/template :: common-head(title='Profile')"/>
@@ -7,8 +7,12 @@
 <body>
 
 <!-- Container starts-->
-<div class="container">
-  <div class="main-body">
+<main class="container">
+
+  <!--Common Body Scripts-->
+  <nav th:replace="common/template :: common-navbar"></nav>
+
+  <div class="main-body mt-lg-5">
     <div class="row">
       <div class="col-lg-4">
         <div class="card">
@@ -114,7 +118,7 @@
 
               <div class="row mb-3">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">First Name</h6>
+                  <h6 class="mb-0" th:text="#{form.first.name}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                   <input type="text" class="form-control" th:field="*{firstName}">
@@ -122,7 +126,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Middle Name</h6>
+                  <h6 class="mb-0" th:text="#{form.middle.name}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                   <input type="text" class="form-control" th:field="*{middleName}">
@@ -130,7 +134,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Last Name</h6>
+                  <h6 class="mb-0" th:text="#{form.last.name}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                   <input type="text" class="form-control" th:field="*{lastName}">
@@ -138,7 +142,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Email</h6>
+                  <h6 class="mb-0" th:text="#{form.email}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                   <input type="text" class="form-control" th:field="*{email}" disabled>
@@ -146,7 +150,7 @@
               </div>
               <div class="row mb-3">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Phone</h6>
+                  <h6 class="mb-0" th:text="#{form.phone.number}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                   <input type="text" class="form-control" th:field="*{phone}">
@@ -155,53 +159,55 @@
               <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="submit" class="btn btn-primary px-4" value="Save Changes">
+                  <input type="submit" class="btn btn-primary px-4" th:value="#{form.update}">
                 </div>
               </div>
             </form>
           </div>
         </div>
-        <div class="row">
+
+        <div class="row" style="max-height: 12rem;">
           <div class="col-sm-12">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="d-flex align-items-center mb-3">User Activity</h5>
+            <div class="card" style="height: 12rem;">
+              <div class="card-header">
+                User Activity
+              </div>
+              <div class="card-body overflow-auto h-100">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex gap-5" th:each="userHistory : ${userHistories}">
+                    <p th:text="${userHistory.userHistoryType.name}"></p>
 
-                <div class="d-flex flex-row justify-content-between"
-                     th:each="userHistory : ${userHistories}">
-                  <p th:text="${userHistory.userHistoryType.name}"></p>
-
-                  <div class="mb-3" th:text="${userHistory.timeElapsedDescription}"></div>
-                  <div class="like-comm"
-                       th:if="${userHistory.userHistoryType == T(com.developersboard.enums.UserHistoryType).CREATED}">
-                    <span class="link m-r-0">Created by</span>
-                    <strong>
+                    <div class="mb-3" th:text="${userHistory.timeElapsedDescription}"></div>
+                    <div class="like-comm"
+                         th:if="${userHistory.userHistoryType == T(com.developersboard.enums.UserHistoryType).CREATED}">
+                      <span class="link m-r-0">Created by</span>
+                      <strong>
                         <span
                             th:if="${userHistory.userHistoryType == T(com.developersboard.enums.UserHistoryType).CREATED}"
                             th:text="'@' + ${user.createdBy}">
                         </span>
-                    </strong>
-                  </div>
-                  <div class="like-comm"
-                       th:unless="${userHistory.userHistoryType == T(com.developersboard.enums.UserHistoryType).CREATED}">
-                    <span class="link m-r-0">Updated by</span>
-                    <strong>
+                      </strong>
+                    </div>
+                    <div class="like-comm"
+                         th:unless="${userHistory.userHistoryType == T(com.developersboard.enums.UserHistoryType).CREATED}">
+                      <span class="link m-r-0">Updated by</span>
+                      <strong>
                         <span th:text="'@' + ${user.updatedBy}"
                               th:unless="${userHistory.userHistoryType == T(com.developersboard.enums.UserHistoryType).CREATED}">
                         </span>
-                    </strong>
-                  </div>
-
-                </div>
-
+                      </strong>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
-</div>
+</main>
 <!-- Container ends-->
 
 <!--Common Body Scripts-->

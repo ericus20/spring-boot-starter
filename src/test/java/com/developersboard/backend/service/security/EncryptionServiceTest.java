@@ -2,10 +2,6 @@ package com.developersboard.backend.service.security;
 
 import com.developersboard.backend.service.security.impl.EncryptionServiceImpl;
 import com.developersboard.exception.EncryptionException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
@@ -123,32 +119,6 @@ class EncryptionServiceTest {
     Assertions.assertNotEquals(decodedUri, encodedUri);
 
     Assertions.assertEquals(uri, decodedUri);
-  }
-
-  @Test
-  void encodeThrowingExceptionShouldBeHandled(TestInfo testInfo) {
-    try (MockedStatic<URLEncoder> encoder = Mockito.mockStatic(URLEncoder.class)) {
-      encoder
-          .when(
-              () -> URLEncoder.encode(testInfo.getDisplayName(), StandardCharsets.UTF_8.toString()))
-          .thenThrow(new UnsupportedEncodingException());
-
-      Assertions.assertThrows(
-          EncryptionException.class, () -> encryptionService.encode(testInfo.getDisplayName()));
-    }
-  }
-
-  @Test
-  void decodeThrowingExceptionShouldBeHandled(TestInfo testInfo) {
-    try (MockedStatic<URLDecoder> decoder = Mockito.mockStatic(URLDecoder.class)) {
-      decoder
-          .when(
-              () -> URLDecoder.decode(testInfo.getDisplayName(), StandardCharsets.UTF_8.toString()))
-          .thenThrow(new UnsupportedEncodingException());
-
-      Assertions.assertThrows(
-          EncryptionException.class, () -> encryptionService.decode(testInfo.getDisplayName()));
-    }
   }
 
   @Test
