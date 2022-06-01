@@ -119,8 +119,6 @@ public class AuthRestApi {
     var newAccessToken = jwtService.generateJwtToken(username, expiration);
     var encryptedAccessToken = encryptionService.encrypt(newAccessToken);
 
-    SecurityUtils.clearAuthentication();
-
     return ResponseEntity.ok(JwtResponseBuilder.buildJwtResponse(encryptedAccessToken));
   }
 
