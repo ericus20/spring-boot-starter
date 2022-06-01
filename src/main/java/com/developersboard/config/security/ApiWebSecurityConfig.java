@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
  * This configuration handles api web requests with stateless session.
@@ -43,14 +44,17 @@ public class ApiWebSecurityConfig {
   @Order(1)
   public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
-    // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
-    SecurityUtils.configureDevEnvironmentAccess(http, environment);
-
     http.exceptionHandling()
         .authenticationEntryPoint(unauthorizedHandler)
         .and()
         .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .csrf()
+        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+
+    // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
+    SecurityUtils.configureDevEnvironmentAccess(http, environment);
 
     http.antMatcher(SecurityConstants.API_ROOT_URL_MAPPING)
         .authorizeRequests()
