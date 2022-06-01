@@ -15,6 +15,7 @@ import javax.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpHeaders;
@@ -57,7 +58,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
     Assertions.assertNotNull(jwtResponse);
 
     var accessToken = jwtResponse.getAccessToken();
-    var bearerToken = String.format("Bearer %s", accessToken);
+    var bearerToken = getBearerToken(accessToken);
     var enableUrl =
         String.format("%s/%s/enable", AdminConstants.API_V1_USERS_ROOT_URL, userDto.getPublicId());
 
@@ -80,7 +81,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
     Assertions.assertNotNull(jwtResponse);
 
     var accessToken = jwtResponse.getAccessToken();
-    var bearerToken = String.format("Bearer %s", accessToken);
+    var bearerToken = getBearerToken(accessToken);
     var enableUrl =
         String.format("%s/%s/enable", AdminConstants.API_V1_USERS_ROOT_URL, UUID.randomUUID());
 
@@ -108,7 +109,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
         String.format("%s/%s/disable", AdminConstants.API_V1_USERS_ROOT_URL, userDto.getPublicId());
 
     var accessToken = jwtResponse.getAccessToken();
-    var bearerToken = String.format("Bearer %s", accessToken);
+    var bearerToken = String.format("%s %s", SecurityConstants.BEARER, accessToken);
 
     performRequest(
             MockMvcRequestBuilders.put(disableUrl).header(HttpHeaders.AUTHORIZATION, bearerToken))
@@ -167,6 +168,48 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
         .andExpect(MockMvcResultMatchers.status().isUnauthorized());
   }
 
+  /** Delete a user */
+  @Test
+  void deleteUser(TestInfo testInfo) throws Exception {
+    // Endpoint: DELETE /api/v1/users/{publicId}
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), true);
+    Assertions.assertTrue(userService.existsByUsername(userDto.getUsername()));
+
+    // Authenticate to retrieve access token
+    var jwtResponse = getJwtResponse();
+    Assertions.assertNotNull(jwtResponse);
+
+    var accessToken = jwtResponse.getAccessToken();
+    var bearerToken = getBearerToken(accessToken);
+    var enableUrl =
+        String.format("%s/%s", AdminConstants.API_V1_USERS_ROOT_URL, userDto.getPublicId());
+
+    var result =
+        performRequest(
+                MockMvcRequestBuilders.delete(enableUrl)
+                    .header(HttpHeaders.AUTHORIZATION, bearerToken))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn();
+
+    Assertions.assertTrue(
+        result.getResponse().getContentAsString().contains(OperationStatus.SUCCESS.name()));
+
+    Assertions.assertFalse(userService.existsByUsername(userDto.getUsername()));
+  }
+
+  /** Deleting a user without authorization should fail. Should return 401 Unauthorized. */
+  @Test
+  void deleteUserNoAuthorization() throws Exception {
+    // Endpoint: PUT /api/v1/users/{publicId}/enable
+
+    var enableUrl = String.format("%s/%s", AdminConstants.API_V1_USERS_ROOT_URL, UUID.randomUUID());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.delete(enableUrl)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+  }
+
   /**
    * Authenticate and return jwt response.
    *
@@ -177,6 +220,16 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
     var contentAsString = mvcResult.getResponse().getContentAsString();
 
     return TestUtils.parse(contentAsString, JwtResponseBuilder.class);
+  }
+
+  /**
+   * Constructs a bearer token from the given access token.
+   *
+   * @param accessToken access token
+   * @return bearer token
+   */
+  private String getBearerToken(String accessToken) {
+    return String.format("%s %s", SecurityConstants.BEARER, accessToken);
   }
 
   /**
