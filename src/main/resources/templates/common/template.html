@@ -20,8 +20,7 @@
         type="text/css">
   <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
 
-  <title th:text="${title} ? '..:: Spring Boot Starter | ' + ${title} + ' ::..' : _">..:: Spring
-    Boot Starter ::..</title>
+  <title th:text="${title} ? '..:: Spring Boot Starter | ' + ${title} + ' ::..' : _"></title>
 </head>
 
 
@@ -29,27 +28,31 @@
 <nav th:fragment="common-navbar" class="navbar navbar-expand-lg fixed-top bg-light navbar-light">
   <div class="container">
     <a class="navbar-brand" th:href="@{/}" th:text="#{navbar.logo.text}"></a>
-    <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-    >
-      <i class="fas fa-bars"></i>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto align-items-center">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link mx-2" th:href="@{/contact}">
-            <i class="fas fa-mail-bulk pe-2"></i> <span th:text="#{navbar.contact.text}"></span></a>
+          <a class="nav-link" target="_blank" th:href="@{/swagger-ui/index.html}">Swagger UI </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link mx-2" th:href="@{/contact}">
+            <i class="fas fa-mail-bulk pe-2"></i> <span th:text="#{navbar.contact.text}"></span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
           <select class="nav-link mx-2" id="locale" data-width="fit">
-            <option th:selected="__${#locale}__== 'en'" value="en" data-content='<span class="fa-regular fa-flag-usa"></span> English'>English</option>
-            <option th:selected="__${#locale}__== 'es'" value="es"  data-content='<i class="flag-icon flag-icon-mx"></i> Español'>Español</option>
+            <option th:selected="__${#locale}__== 'en'" value="en"
+                    data-content='<span class="fa-regular fa-flag-usa"></span> English'>English
+            </option>
+            <option th:selected="__${#locale}__== 'es'" value="es"
+                    data-content='<i class="flag-icon flag-icon-mx"></i> Español'>Español
+            </option>
           </select>
         </li>
         <li class="nav-item" sec:authorize="isAnonymous()">
@@ -66,10 +69,12 @@
             <li><a class="dropdown-item" th:href="@{/profile}">
               <i class="ti-user"></i> <span th:text="#{navbar.user.profile.text}"></span></a>
             </li>
-            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')" th:href="@{/users/stuff}">
+            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')"
+                   th:href="@{/users/stuff}">
               <i class="ti-user"></i> <span th:text="#{navbar.user.stuff.text}"></span></a>
             </li>
-            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/stuff}">
+            <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')"
+                   th:href="@{/admin/stuff}">
               <i class="ti-user"></i> <span th:text="#{navbar.admin.stuff.text}"></span></a></li>
             <li><a class="dropdown-item" th:href="@{/logout}">
               <i class="fa fa-power-off"></i> <span th:text="#{navbar.logout.text}"></span></a>

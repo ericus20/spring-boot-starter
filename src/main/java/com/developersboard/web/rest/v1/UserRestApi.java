@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,5 +57,18 @@ public class UserRestApi {
 
     return ResponseEntity.ok(
         Objects.isNull(userDto) ? OperationStatus.FAILURE : OperationStatus.SUCCESS);
+  }
+
+  /**
+   * Deletes the user associated with the publicId.
+   *
+   * @param publicId the publicId
+   * @return if the operation is success
+   */
+  @DeleteMapping(value = "/{publicId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<OperationStatus> deleteUser(@PathVariable String publicId) {
+    userService.deleteUser(publicId);
+
+    return ResponseEntity.ok(OperationStatus.SUCCESS);
   }
 }
