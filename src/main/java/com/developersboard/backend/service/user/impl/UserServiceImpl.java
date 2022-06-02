@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserDto createUser(UserDto userDto) {
-    return createUser(userDto, Collections.singleton(RoleType.ROLE_USER));
+    return createUser(userDto, Collections.emptySet());
   }
 
   /**

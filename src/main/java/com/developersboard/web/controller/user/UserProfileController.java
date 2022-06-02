@@ -60,7 +60,7 @@ public class UserProfileController {
       return HomeConstants.REDIRECT_TO_LOGIN;
     }
 
-    var userHistoryDtos = UserUtils.getUserHistoryDto(userDto.getUserHistories());
+    var userHistoryDtos = UserUtils.convertToUserHistoryDto(userDto.getUserHistories());
     userHistoryDtos.sort(Comparator.comparing(UserHistoryDto::getCreatedAt).reversed());
 
     model.addAttribute(ProfileConstants.USER_HISTORIES, userHistoryDtos);

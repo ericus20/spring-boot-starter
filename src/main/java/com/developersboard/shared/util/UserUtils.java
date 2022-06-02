@@ -242,7 +242,7 @@ public final class UserUtils {
    * @param userHistories stored userHistories details
    * @return userHistories dto
    */
-  public static List<UserHistoryDto> getUserHistoryDto(final Set<UserHistory> userHistories) {
+  public static List<UserHistoryDto> convertToUserHistoryDto(final Set<UserHistory> userHistories) {
     ValidationUtils.validateInputs(userHistories);
 
     return UserHistoryDtoMapper.MAPPER.toUserHistoryDto(userHistories);
