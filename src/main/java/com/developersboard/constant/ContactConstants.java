@@ -13,13 +13,12 @@ public final class ContactConstants {
   public static final String CONTACT_URL_MAPPING = "/contact";
 
   /** The key which identifies the feedback payload in the Model. */
-  public static final String FEEDBACK_MODEL_KEY = "feedback";
+  public static final String FEEDBACK = "feedback";
 
   public static final String FEEDBACK_SUCCESS_KEY = "feedbackSuccess";
-  public static final String FEEDBACK_ERROR_KEY = "feedbackError";
 
   /** View Name Constants. */
-  public static final String CONTACT_VIEW_NAME = "contact";
+  public static final String CONTACT_VIEW_NAME = "contact-us";
 
   public static final String FEEDBACK_ERROR_MESSAGE = "Error submitting feedback";
 

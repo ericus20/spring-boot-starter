@@ -34,6 +34,8 @@ public final class UserConstants {
   /** Email cannot be blank. */
   public static final String BLANK_EMAIL = "Email cannot be blank";
 
+  public static final String BLANK_NAME = "Name cannot be blank";
+
   public static final String BLANK_PUBLIC_ID = "PublicId cannot be left blank";
 
   /** A valid email format is required. */

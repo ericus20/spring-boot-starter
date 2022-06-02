@@ -42,15 +42,11 @@ public final class EmailConstants {
   public static final String COPY_ABOUT_US = "/copy/about-us";
 
   /** Message Constants. */
-  public static final String CONFIRMATION_PENDING_EMAIL_SUBJECT =
-      "[Spring Boot Starter] You are almost there...";
+  public static final String CONFIRMATION_PENDING_EMAIL_SUBJECT = "You are almost there...";
 
-  public static final String CONFIRMATION_SUCCESS_EMAIL_SUBJECT =
-      "[Spring Boot Starter] Thank you for choosing Starter App";
-  public static final String PASSWORD_RESET_EMAIL_SUBJECT =
-      "[Spring Boot Starter] How to Reset Your Password";
-  public static final String PASSWORD_RESET_SUCCESS_SUBJECT =
-      "[Spring Boot Starter] Password successfully updated.";
+  public static final String CONFIRMATION_SUCCESS_EMAIL_SUBJECT = "Thank you for choosing us";
+  public static final String PASSWORD_RESET_EMAIL_SUBJECT = "How to Reset Your Password";
+  public static final String PASSWORD_RESET_SUCCESS_SUBJECT = "Password successfully updated.";
 
   private EmailConstants() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);

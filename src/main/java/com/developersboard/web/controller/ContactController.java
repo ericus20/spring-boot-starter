@@ -7,6 +7,7 @@ import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.util.core.SecurityUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -49,7 +50,7 @@ public class ContactController {
       BeanUtils.copyProperties(authorizedUserDto, feedback);
     }
 
-    model.addAttribute(ContactConstants.FEEDBACK_MODEL_KEY, feedback);
+    model.addAttribute(ContactConstants.FEEDBACK, feedback);
     return ContactConstants.CONTACT_VIEW_NAME;
   }
 
@@ -61,7 +62,7 @@ public class ContactController {
    * @return the status
    */
   @PostMapping
-  public String contactUs(@ModelAttribute FeedbackRequest feedback, Model model) {
+  public String contactUs(@ModelAttribute @Valid FeedbackRequest feedback, Model model) {
     try {
       feedback.setFrom(feedback.getEmail());
       feedback.setTo(systemProperties.getEmail());
@@ -73,7 +74,7 @@ public class ContactController {
       model.addAttribute(ErrorConstants.ERROR, ContactConstants.FEEDBACK_ERROR_MESSAGE);
     }
 
-    model.addAttribute(ContactConstants.FEEDBACK_MODEL_KEY, new FeedbackRequest());
+    model.addAttribute(ContactConstants.FEEDBACK, new FeedbackRequest());
     return ContactConstants.CONTACT_VIEW_NAME;
   }
 }

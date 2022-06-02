@@ -128,8 +128,19 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
+  void getUserHistories(TestInfo testInfo) {
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
+
+    var userHistoryDtos = UserUtils.convertToUserHistoryDto(userDto.getUserHistories());
+
+    Assertions.assertFalse(userHistoryDtos.isEmpty());
+    Assertions.assertEquals(1, userHistoryDtos.size());
+    Assertions.assertEquals(userHistoryDtos.get(0).getUserHistoryType(), UserHistoryType.CREATED);
+  }
+
+  @Test
   void findAllNotEnabledAfterCreationDays(TestInfo testInfo) {
-    UserDto userDto = createAndAssertUser(testInfo.getDisplayName(), false);
+    var userDto = createAndAssertUser(testInfo.getDisplayName(), false);
 
     List<UserDto> users = userService.findAllNotEnabledAfterAllowedDays();
     // User was just created and should not be returned to be deleted.
@@ -236,13 +247,38 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
+  void isValidUsernameAndTokenWithValidToken() {
+    var userDto = createAndAssertUser(UserUtils.createUserDto(false));
+    var token = jwtService.generateJwtToken(userDto.getUsername());
+    Assertions.assertFalse(userService.isValidUsernameAndToken(userDto.getUsername(), token));
+
+    userDto.setVerificationToken(token);
+    userService.saveOrUpdate(UserUtils.convertToUser(userDto), true);
+
+    Assertions.assertTrue(userService.isValidUsernameAndToken(userDto.getUsername(), token));
+  }
+
+  @Test
+  void isValidUsernameAndTokenWithInvalidToken(TestInfo testInfo) {
+    Assertions.assertFalse(
+        userService.isValidUsernameAndToken(testInfo.getDisplayName(), testInfo.getDisplayName()));
+  }
+
+  @Test
+  void isValidUsernameAndTokenWithNullTokenThrowsException(TestInfo testInfo) {
+    Assertions.assertThrows(
+        NullPointerException.class,
+        () -> userService.isValidUsernameAndToken(null, testInfo.getDisplayName()));
+  }
+
+  @Test
   void disableUserNotExistingDoesNothing(TestInfo testInfo) {
     Assertions.assertNull(userService.disableUser(testInfo.getDisplayName()));
   }
 
   @Test
   void deleteUser() {
-    UserDto userDto = createAndAssertUser(UserUtils.createUserDto(false));
+    var userDto = createAndAssertUser(UserUtils.createUserDto(false));
     Assertions.assertTrue(userService.existsByUsername(userDto.getUsername()));
 
     userService.deleteUser(userDto.getPublicId());
