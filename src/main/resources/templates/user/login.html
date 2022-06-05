@@ -17,10 +17,12 @@
     <!-- Col starts-->
     <div class="col-md-4 offset-md-4 mt-4">
       <div class="mt-4 mb-2 text-center">
-        <div class="bg-warning p-2" th:if="${param.error}" th:text="#{login.error.message}"></div>
-        <div class="bg-success text-white p-2" th:if="${param.logout}" th:text="#{login.logout.success}"></div>
-        <div th:if="${passwordResetSuccess}" class="bg-success text-white p-2" th:text="#{reset.password.email.sent.success}"></div>
-        <div th:if="${error}" class="bg-warning p-2" th:text="${error}"></div>
+        <div class="bg-warning p-2" th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></div>
+        <div class="bg-success text-white p-2" th:if="${param.logout}"
+             th:text="#{login.logout.success}"></div>
+        <div class="bg-success text-white p-2" th:if="${passwordResetSuccess}"
+             th:text="#{reset.password.email.sent.success}"></div>
+        <div class="bg-warning p-2" th:if="${error}" th:text="${error}"></div>
       </div>
 
       <form id="login-form" method="post" th:action="@{/login}"
@@ -32,9 +34,9 @@
           <div class="mb-3">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-user"></i></span>
-              <input type="text" class="form-control rounded" th:field="*{username}"
-                     th:placeholder="#{form.username} + ' or ' + #{form.email}"
-                     aria-label="Username" aria-describedby="username" required autofocus>
+              <input aria-describedby="username" aria-label="Username" autofocus
+                     class="form-control rounded"
+                     required th:field="*{username}" th:placeholder="#{form.username} + ' or ' + #{form.email}" type="text">
             </div>
           </div>
           <!-- Username input ends -->
@@ -42,26 +44,26 @@
           <div class="mb-3">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-lock"></i></span>
-              <input type="password" class="form-control rounded" th:field="*{password}"
-                     th:placeholder="#{form.password}"
-                     aria-label="Password" aria-describedby="password" required>
-              <button id="toggle-password" type="button" class="d-none"
-                      aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+              <input aria-describedby="password" aria-label="Password" class="form-control rounded"
+                     required
+                     th:field="*{password}" th:placeholder="#{form.password}" type="password">
+              <button aria-label="Show password as plain text. Warning: this will display your password on the screen." class="d-none" id="toggle-password"
+                      type="button">
               </button>
             </div>
           </div>
           <!-- Password input ends -->
           <!-- Remember me starts -->
           <div class="mb-3 form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me"
-                   checked>
+            <input checked class="form-check-input" id="remember-me" name="remember-me"
+                   type="checkbox">
             <label class="form-check-label" for="remember-me"
                    th:text="#{login.remember-me}"></label>
           </div>
           <!-- Remember me ends-->
           <!-- Sign in button starts -->
           <div class="mb-3 d-grid gap-2 mx-auto">
-            <button class="btn btn-primary" type="submit" th:text="#{login.text}"></button>
+            <button class="btn btn-primary" th:text="#{login.text}" type="submit"></button>
           </div>
           <!-- Sign in button ends -->
         </fieldset>
@@ -74,7 +76,7 @@
       </div>
       <!-- Sign in button starts -->
       <div class="d-grid gap-2 mx-auto mb-3">
-        <a class="btn btn-info" th:href="@{/sign-up}" type="submit" th:text="#{sign-up.text}"></a>
+        <a class="btn btn-info" th:href="@{/sign-up}" th:text="#{sign-up.text}" type="submit"></a>
       </div>
       <!-- Sign in button ends -->
     </div>

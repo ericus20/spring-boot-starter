@@ -24,14 +24,16 @@
     <div class="row">
 
       <div class="col-md-6 mt-4 mb-4 text-center">
-        <div class="bg-success text-white p-2" th:if="${feedbackSuccess}" th:text="#{contact.form.success.text}"></div>
-        <div th:if="${error}" class="bg-warning p-2" th:text="${error}"></div>
+        <div class="bg-success text-white p-2" th:if="${feedbackSuccess}"
+             th:text="#{contact.form.success.text}"></div>
+        <div class="bg-warning p-2" th:if="${error}" th:text="${error}"></div>
       </div>
 
       <!--Grid column-->
       <div class="col-md-9 mb-md-0 mb-5">
-        <form id="contact-form" name="contact-form" th:action="@{/contact}" method="post" th:object="${user}">
-          <input th:if="${user}" th:field="*{email}" type="hidden">
+        <form id="contact-form" method="post" name="contact-form" th:action="@{/contact}"
+              th:object="${user}">
+          <input th:field="*{email}" th:if="${user}" type="hidden">
 
           <!--Grid row-->
           <div class="row">
@@ -39,8 +41,8 @@
             <!--Grid column-->
             <div class="col-md-6">
               <div class="md-form mb-0">
-                <input type="text" id="name" name="name" class="form-control">
-                <label for="name" class="" th:text="#{contact.name}"></label>
+                <input class="form-control" id="name" name="name" type="text">
+                <label class="" for="name" th:text="#{contact.name}"></label>
               </div>
             </div>
             <!--Grid column-->
@@ -48,9 +50,10 @@
             <!--Grid column-->
             <div class="col-md-6">
               <div class="md-form mb-0">
-                <input th:if="${user}" type="text" th:field="*{email}" class="form-control" disabled>
-                <input th:unless="${user}" type="text" id="email" name="email" class="form-control">
-                <label for="email" class="" th:text="#{contact.email}"></label>
+                <input class="form-control" disabled th:field="*{email}" th:if="${user}"
+                       type="text">
+                <input class="form-control" id="email" name="email" th:unless="${user}" type="text">
+                <label class="" for="email" th:text="#{contact.email}"></label>
               </div>
             </div>
             <!--Grid column-->
@@ -62,8 +65,8 @@
           <div class="row">
             <div class="col-md-12">
               <div class="md-form mb-0">
-                <input type="text" id="subject" name="subject" class="form-control">
-                <label for="subject" class="" th:text="#{contact.form.subject}"></label>
+                <input class="form-control" id="subject" name="subject" type="text">
+                <label class="" for="subject" th:text="#{contact.form.subject}"></label>
               </div>
             </div>
           </div>
@@ -76,8 +79,8 @@
             <div class="col-md-12">
 
               <div class="md-form">
-                <textarea type="text" id="message" name="message" rows="2"
-                          class="form-control md-textarea"></textarea>
+                <textarea class="form-control md-textarea" id="message" name="message" rows="2"
+                          type="text"></textarea>
                 <label for="message" th:text="#{contact.form.feedback}"></label>
               </div>
 

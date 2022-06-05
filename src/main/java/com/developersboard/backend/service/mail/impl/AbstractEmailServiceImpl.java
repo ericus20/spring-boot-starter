@@ -35,6 +35,29 @@ import org.thymeleaf.context.Context;
 public abstract class AbstractEmailServiceImpl implements EmailService {
 
   /**
+   * Prepares a context with current content.
+   *
+   * @param emailRequest the emailRequest
+   * @return emailRequest with context
+   */
+  public static HtmlEmailRequest prepareEmailRequest(final HtmlEmailRequest emailRequest) {
+    var context = new Context();
+    context.setVariable(EmailConstants.URLS, emailRequest.getUrls());
+    context.setVariable(UserConstants.USERNAME, emailRequest.getReceiver().getUsername());
+    emailRequest.setTo(emailRequest.getReceiver().getEmail());
+    emailRequest.setSubject(emailRequest.getSubject());
+
+    if (emailRequest.getUrls().containsKey(EmailConstants.EMAIL_LINK)) {
+      context.setVariable(
+          EmailConstants.EMAIL_LINK, emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
+      LOG.info(emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
+    }
+    emailRequest.setContext(context);
+
+    return emailRequest;
+  }
+
+  /**
    * Sends an email given a feedback Pojo.
    *
    * @param feedbackRequest the feedback pojo.
@@ -178,29 +201,6 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     emailRequest.setUrls(links);
     emailRequest.setReceiver(userDto);
     emailRequest.setSubject(subject);
-
-    return emailRequest;
-  }
-
-  /**
-   * Prepares a context with current content.
-   *
-   * @param emailRequest the emailRequest
-   * @return emailRequest with context
-   */
-  public static HtmlEmailRequest prepareEmailRequest(final HtmlEmailRequest emailRequest) {
-    var context = new Context();
-    context.setVariable(EmailConstants.URLS, emailRequest.getUrls());
-    context.setVariable(UserConstants.USERNAME, emailRequest.getReceiver().getUsername());
-    emailRequest.setTo(emailRequest.getReceiver().getEmail());
-    emailRequest.setSubject(emailRequest.getSubject());
-
-    if (emailRequest.getUrls().containsKey(EmailConstants.EMAIL_LINK)) {
-      context.setVariable(
-          EmailConstants.EMAIL_LINK, emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
-      LOG.info(emailRequest.getUrls().get(EmailConstants.EMAIL_LINK));
-    }
-    emailRequest.setContext(context);
 
     return emailRequest;
   }

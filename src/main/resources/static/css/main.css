@@ -1,25 +1,25 @@
 
 html {
-    background: url('../images/bg.png') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+  background: url('../images/bg.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 body {
-    padding: 0 2em;
-    color: #024457;
-    background-color: transparent;
-    font-family: Arial, sans-serif;
+  padding: 0 2em;
+  color: #024457;
+  background-color: transparent;
+  font-family: Arial, sans-serif;
 }
 
 .ms-8 {
-    margin-left: 8rem;
+  margin-left: 8rem;
 }
 
 .me-8 {
-    margin-right: 8rem;
+  margin-right: 8rem;
 }
 
 .card {
@@ -35,6 +35,7 @@ body {
   margin-bottom: 1.5rem;
   box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
 }
+
 .me-2 {
-  margin-right: .5rem!important;
+  margin-right: .5rem !important;
 }

@@ -39,7 +39,16 @@ public final class SecurityConstants {
   public static final int DEFAULT_TOKEN_DURATION = 7;
 
   public static final int SECURITY_STRENGTH = 12;
-
+  public static final List<String> ALLOWED_HTTP_METHODS =
+      List.of(
+          HttpMethod.GET.name(),
+          HttpMethod.POST.name(),
+          HttpMethod.PUT.name(),
+          HttpMethod.DELETE.name(),
+          HttpMethod.PATCH.name(),
+          HttpMethod.OPTIONS.name());
+  public static final List<String> ALLOWED_HTTP_HEADERS =
+      List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL, HttpHeaders.CONTENT_TYPE);
   private static final String[] PUBLIC_MATCHERS = {
     "/css/**",
     "/js/**",
@@ -54,22 +63,11 @@ public final class SecurityConstants {
     "/swagger-ui/**",
     "/swagger-ui.html",
     ROOT_PATH,
+    String.join("/", SecurityConstants.LOGIN, "**"),
     String.join("/", SignUpConstants.SIGN_UP_MAPPING, "**"),
     String.join("/", ContactConstants.CONTACT_URL_MAPPING, "**"),
     String.join("/", PasswordConstants.PASSWORD_RESET_ROOT_MAPPING, "**"),
   };
-
-  public static final List<String> ALLOWED_HTTP_METHODS =
-      List.of(
-          HttpMethod.GET.name(),
-          HttpMethod.POST.name(),
-          HttpMethod.PUT.name(),
-          HttpMethod.DELETE.name(),
-          HttpMethod.PATCH.name(),
-          HttpMethod.OPTIONS.name());
-
-  public static final List<String> ALLOWED_HTTP_HEADERS =
-      List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL, HttpHeaders.CONTENT_TYPE);
 
   private SecurityConstants() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);

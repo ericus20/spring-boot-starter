@@ -8,24 +8,24 @@
 
 <div class="container error-container">
 
-    <div class="container-fluid bg-secondary text-light p-5 mt-5">
-        <div class="container bg-secondary p-5">
-            <h1 class="display-3">Spring Boot Starter Support Center</h1>
-            <p class="lead">403 Forbidden Error</p>
-            <hr class="my-2">
+  <div class="container-fluid bg-secondary text-light p-5 mt-5">
+    <div class="container bg-secondary p-5">
+      <h1 class="display-3">Spring Boot Starter Support Center</h1>
+      <p class="lead">403 Forbidden Error</p>
+      <hr class="my-2">
 
-            <h3>You are Forbidden to access this path</h3>
+      <h3>You are Forbidden to access this path</h3>
 
-            <b>Page:</b> <span th:text="${path}"></span>
-            <br>
-            <b>Time:</b> <span th:text="${timestamp}"></span>
+      <b>Page:</b> <span th:text="${path}"></span>
+      <br>
+      <b>Time:</b> <span th:text="${timestamp}"></span>
 
-            <p th:if="${status}">
-                <b>Response Status:</b> <span th:text="${status}">status-code</span> <span
-                th:if="${message}" th:text="'('+${message}+')'">error ...</span>
-            </p>
-        </div>
+      <p th:if="${status}">
+        <b>Response Status:</b> <span th:text="${status}">status-code</span> <span
+          th:if="${message}" th:text="'('+${message}+')'">error ...</span>
+      </p>
     </div>
+  </div>
 
 </div>
 

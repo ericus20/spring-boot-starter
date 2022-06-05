@@ -276,7 +276,8 @@ public class UserServiceImpl implements UserService {
       evict = {
         @CacheEvict(value = CacheConstants.USERS, key = "#userDto.username"),
         @CacheEvict(value = CacheConstants.USERS, key = "#userDto.publicId"),
-        @CacheEvict(value = CacheConstants.USERS, key = "#userDto.email")
+        @CacheEvict(value = CacheConstants.USERS, key = "#userDto.email"),
+        @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
   public UserDto updateUser(UserDto userDto, UserHistoryType userHistoryType) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
@@ -349,6 +350,11 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Transactional
+  @Caching(
+      evict = {
+        @CacheEvict(value = CacheConstants.USERS, key = "#publicId"),
+        @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
+      })
   public void deleteUser(String publicId) {
     ValidationUtils.validateInputsWithMessage(UserConstants.BLANK_PUBLIC_ID, publicId);
 

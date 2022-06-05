@@ -23,11 +23,11 @@ import org.junit.jupiter.api.TestInfo;
  */
 class JwtResponseBuilderTest {
 
-  private transient UserDetailsBuilder userDetailsBuilder;
   private static final String JWT_TOKEN =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
           + "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InRlc3QgdXNlciIsImlhdCI6MTUxNjIzOTAyMn0."
           + "WUwx8SdGax2poWdgIbL3mMLamAVYb6fF1t87jSyGh94";
+  private transient UserDetailsBuilder userDetailsBuilder;
 
   @BeforeAll
   static void beforeAll() {

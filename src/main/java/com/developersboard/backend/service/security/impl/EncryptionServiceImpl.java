@@ -48,14 +48,13 @@ public class EncryptionServiceImpl implements EncryptionService {
   // The password-based key derivation function
   private static final int ITERATION_COUNT = 65536;
   private static final int KEY_LENGTH = 256;
+  private final transient SecureRandom RANDOM = new SecureRandom();
 
   @Value("${encryption.secret.password}")
   private transient String password;
 
   @Value("${encryption.secret.salt}")
   private transient String salt;
-
-  private final transient SecureRandom RANDOM = new SecureRandom();
 
   /**
    * Encrypts the text to be sent out.

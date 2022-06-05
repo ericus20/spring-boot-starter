@@ -1,8 +1,10 @@
 # Authentication and Authorization with JWT
 
-Authentication and authorization is a core feature of the [JWT](https://jwt.io/) and it's been used in the application as the authentication token.
+Authentication and authorization is a core feature of the [JWT](https://jwt.io/) and it's been used
+in the application as the authentication token.
 
-JWT tokens generated within the application are automatically encrypted to prevent public viewing of any data embedded in the payload.
+JWT tokens generated within the application are automatically encrypted to prevent public viewing of
+any data embedded in the payload.
 
 JWT tokens can be traced within the application logs as such:
 
@@ -13,7 +15,8 @@ Token successfully created as eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6M
 
 ```
 
-* This can be viewed in jwt.io to view the content of the payload. The username can be seen in the payload.
+* This can be viewed in jwt.io to view the content of the payload. The username can be seen in the
+  payload.
 
 ![img_1.png](images/auth-jwt.png)
 

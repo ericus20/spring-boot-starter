@@ -1,4 +1,3 @@
-
 The Open API Specification (OAS) is a [JSON Schema](https://json-schema.org/).
 Configuration can be found [here](/src/main/java/com/developersboard/config/OpenApi30Config.java)
 
@@ -8,7 +7,6 @@ Configuration can be found [here](/src/main/java/com/developersboard/config/Open
 ## Actuator endpoints
 
 ![img.png](images/swagger-actuator-endpoint.png)
-
 
 ## User search, Authentication, and Authorization
 

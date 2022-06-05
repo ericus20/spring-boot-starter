@@ -39,8 +39,8 @@ import org.thymeleaf.context.Context;
 public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
 
   private final SystemProperties systemProps;
-  private final transient JavaMailSender mailSender;
-  private final transient TemplateEngine templateEngine;
+  private final JavaMailSender mailSender;
+  private final TemplateEngine templateEngine;
 
   /**
    * Sends an email with the provided simple mail message object.

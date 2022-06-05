@@ -160,6 +160,7 @@ public class PasswordController {
         return PasswordConstants.PASSWORD_RESET_COMPLETE_VIEW_NAME;
       }
 
+      UserUtils.enableUser(storedUserDto);
       storedUserDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
       var updatedUserDto = userService.updateUser(storedUserDto, UserHistoryType.PASSWORD_UPDATE);
       if (Objects.isNull(updatedUserDto)) {

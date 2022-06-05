@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(AdminConstants.API_V1_USERS_ROOT_URL)
-@PreAuthorize("isFullyAuthenticated() && hasRole(T(com.developersboard.enums.RoleType).ROLE_ADMIN)")
 public class UserRestApi {
 
   private final UserService userService;
@@ -37,6 +37,8 @@ public class UserRestApi {
    * @param publicId the publicId
    * @return if the operation is success
    */
+  @PreAuthorize(
+      "isFullyAuthenticated() && hasRole(T(com.developersboard.enums.RoleType).ROLE_ADMIN)")
   @PutMapping(value = "/{publicId}/enable", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<OperationStatus> enableUser(@PathVariable String publicId) {
     var userDto = userService.enableUser(publicId);
@@ -51,6 +53,8 @@ public class UserRestApi {
    * @param publicId the publicId
    * @return if the operation is success
    */
+  @PreAuthorize(
+      "isFullyAuthenticated() && hasRole(T(com.developersboard.enums.RoleType).ROLE_ADMIN)")
   @PutMapping(value = "/{publicId}/disable", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<OperationStatus> disableUser(@PathVariable String publicId) {
     var userDto = userService.disableUser(publicId);
@@ -65,9 +69,17 @@ public class UserRestApi {
    * @param publicId the publicId
    * @return if the operation is success
    */
+  @PreAuthorize(
+      "isFullyAuthenticated() && hasRole(T(com.developersboard.enums.RoleType).ROLE_ADMIN)")
   @DeleteMapping(value = "/{publicId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<OperationStatus> deleteUser(@PathVariable String publicId) {
     userService.deleteUser(publicId);
+
+    return ResponseEntity.ok(OperationStatus.SUCCESS);
+  }
+
+  @PostMapping
+  public ResponseEntity<OperationStatus> createUser() {
 
     return ResponseEntity.ok(OperationStatus.SUCCESS);
   }

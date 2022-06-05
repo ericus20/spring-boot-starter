@@ -44,6 +44,8 @@ https://spring-boot-starter.herokuapp.com/
 
 - [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Form Validation](https://formvalidation.io/)
+- [Last Successful Login](documents/AUTHENTICATION.MD)
+- [Bruteforce Attack Prevention using Failed Login Attempts](documents/AUTHENTICATION.MD)
 - [Unit and Integration Tests](documents/TESTS.md)
 - [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
 - [Advanced CORS Configuration](documents/advanced-cors-configuration.md)
@@ -55,12 +57,10 @@ https://spring-boot-starter.herokuapp.com/
 - [Email Service with HTML and attachment support](documents/EMAIL_SERVICE.md)
 - [Security Configuration Without WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#ldap-authentication)
 
-
 ## Sample *ongoing* project using this template
+
 <!-- - [A Simple E-Commerce Application](https://github.com/ericus20/e-commerce) -->
 TBD
-
-
 
 ## Production Ready Folder Structure
 
@@ -166,13 +166,18 @@ TBD
 * Run unit tests using - **./gradlew test**
 * Run integration tests using - **./gradlew integrationTest**
 * Run all tests using - **./gradlew testAll**
-* * Access application on *http://localhost:8080/*
+*
+    * Access application on *http://localhost:8080/*
 * Access in-memory database on *http://localhost:8080/console*
-* Run owasp dependency check - **./gradlew  dependencyCheckAnalyze --info**
+* Run owasp dependency check - **./gradlew dependencyCheckAnalyze --info**
 * Access Swagger UI - **http://localhost:8080/swagger-ui/index.html**
 
 ## Running on Docker (Assuming docker is installed)
-* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose up**
+
+* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose
+  up**
 
 ## Stop running application on Docker
-* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose down**
+
+* in the directory where docker-compose.yml file resides, simply run the command - **docker-compose
+  down**

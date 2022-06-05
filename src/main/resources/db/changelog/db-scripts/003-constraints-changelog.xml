@@ -1,72 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <databaseChangeLog
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
-   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-   http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet author="Simon" id="cnst01">
-  		<sql>
-			alter table user_history
-			drop constraint if exists UK_b9aiadh5fvuj1ssnxyya4yclu;
+  <changeSet author="Simon" id="cnst01">
+    <sql>
+      alter table user_history
+      drop
+      constraint if exists UK_b9aiadh5fvuj1ssnxyya4yclu;
 
 
-			alter table user_history
-				add constraint UK_b9aiadh5fvuj1ssnxyya4yclu unique (public_id);
+      alter table user_history
+        add constraint UK_b9aiadh5fvuj1ssnxyya4yclu unique (public_id);
 
 
-			alter table user_role
-			drop constraint if exists UK_fly41lfcts7ihspkv2f1wbuv5;
+      alter table user_role
+      drop
+      constraint if exists UK_fly41lfcts7ihspkv2f1wbuv5;
 
 
-			alter table user_role
-				add constraint UK_fly41lfcts7ihspkv2f1wbuv5 unique (public_id);
+      alter table user_role
+        add constraint UK_fly41lfcts7ihspkv2f1wbuv5 unique (public_id);
 
 
-			alter table users
-			drop constraint if exists UK_s24bux761rbgowsl7a4b386ba;
+      alter table users
+      drop
+      constraint if exists UK_s24bux761rbgowsl7a4b386ba;
 
 
-			alter table users
-				add constraint UK_s24bux761rbgowsl7a4b386ba unique (public_id);
+      alter table users
+        add constraint UK_s24bux761rbgowsl7a4b386ba unique (public_id);
 
 
-			alter table users
-			drop constraint if exists UK_6dotkott2kjsp8vw4d0m25fb7;
+      alter table users
+      drop
+      constraint if exists UK_6dotkott2kjsp8vw4d0m25fb7;
 
 
-			alter table users
-				add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email);
+      alter table users
+        add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email);
 
 
-			alter table users
-			drop constraint if exists UK_r43af9ap4edm43mmtq01oddj6;
+      alter table users
+      drop
+      constraint if exists UK_r43af9ap4edm43mmtq01oddj6;
 
 
-			alter table users
-				add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username);
+      alter table users
+        add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username);
 
 
-			alter table user_history
-				add constraint FKd8f7md75uuycl5mgtl394nqoi
-					foreign key (user_id)
-						references users;
+      alter table user_history
+        add constraint FKd8f7md75uuycl5mgtl394nqoi
+          foreign key (user_id)
+            references users;
 
 
-			alter table user_role
-				add constraint FKa68196081fvovjhkek5m97n3y
-					foreign key (role_id)
-						references role;
+      alter table user_role
+        add constraint FKa68196081fvovjhkek5m97n3y
+          foreign key (role_id)
+            references role;
 
 
-			alter table user_role
-				add constraint FKj345gk1bovqvfame88rcx7yyx
-					foreign key (user_id)
-						references users;
-  		</sql>
-    </changeSet>
-  </databaseChangeLog>
+      alter table user_role
+        add constraint FKj345gk1bovqvfame88rcx7yyx
+          foreign key (user_id)
+            references users;
+    </sql>
+  </changeSet>
+</databaseChangeLog>
