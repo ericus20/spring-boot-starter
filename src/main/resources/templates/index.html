@@ -27,6 +27,7 @@
                 th:text="${#temporals.format(lastLogin, 'MMM dd yyyy h:mm:ss a')}">
             </span>
           </p>
+          <p th:unless="${lastLogin}">No previous recorded login action</p>
 
           <hr>
 
