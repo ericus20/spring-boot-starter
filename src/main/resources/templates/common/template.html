@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="common-head (title)">
   <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
 
   <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}" type="text/css">
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
@@ -12,11 +12,11 @@
         type="text/css">
 
   <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
-  <link rel="stylesheet" th:if="${formValidation}" th:href="@{/css/formValidation.min.css}"
+  <link rel="stylesheet" th:href="@{/css/formValidation.min.css}" th:if="${formValidation}"
         type="text/css">
 
   <!--/*@thymesVar id="togglePassword" type="java.lang.Boolean"*/-->
-  <link rel="stylesheet" th:if="${togglePassword}" th:href="@{/css/show-password-toggle.min.css}"
+  <link rel="stylesheet" th:href="@{/css/show-password-toggle.min.css}" th:if="${togglePassword}"
         type="text/css">
   <link rel="stylesheet" th:href="@{/css/main.css}" type="text/css">
 
@@ -25,12 +25,12 @@
 
 
 <!-- Navbar -->
-<nav th:fragment="common-navbar" class="navbar navbar-expand-lg fixed-top bg-light navbar-light">
+<nav class="navbar navbar-expand-lg fixed-top bg-light navbar-light" th:fragment="common-navbar">
   <div class="container">
     <a class="navbar-brand" th:href="@{/}" th:text="#{navbar.logo.text}"></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-bs-target="#navbarSupportedContent"
+            data-bs-toggle="collapse" type="button">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -46,12 +46,12 @@
       </ul>
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item">
-          <select class="nav-link mx-2" id="locale" data-width="fit">
-            <option th:selected="__${#locale}__== 'en'" value="en"
-                    data-content='<span class="fa-regular fa-flag-usa"></span> English'>English
+          <select class="nav-link mx-2" data-width="fit" id="locale">
+            <option data-content='<span class="fa-regular fa-flag-usa"></span> English' th:selected="__${#locale}__== 'en'"
+                    value="en">English
             </option>
-            <option th:selected="__${#locale}__== 'es'" value="es"
-                    data-content='<i class="flag-icon flag-icon-mx"></i> Español'>Español
+            <option data-content='<i class="flag-icon flag-icon-mx"></i> Español' th:selected="__${#locale}__== 'es'"
+                    value="es">Español
             </option>
           </select>
         </li>
@@ -61,11 +61,11 @@
           </a>
         </li>
         <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
+          <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+             id="navbarDropdown" role="button">
             <span sec:authentication="name"></span>
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <ul aria-labelledby="navbarDropdown" class="dropdown-menu">
             <li><a class="dropdown-item" th:href="@{/profile}">
               <i class="ti-user"></i> <span th:text="#{navbar.user.profile.text}"></span></a>
             </li>

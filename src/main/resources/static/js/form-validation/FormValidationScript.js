@@ -131,7 +131,8 @@ const main = () => {
     ); /* Sign up form validation ends */
   }
 
-  const passwordResetStartForm = document.getElementById('password-reset-start-form');
+  const passwordResetStartForm = document.getElementById(
+      'password-reset-start-form');
   if (passwordResetStartForm) {
     /* Sign up form validation starts */
     FormValidation.formValidation(
@@ -170,7 +171,8 @@ const main = () => {
     ); /* Sign up form validation ends */
   }
 
-  const passwordResetCompleteForm = document.getElementById('password-reset-complete-form');
+  const passwordResetCompleteForm = document.getElementById(
+      'password-reset-complete-form');
   if (passwordResetCompleteForm) {
     /* Sign up form validation starts */
     const fv = FormValidation.formValidation(
@@ -192,7 +194,8 @@ const main = () => {
               validators: {
                 identical: {
                   compare: function () {
-                    return passwordResetCompleteForm.querySelector('[name="password"]').value;
+                    return passwordResetCompleteForm.querySelector(
+                        '[name="password"]').value;
                   },
                   message: 'The password and its confirm are not the same',
                 },
@@ -216,7 +219,8 @@ const main = () => {
     ); /* Sign up form validation ends */
 
     // Revalidate the confirmation password when changing the password
-    passwordResetCompleteForm.querySelector('[name="password"]').addEventListener('input', function () {
+    passwordResetCompleteForm.querySelector(
+        '[name="password"]').addEventListener('input', function () {
       fv.revalidateField('confirmPassword');
     });
   }

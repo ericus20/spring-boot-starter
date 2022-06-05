@@ -24,17 +24,15 @@ import org.springframework.security.core.userdetails.User;
  * @since 1.0
  */
 public class TestUtils {
+  public static final String ANONYMOUS_USER = "anonymousUser";
+  public static final String ANONYMOUS_ROLE = "ROLE_ANONYMOUS";
+  public static final String ROLE_USER = "ROLE_USER";
   protected static final Faker FAKER = new Faker();
-
   private static final String[] IGNORED_FIELDS = {
     "id", "createdAt", "createdBy", "updatedAt", "updatedBy"
   };
   private static final String[] BASE_EQUALS_AND_HASH_CODE_FIELDS = {"version", "publicId"};
   private static final String[] USER_EQUALS_FIELDS = {"publicId", "username", "email"};
-
-  public static final String ANONYMOUS_USER = "anonymousUser";
-  public static final String ANONYMOUS_ROLE = "ROLE_ANONYMOUS";
-  public static final String ROLE_USER = "ROLE_USER";
 
   public static Collection<String> getBaseEqualsAndHashCodeFields() {
     return List.of(BASE_EQUALS_AND_HASH_CODE_FIELDS);

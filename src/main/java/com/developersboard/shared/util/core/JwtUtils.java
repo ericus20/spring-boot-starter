@@ -14,12 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public final class JwtUtils {
 
-  public enum JwtTokenType {
-    BAD_SIGNATURE,
-    MALFORMED,
-    UNSUPPORTED
-  }
-
   public static final int NUM_OF_JWT_PARTS = 3;
   public static final int JWT_HEADER_PART = 0;
   public static final int JWT_PAYLOAD_PART = 1;
@@ -65,5 +59,11 @@ public final class JwtUtils {
       }
     }
     return null;
+  }
+
+  public enum JwtTokenType {
+    BAD_SIGNATURE,
+    MALFORMED,
+    UNSUPPORTED
   }
 }

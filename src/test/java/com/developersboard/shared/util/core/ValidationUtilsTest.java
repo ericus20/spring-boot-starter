@@ -10,6 +10,10 @@ import org.junit.platform.commons.util.ReflectionUtils;
 
 class ValidationUtilsTest {
 
+  private static Stream<String> blankStrings() {
+    return Stream.of("", "   ");
+  }
+
   @Test
   void callingConstructorShouldThrowException() {
     Assertions.assertThrows(
@@ -72,9 +76,5 @@ class ValidationUtilsTest {
 
     Assertions.assertDoesNotThrow(
         () -> ValidationUtils.validateInputs(testInfo.getDisplayName(), new int[] {1}));
-  }
-
-  private static Stream<String> blankStrings() {
-    return Stream.of("", "   ");
   }
 }

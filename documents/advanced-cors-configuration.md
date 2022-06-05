@@ -23,12 +23,12 @@ cors.allow-credentials=${CORS_ALLOW_CREDENTIALS:true}
 cors.allowed-origins=${CORS_ALLOWED_ORIGINS:http://localhost:3000/, http://localhost:4200/}
 ```
 
- * `CORS_ALLOWED_ORIGINS` - Comma-separated list of allowed origins.
- * `CORS_ALLOWED_HEADERS` - Comma-separated list of allowed headers.
- * `CORS_ALLOWED_METHODS` - Comma-separated list of allowed methods.
- * `CORS_ALLOWED_EXPOSE_HEADERS` - Comma-separated list of exposed headers.
- * `CORS_ALLOWED_CREDENTIALS` - Boolean value indicating whether credentials are allowed.
- * `CORS_PREFLIGHT_MAX_AGE` - Integer value indicating the max age of the preflight request.
+* `CORS_ALLOWED_ORIGINS` - Comma-separated list of allowed origins.
+* `CORS_ALLOWED_HEADERS` - Comma-separated list of allowed headers.
+* `CORS_ALLOWED_METHODS` - Comma-separated list of allowed methods.
+* `CORS_ALLOWED_EXPOSE_HEADERS` - Comma-separated list of exposed headers.
+* `CORS_ALLOWED_CREDENTIALS` - Boolean value indicating whether credentials are allowed.
+* `CORS_PREFLIGHT_MAX_AGE` - Integer value indicating the max age of the preflight request.
 
 The bean responsible for the CORS configuration is:
 

@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 
 <!-- Head -->
 <th:block th:replace="common/template :: common-head(title='Profile')"/>
@@ -18,11 +19,11 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex flex-column align-items-center text-center">
-              <img th:src="@{${user.profileImage}}" alt="Admin"
-                   class="rounded-circle p-1 bg-primary" width="110">
+              <img alt="Admin" class="rounded-circle p-1 bg-primary"
+                   th:src="@{${user.profileImage}}" width="110">
               <div class="mt-3">
                 <h4 th:if="${#strings.isEmpty(user.name)}" th:text="${user.username}"></h4>
-                <h4 th:unless="${#strings.isEmpty(user.name)}" th:text="${user.name}"></h4>
+                <h4 th:text="${user.name}" th:unless="${#strings.isEmpty(user.name)}"></h4>
                 <p class="text-secondary mb-1"
                    sec:authorize="hasAnyRole('ADMIN', 'USER')">
                   Your role: <span th:text="${user.role}"></span>
@@ -36,11 +37,11 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <h6 class="mb-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                       stroke-linejoin="round" class="feather feather-globe me-2 icon-inline">
+                  <svg class="feather feather-globe me-2 icon-inline" fill="none" height="24" stroke="currentColor"
+                       stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                       width="24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <line x1="2" x2="22" y1="12" y2="12"></line>
                     <path
                         d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                   </svg>
@@ -50,9 +51,9 @@
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <h6 class="mb-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                       stroke-linejoin="round" class="feather feather-github me-2 icon-inline">
+                  <svg class="feather feather-github me-2 icon-inline" fill="none" height="24" stroke="currentColor"
+                       stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                       width="24" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                   </svg>
@@ -62,10 +63,10 @@
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <h6 class="mb-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                       stroke-linejoin="round"
-                       class="feather feather-twitter me-2 icon-inline text-info">
+                  <svg class="feather feather-twitter me-2 icon-inline text-info" fill="none" height="24" stroke="currentColor"
+                       stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                       width="24"
+                       xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
                   </svg>
@@ -75,13 +76,13 @@
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <h6 class="mb-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                       stroke-linejoin="round"
-                       class="feather feather-instagram me-2 icon-inline text-danger">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <svg class="feather feather-instagram me-2 icon-inline text-danger" fill="none" height="24" stroke="currentColor"
+                       stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                       width="24"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
                   </svg>
                   Instagram
                 </h6>
@@ -89,10 +90,10 @@
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <h6 class="mb-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                       fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                       stroke-linejoin="round"
-                       class="feather feather-facebook me-2 icon-inline text-primary">
+                  <svg class="feather feather-facebook me-2 icon-inline text-primary" fill="none" height="24" stroke="currentColor"
+                       stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                       width="24"
+                       xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
                   </svg>
@@ -121,7 +122,7 @@
                   <h6 class="mb-0" th:text="#{form.first.name}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" th:field="*{firstName}">
+                  <input class="form-control" th:field="*{firstName}" type="text">
                 </div>
               </div>
               <div class="row mb-3">
@@ -129,7 +130,7 @@
                   <h6 class="mb-0" th:text="#{form.middle.name}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" th:field="*{middleName}">
+                  <input class="form-control" th:field="*{middleName}" type="text">
                 </div>
               </div>
               <div class="row mb-3">
@@ -137,7 +138,7 @@
                   <h6 class="mb-0" th:text="#{form.last.name}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" th:field="*{lastName}">
+                  <input class="form-control" th:field="*{lastName}" type="text">
                 </div>
               </div>
               <div class="row mb-3">
@@ -145,7 +146,7 @@
                   <h6 class="mb-0" th:text="#{form.email}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" th:field="*{email}" disabled>
+                  <input class="form-control" disabled th:field="*{email}" type="text">
                 </div>
               </div>
               <div class="row mb-3">
@@ -153,13 +154,13 @@
                   <h6 class="mb-0" th:text="#{form.phone.number}"></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="text" class="form-control" th:field="*{phone}">
+                  <input class="form-control" th:field="*{phone}" type="text">
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9 text-secondary">
-                  <input type="submit" class="btn btn-primary px-4" th:value="#{form.update}">
+                  <input class="btn btn-primary px-4" th:value="#{form.update}" type="submit">
                 </div>
               </div>
             </form>

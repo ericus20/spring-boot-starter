@@ -5,6 +5,7 @@ import com.developersboard.constant.user.UserConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -59,6 +60,9 @@ public class User extends BaseEntity<Long> implements Serializable {
   private String phone;
   private String profileImage;
   private String verificationToken;
+
+  private int failedLoginAttempts;
+  private LocalDateTime lastSuccessfulLogin;
 
   private boolean enabled;
   private boolean accountNonExpired;

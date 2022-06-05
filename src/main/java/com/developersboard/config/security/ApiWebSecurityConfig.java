@@ -2,14 +2,15 @@ package com.developersboard.config.security;
 
 import com.developersboard.config.security.jwt.JwtAuthTokenFilter;
 import com.developersboard.config.security.jwt.JwtAuthenticationEntryPoint;
+import com.developersboard.constant.AdminConstants;
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.enums.RoleType;
 import com.developersboard.shared.util.core.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -58,10 +59,14 @@ public class ApiWebSecurityConfig {
 
     http.antMatcher(SecurityConstants.API_ROOT_URL_MAPPING)
         .authorizeRequests()
+        // allow anonymous resource requests to authenticate
         .antMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING)
         .permitAll()
+        // allow anonymous resource requests to create new user
+        .antMatchers(HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL)
+        .permitAll()
         .anyRequest()
-        .hasAuthority(RoleType.ROLE_ADMIN.getName());
+        .authenticated();
 
     http.authenticationManager(authenticationManager);
 

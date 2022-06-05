@@ -5,6 +5,7 @@ import com.developersboard.backend.persistent.domain.user.UserRole;
 import com.developersboard.constant.user.UserConstants;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.constraints.Email;
@@ -48,12 +49,15 @@ public class UserDto extends BaseDto implements Serializable {
   private String role;
   private String phone;
   private String profileImage;
+  private String verificationToken;
+
+  private int failedLoginAttempts;
+  private LocalDateTime lastSuccessfulLogin;
 
   private boolean enabled;
   private boolean accountNonExpired;
   private boolean accountNonLocked;
   private boolean credentialsNonExpired;
-  private String verificationToken;
 
   @ToString.Exclude private Set<UserRole> userRoles = new HashSet<>();
 

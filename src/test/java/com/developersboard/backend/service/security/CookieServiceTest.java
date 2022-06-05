@@ -23,16 +23,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 @TestInstance(Lifecycle.PER_CLASS)
 class CookieServiceTest {
 
-  private transient JwtService jwtService;
-
-  private transient CookieService cookieService;
-
   private static final int LENGTH_OF_KEY_VALUE_PAIR = 2;
   private static final int DURATION = 1;
   private static final String HTTP_ONLY = "HttpOnly";
   private static final String MAX_AGE = "Max-Age";
   private static final String SAME_SITE = "SameSite";
-
+  private transient JwtService jwtService;
+  private transient CookieService cookieService;
   private transient String jwtToken;
 
   @BeforeAll

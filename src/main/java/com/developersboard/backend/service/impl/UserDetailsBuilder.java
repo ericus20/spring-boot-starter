@@ -3,6 +3,7 @@ package com.developersboard.backend.service.impl;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.constant.user.UserConstants;
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -40,6 +41,8 @@ public final class UserDetailsBuilder implements UserDetails {
   private boolean accountNonExpired;
   private boolean accountNonLocked;
   private boolean credentialsNonExpired;
+  private int failedLoginAttempts;
+  private LocalDateTime lastSuccessfulLogin;
 
   private Collection<? extends GrantedAuthority> authorities;
 
@@ -73,6 +76,8 @@ public final class UserDetailsBuilder implements UserDetails {
         .lastName(user.getLastName())
         .publicId(user.getPublicId())
         .enabled(user.isEnabled())
+        .failedLoginAttempts(user.getFailedLoginAttempts())
+        .lastSuccessfulLogin(user.getLastSuccessfulLogin())
         .accountNonExpired(user.isAccountNonExpired())
         .accountNonLocked(user.isAccountNonLocked())
         .credentialsNonExpired(user.isCredentialsNonExpired())

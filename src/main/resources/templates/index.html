@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!-- Head -->
 <th:block th:replace="common/template :: common-head(title='Home')"/>
 
@@ -16,6 +17,26 @@
     <div class="container bg-secondary text-light p-5 rounded">
       <div class="container bg-secondary p-5 text-center">
         <h1 class="display-4" th:text="#{navbar.logo.text}"></h1>
+
+        <div sec:authorize="isAuthenticated()"
+             th:with="lastLogin=${#authentication.principal.lastSuccessfulLogin}">
+
+          <p th:if="${lastLogin}" class="lead">
+            Last Login:
+            <span
+                th:text="${#temporals.format(lastLogin, 'MMM dd yyyy h:mm:ss a')}">
+            </span>
+          </p>
+
+          <hr>
+
+          <p class="lead">
+            Failed Login Attempts: <span
+              th:text="${#authentication.principal.failedLoginAttempts}"></span>
+          </p>
+
+        </div>
+
         <hr>
       </div>
     </div>
