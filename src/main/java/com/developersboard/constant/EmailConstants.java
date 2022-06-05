@@ -37,6 +37,9 @@ public final class EmailConstants {
   public static final String SIMULATING_SENDING_AN_EMAIL = "Simulating sending an email...";
 
   /** About us link */
+  public static final String HOME_LINK = "home";
+
+  public static final String CONTACT_US_LINK = "contact-us";
   public static final String ABOUT_US_LINK = "aboutUsLink";
 
   public static final String COPY_ABOUT_US = "/copy/about-us";

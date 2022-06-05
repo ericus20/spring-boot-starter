@@ -3,6 +3,7 @@ package com.developersboard.backend.service.mail.impl;
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.user.PasswordConstants;
+import com.developersboard.constant.user.ProfileConstants;
 import com.developersboard.constant.user.SignUpConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.dto.UserDto;
@@ -116,7 +117,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
         prepareHtmlEmailRequest(
             userDto,
             null,
-            "/profile-path",
+            ProfileConstants.PROFILE_MAPPING,
             EmailConstants.EMAIL_WELCOME_TEMPLATE,
             EmailConstants.CONFIRMATION_SUCCESS_EMAIL_SUBJECT);
     // prepare the email request then send it.

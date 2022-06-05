@@ -1,7 +1,9 @@
 package com.developersboard.shared.util.core;
 
+import com.developersboard.constant.ContactConstants;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.ErrorConstants;
+import com.developersboard.constant.HomeConstants;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -52,7 +54,8 @@ public final class WebUtils {
    */
   public static Map<String, String> getDefaultEmailUrls() {
     Map<String, String> links = new HashMap<>();
-    links.put(EmailConstants.ABOUT_US_LINK, getGenericUri(EmailConstants.COPY_ABOUT_US));
+    links.put(EmailConstants.HOME_LINK, getGenericUri(HomeConstants.INDEX_URL_MAPPING));
+    links.put(EmailConstants.CONTACT_US_LINK, getGenericUri(ContactConstants.CONTACT_URL_MAPPING));
 
     return links;
   }

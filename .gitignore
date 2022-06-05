@@ -381,6 +381,7 @@ gradle-app.setting
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+!newrelic-agent-7.7.0.jar
 
 # Avoid ignore Gradle wrappper properties
 !gradle-wrapper.properties
