@@ -45,6 +45,7 @@ https://spring-boot-starter.herokuapp.com/
 - [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Form Validation](https://formvalidation.io/)
 - [Last Successful Login](documents/AUTHENTICATION.MD)
+- [New Relic Integration](documents/NEWRELIC.MD)
 - [Bruteforce Attack Prevention using Failed Login Attempts](documents/AUTHENTICATION.MD)
 - [Unit and Integration Tests](documents/TESTS.md)
 - [API Login Controller](documents/API_LOGIN_CONTROLLER.MD)
@@ -102,7 +103,8 @@ TBD
 ```
 
 Configuration properties required to deploy to Heroku:
-![img.png](documents/images/heroku-deploy-properties.png)
+
+![img.png](documents/images/heroku-deployment-properties.png)
 
 ## Contributing
 
