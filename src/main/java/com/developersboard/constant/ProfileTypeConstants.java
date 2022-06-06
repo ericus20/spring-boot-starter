@@ -10,10 +10,10 @@ package com.developersboard.constant;
 public final class ProfileTypeConstants {
 
   /** The dev profile exposes development specific beans and configurations. */
-  public static final String DEV = "dev";
+  public static final String DEV = "development";
 
   /** The prod profile exposes production specific beans and configurations. */
-  public static final String PROD = "prod";
+  public static final String PROD = "production";
 
   /** The test profile exposes testing specific beans and configurations. */
   public static final String TEST = "test";
