@@ -1,5 +1,6 @@
 package com.developersboard.annotation.impl;
 
+import com.developersboard.annotation.Loggable;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -26,19 +27,39 @@ public class MethodLogger {
    * @return the log object
    * @throws Throwable if an error occurs
    */
-  @Around("execution(* *(..)) && @annotation(com.developersboard.annotation.Loggable)")
-  public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
+  @Around("execution(* *(..)) && @annotation(loggable)")
+  public Object log(ProceedingJoinPoint joinPoint, Loggable loggable) throws Throwable {
     var method = joinPoint.getSignature().toShortString();
     var start = System.currentTimeMillis();
 
-    LOG.info("=> Starting -  {} args: {}", method, joinPoint.getArgs());
+    switchStartingLogger(loggable.level(), method, joinPoint.getArgs());
     Object response = joinPoint.proceed();
-    LOG.info(
-        "<= {} : {} - Finished, duration: {} ms",
-        method,
-        response,
-        System.currentTimeMillis() - start);
+    switchFinishingLogger(loggable.level(), method, response, start);
 
     return response;
+  }
+
+  private void switchStartingLogger(String level, String method, Object args) {
+    final String format = "=> Starting -  {} args: {}";
+
+    switch (level) {
+      case "warn" -> LOG.warn(format, method, args);
+      case "error" -> LOG.error(format, method, args);
+      case "debug" -> LOG.debug(format, method, args);
+      case "trace" -> LOG.trace(format, method, args);
+      default -> LOG.info(format, method, args);
+    }
+  }
+
+  private void switchFinishingLogger(String level, String method, Object response, long start) {
+    final String format = "<= {} : {} - Finished, duration: {} ms";
+
+    switch (level) {
+      case "warn" -> LOG.warn(format, method, response, System.currentTimeMillis() - start);
+      case "error" -> LOG.error(format, method, response, System.currentTimeMillis() - start);
+      case "debug" -> LOG.debug(format, method, response, System.currentTimeMillis() - start);
+      case "trace" -> LOG.trace(format, method, response, System.currentTimeMillis() - start);
+      default -> LOG.info(format, method, response, System.currentTimeMillis() - start);
+    }
   }
 }
