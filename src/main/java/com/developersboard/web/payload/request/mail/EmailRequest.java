@@ -1,9 +1,9 @@
 package com.developersboard.web.payload.request.mail;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Data;
 
 /**
@@ -21,5 +21,5 @@ public class EmailRequest {
   private String from;
 
   private List<String> recipients = new ArrayList<>();
-  private Map<String, String> urls = new HashMap<>();
+  private Map<String, String> urls = new ConcurrentHashMap<>();
 }

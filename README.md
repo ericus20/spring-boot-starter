@@ -60,8 +60,7 @@ https://spring-boot-starter.herokuapp.com/
 
 ## Sample *ongoing* project using this template
 
-<!-- - [A Simple E-Commerce Application](https://github.com/ericus20/e-commerce) -->
-TBD
+[A Simple E-Commerce Application](https://github.com/ericus20/e-commerce)
 
 ## Production Ready Folder Structure
 

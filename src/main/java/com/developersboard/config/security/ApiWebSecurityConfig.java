@@ -4,12 +4,10 @@ import com.developersboard.config.security.jwt.JwtAuthTokenFilter;
 import com.developersboard.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.developersboard.constant.AdminConstants;
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.shared.util.core.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,7 +27,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @RequiredArgsConstructor
 public class ApiWebSecurityConfig {
 
-  private final Environment environment;
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
   private final AuthenticationManager authenticationManager;
@@ -53,9 +50,6 @@ public class ApiWebSecurityConfig {
         .and()
         .csrf()
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-
-    // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
-    SecurityUtils.configureDevEnvironmentAccess(http, environment);
 
     http.antMatcher(SecurityConstants.API_ROOT_URL_MAPPING)
         .authorizeRequests()

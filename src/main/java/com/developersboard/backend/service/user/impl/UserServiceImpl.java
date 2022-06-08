@@ -2,7 +2,6 @@ package com.developersboard.backend.service.user.impl;
 
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.persistent.domain.user.UserHistory;
-import com.developersboard.backend.persistent.domain.user.UserRole;
 import com.developersboard.backend.persistent.repository.UserRepository;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.backend.service.user.RoleService;
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Transactional
-  public UserDto saveOrUpdate(User user, boolean isUpdate) {
+  public UserDto saveOrUpdate(final User user, final boolean isUpdate) {
     Validate.notNull(user, UserConstants.USER_MUST_NOT_BE_NULL);
     User persistedUser = isUpdate ? userRepository.saveAndFlush(user) : userRepository.save(user);
     LOG.debug(UserConstants.USER_PERSISTED_SUCCESSFULLY, persistedUser);
@@ -78,7 +77,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Transactional
-  public UserDto createUser(UserDto userDto) {
+  public UserDto createUser(final UserDto userDto) {
     return createUser(userDto, Collections.emptySet());
   }
 
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Transactional
-  public UserDto createUser(UserDto userDto, Set<RoleType> roleTypes) {
+  public UserDto createUser(final UserDto userDto, final Set<RoleType> roleTypes) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     var localUser = userRepository.findByEmail(userDto.getEmail());
@@ -123,7 +122,7 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  public UserDto findById(Long id) {
+  public UserDto findById(final Long id) {
     Validate.notNull(id, UserConstants.USER_ID_MUST_NOT_BE_NULL);
 
     User storedUser = userRepository.findById(id).orElse(null);
@@ -142,7 +141,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Cacheable(CacheConstants.USERS)
-  public UserDto findByPublicId(String publicId) {
+  public UserDto findByPublicId(final String publicId) {
     Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
@@ -161,7 +160,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Cacheable(CacheConstants.USERS)
-  public UserDto findByUsername(String username) {
+  public UserDto findByUsername(final String username) {
     Validate.notNull(username, UserConstants.BLANK_USERNAME);
 
     var storedUser = userRepository.findByUsername(username);
@@ -180,7 +179,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Cacheable(CacheConstants.USERS)
-  public UserDto findByEmail(String email) {
+  public UserDto findByEmail(final String email) {
     Validate.notNull(email, UserConstants.BLANK_EMAIL);
 
     User storedUser = userRepository.findByEmail(email);
@@ -211,7 +210,7 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  public UserDetails getUserDetails(String username) {
+  public UserDetails getUserDetails(final String username) {
     Validate.notNull(username, UserConstants.BLANK_USERNAME);
 
     User storedUser = userRepository.findByUsername(username);
@@ -226,7 +225,7 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  public boolean existsByUsername(String username) {
+  public boolean existsByUsername(final String username) {
     Validate.notNull(username, UserConstants.BLANK_USERNAME);
     return userRepository.existsByUsernameOrderById(username);
   }
@@ -240,7 +239,7 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  public boolean existsByUsernameOrEmailAndEnabled(String username, String email) {
+  public boolean existsByUsernameOrEmailAndEnabled(final String username, final String email) {
     Validate.notNull(username, UserConstants.BLANK_USERNAME);
     Validate.notNull(email, UserConstants.BLANK_EMAIL);
 
@@ -256,7 +255,7 @@ public class UserServiceImpl implements UserService {
    * @return if token is valid
    */
   @Override
-  public boolean isValidUsernameAndToken(String username, String token) {
+  public boolean isValidUsernameAndToken(final String username, final String token) {
     Validate.notNull(username, UserConstants.BLANK_USERNAME);
 
     return userRepository.existsByUsernameAndVerificationTokenOrderById(username, token);
@@ -300,7 +299,7 @@ public class UserServiceImpl implements UserService {
         @CacheEvict(value = CacheConstants.USERS),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
-  public UserDto enableUser(String publicId) {
+  public UserDto enableUser(final String publicId) {
     Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
@@ -329,7 +328,7 @@ public class UserServiceImpl implements UserService {
         @CacheEvict(value = CacheConstants.USERS),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
-  public UserDto disableUser(String publicId) {
+  public UserDto disableUser(final String publicId) {
     Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
 
     User storedUser = userRepository.findByPublicId(publicId);
@@ -355,7 +354,7 @@ public class UserServiceImpl implements UserService {
         @CacheEvict(value = CacheConstants.USERS, key = "#publicId"),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
-  public void deleteUser(String publicId) {
+  public void deleteUser(final String publicId) {
     ValidationUtils.validateInputsWithMessage(UserConstants.BLANK_PUBLIC_ID, publicId);
 
     // Number of rows deleted is expected to be 1 since publicId is unique
@@ -373,7 +372,10 @@ public class UserServiceImpl implements UserService {
    * @return the userDto
    */
   private UserDto persistUser(
-      UserDto userDto, Set<RoleType> roleTypes, UserHistoryType historyType, boolean isUpdate) {
+      final UserDto userDto,
+      final Set<RoleType> roleTypes,
+      final UserHistoryType historyType,
+      final boolean isUpdate) {
 
     // If no role types are specified, then set the default role type
     var localRoleTypes = new HashSet<>(roleTypes);
@@ -384,7 +386,7 @@ public class UserServiceImpl implements UserService {
     var user = UserUtils.convertToUser(userDto);
     for (RoleType roleType : localRoleTypes) {
       var storedRole = roleService.findByName(roleType.name());
-      user.addUserRole(new UserRole(user, storedRole));
+      user.addUserRole(user, storedRole);
     }
     user.addUserHistory(new UserHistory(UUID.randomUUID().toString(), user, historyType));
 

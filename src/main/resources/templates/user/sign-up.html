@@ -19,8 +19,7 @@
              th:text="#{signup.verify.text}"></div>
       </div>
 
-      <form id="sign-up-form" method="post" th:action="@{/sign-up}"
-            th:object="${user}">
+      <form id="sign-up-form" method="post" th:action="@{/sign-up}">
         <fieldset>
           <legend th:text="#{sign-up.text}"></legend>
 
@@ -29,8 +28,8 @@
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-user"></i></span>
               <input aria-describedby="username" aria-label="Username" autofocus
-                     class="form-control rounded"
-                     required th:field="*{username}" th:placeholder="#{form.username}" type="text">
+                     class="form-control rounded" type="text"
+                     required id="username" name="username" th:placeholder="#{form.username}">
             </div>
           </div>
           <!-- Username input ends -->
@@ -39,8 +38,7 @@
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-at"></i></span>
               <input aria-describedby="username" aria-label="Username" class="form-control rounded"
-                     required
-                     th:field="*{email}" th:placeholder="#{form.email}" type="email">
+                     required id="email" name="email" th:placeholder="#{form.email}" type="email">
             </div>
           </div>
           <!-- Email input ends -->
@@ -49,10 +47,13 @@
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-lock"></i></span>
               <input aria-describedby="password" aria-label="Password" class="form-control rounded"
-                     required
-                     th:field="*{password}" th:placeholder="#{form.password}" type="password">
-              <button aria-label="Show password as plain text. Warning: this will display your password on the screen." class="d-none" id="toggle-password"
-                      type="button">
+                     required id="password" name="password" th:placeholder="#{form.password}"
+                     type="password">
+
+              <button
+                  aria-label="Show password as plain text. Warning: this will display your password on the screen."
+                  class="d-none" id="toggle-password"
+                  type="button">
               </button>
             </div>
           </div>

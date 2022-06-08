@@ -35,9 +35,11 @@ public class JwtServiceImpl implements JwtService {
 
   private static final String TOKEN_CREATED_SUCCESS = "Token successfully created as {}";
   private static final int NUMBER_OF_DAYS_TO_EXPIRE = 1;
+  private final transient String jwtSecret;
 
-  @Value("${jwt.secret}")
-  private transient String jwtSecret;
+  public JwtServiceImpl(@Value("${jwt.secret}") String jwtSecret) {
+    this.jwtSecret = jwtSecret;
+  }
 
   /**
    * Generate a JwtToken for the specified username.
@@ -46,7 +48,7 @@ public class JwtServiceImpl implements JwtService {
    * @return the token
    */
   @Override
-  public String generateJwtToken(String username) {
+  public String generateJwtToken(final String username) {
     Validate.notBlank(username, UserConstants.BLANK_USERNAME);
 
     return generateJwtToken(username, DateUtils.addDays(new Date(), NUMBER_OF_DAYS_TO_EXPIRE));
@@ -60,7 +62,7 @@ public class JwtServiceImpl implements JwtService {
    * @return the token
    */
   @Override
-  public String generateJwtToken(String username, Date expiration) {
+  public String generateJwtToken(final String username, final Date expiration) {
     Validate.notBlank(username, UserConstants.BLANK_USERNAME);
 
     var jwtToken =
@@ -82,7 +84,7 @@ public class JwtServiceImpl implements JwtService {
    * @return the username
    */
   @Override
-  public String getUsernameFromToken(String token) {
+  public String getUsernameFromToken(final String token) {
     Validate.notBlank(token, "Token cannot be blank");
 
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
@@ -96,7 +98,7 @@ public class JwtServiceImpl implements JwtService {
    * @return the jwt token
    */
   @Override
-  public String getJwtToken(HttpServletRequest request, boolean fromCookie) {
+  public String getJwtToken(final HttpServletRequest request, final boolean fromCookie) {
     if (fromCookie) {
       return getJwtFromCookie(request);
     }
@@ -111,7 +113,7 @@ public class JwtServiceImpl implements JwtService {
    * @return if valid or not
    */
   @Override
-  public boolean isValidJwtToken(String token) {
+  public boolean isValidJwtToken(final String token) {
     try {
       Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
       return true;
@@ -135,7 +137,7 @@ public class JwtServiceImpl implements JwtService {
    * @param request the httpRequest
    * @return the jwt token
    */
-  private String getJwtFromRequest(HttpServletRequest request) {
+  private String getJwtFromRequest(final HttpServletRequest request) {
     var headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
 
     if (StringUtils.isNotBlank(headerAuth)
@@ -151,7 +153,7 @@ public class JwtServiceImpl implements JwtService {
    * @param request the httpRequest
    * @return the jwt token
    */
-  private String getJwtFromCookie(HttpServletRequest request) {
+  private String getJwtFromCookie(final HttpServletRequest request) {
     Cookie[] cookies = request.getCookies();
     if (Objects.nonNull(cookies)) {
       for (Cookie cookie : cookies) {

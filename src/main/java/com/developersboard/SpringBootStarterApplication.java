@@ -20,7 +20,7 @@ public class SpringBootStarterApplication {
    *
    * @param args an array of command-line arguments for the application
    */
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     SpringApplication.run(SpringBootStarterApplication.class, args);
   }
 }

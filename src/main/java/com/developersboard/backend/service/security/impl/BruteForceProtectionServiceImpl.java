@@ -57,7 +57,7 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
         @CacheEvict(value = CacheConstants.USERS, key = "#username"),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
-  public void registerLoginFailure(String username) {
+  public void registerLoginFailure(final String username) {
     ValidationUtils.validateInputs(username, UserConstants.BLANK_USERNAME);
 
     var user = userRepository.findByUsername(username);
@@ -86,7 +86,7 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
         @CacheEvict(value = CacheConstants.USERS, key = "#username"),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
-  public void resetBruteForceCounter(String username) {
+  public void resetBruteForceCounter(final String username) {
     ValidationUtils.validateInputs(username, UserConstants.BLANK_USERNAME);
 
     var user = userRepository.findByUsername(username);
@@ -105,7 +105,7 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
   }
 
   @Override
-  public boolean isBruteForceAttack(String username) {
+  public boolean isBruteForceAttack(final String username) {
     ValidationUtils.validateInputs(username, UserConstants.BLANK_USERNAME);
 
     var user = userRepository.findByUsername(username);

@@ -22,14 +22,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ExtendWith(MockitoExtension.class)
 class AuthRestApiTest {
 
-  @Mock private transient CookieService cookieService;
+  @Mock private CookieService cookieService;
 
-  @InjectMocks private transient AuthRestApi authRestApi;
+  @InjectMocks private AuthRestApi authRestApi;
 
-  private transient MockMvc mockMvc;
-  private transient String loginUri;
-  private transient String refreshUri;
-  private transient String logoutUri;
+  private MockMvc mockMvc;
+  private String loginUri;
+  private String refreshUri;
+  private String logoutUri;
 
   @BeforeEach
   void setUp() {

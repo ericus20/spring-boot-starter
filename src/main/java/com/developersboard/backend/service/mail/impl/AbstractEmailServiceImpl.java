@@ -6,6 +6,7 @@ import com.developersboard.constant.user.PasswordConstants;
 import com.developersboard.constant.user.ProfileConstants;
 import com.developersboard.constant.user.SignUpConstants;
 import com.developersboard.constant.user.UserConstants;
+import com.developersboard.exception.InvalidServiceRequestException;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.core.ValidationUtils;
 import com.developersboard.shared.util.core.WebUtils;
@@ -58,34 +59,18 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     return emailRequest;
   }
 
-  /**
-   * Sends an email given a feedback Pojo.
-   *
-   * @param feedbackRequest the feedback pojo.
-   * @see FeedbackRequest
-   * @throws UnsupportedEncodingException if the encoding is not supported.
-   */
   @Override
-  public void sendMailWithFeedback(final FeedbackRequest feedbackRequest)
-      throws UnsupportedEncodingException {
-
-    var simpleMailMessage = prepareSimpleMailMessage(feedbackRequest);
-    sendMail(simpleMailMessage);
+  public void sendMailWithFeedback(final FeedbackRequest feedbackRequest) {
+    try {
+      var simpleMailMessage = prepareSimpleMailMessage(feedbackRequest);
+      sendMail(simpleMailMessage);
+    } catch (UnsupportedEncodingException e) {
+      throw new InvalidServiceRequestException(e);
+    }
   }
 
-  /**
-   * Sends an email to the provided user to verify account.
-   *
-   * @param userDto the userDto
-   * @param token the token
-   * @throws MessagingException if the email cannot be sent.
-   * @throws UnsupportedEncodingException if the encoding is not supported.
-   * @throws FileNotFoundException if the specified attachment file is not found
-   */
   @Override
-  public void sendAccountVerificationEmail(UserDto userDto, String token)
-      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
-
+  public void sendAccountVerificationEmail(UserDto userDto, String token) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     var emailRequest =
@@ -99,18 +84,8 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     sendHtmlEmail(prepareEmailRequest(emailRequest));
   }
 
-  /**
-   * Sends an email to the provided user to confirm account activation.
-   *
-   * @param userDto the userDto
-   * @throws MessagingException if the email cannot be sent.
-   * @throws UnsupportedEncodingException if the encoding is not supported.
-   * @throws FileNotFoundException if the specified attachment file is not found
-   */
   @Override
-  public void sendAccountConfirmationEmail(UserDto userDto)
-      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
-
+  public void sendAccountConfirmationEmail(final UserDto userDto) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     HtmlEmailRequest emailRequest =
@@ -124,19 +99,8 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     sendHtmlEmail(prepareEmailRequest(emailRequest));
   }
 
-  /**
-   * Sends an email to the provided user to reset password.
-   *
-   * @param userDto the userDto
-   * @param token the password token
-   * @throws MessagingException if the email cannot be sent.
-   * @throws UnsupportedEncodingException if the encoding is not supported.
-   * @throws FileNotFoundException if the specified attachment file is not found
-   */
   @Override
-  public void sendPasswordResetEmail(UserDto userDto, String token)
-      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
-
+  public void sendPasswordResetEmail(final UserDto userDto, final String token) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     HtmlEmailRequest emailRequest =
@@ -150,18 +114,8 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
     sendHtmlEmail(prepareEmailRequest(emailRequest));
   }
 
-  /**
-   * Send password reset confirmation email to user.
-   *
-   * @param userDto the user dto
-   * @throws MessagingException if the email cannot be sent.
-   * @throws UnsupportedEncodingException if the encoding is not supported.
-   * @throws FileNotFoundException if the specified attachment file is not found
-   */
   @Override
-  public void sendPasswordResetConfirmationEmail(UserDto userDto)
-      throws MessagingException, UnsupportedEncodingException, FileNotFoundException {
-
+  public void sendPasswordResetConfirmationEmail(final UserDto userDto) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     HtmlEmailRequest emailRequest =
@@ -258,7 +212,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
    * @throws MessagingException the messaging exception
    * @throws FileNotFoundException if the file is not found
    */
-  void addAttachments(HtmlEmailRequest emailRequest, MimeMessageHelper mimeMessageHelper)
+  protected void addAttachments(HtmlEmailRequest emailRequest, MimeMessageHelper mimeMessageHelper)
       throws MessagingException, FileNotFoundException {
 
     for (File attachment : emailRequest.getAttachments()) {

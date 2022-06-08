@@ -14,7 +14,6 @@ import org.junit.jupiter.api.TestInfo;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.springframework.test.util.ReflectionTestUtils;
 
 class EncryptionServiceTest {
 
@@ -23,10 +22,7 @@ class EncryptionServiceTest {
 
   @BeforeEach
   void setUp() {
-    encryptionService = new EncryptionServiceImpl();
-
-    ReflectionTestUtils.setField(encryptionService, "salt", "salt");
-    ReflectionTestUtils.setField(encryptionService, "password", "password");
+    encryptionService = new EncryptionServiceImpl("salt", "password");
 
     uri =
         "http://localhost:8080/user/sign-up?id=MKbscZZTo3jMpiUM"

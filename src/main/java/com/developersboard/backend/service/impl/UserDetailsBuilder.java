@@ -53,7 +53,7 @@ public final class UserDetailsBuilder implements UserDetails {
    * @throws NullPointerException if the user is null
    * @return the userDetails
    */
-  public static UserDetailsBuilder buildUserDetails(User user) {
+  public static UserDetailsBuilder buildUserDetails(final User user) {
     Validate.notNull(user, UserConstants.USER_MUST_NOT_BE_NULL);
 
     // Build the authorities from the user's roles

@@ -1,8 +1,9 @@
 package com.developersboard.config.security;
 
 import com.developersboard.constant.HomeConstants;
+import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
-import com.developersboard.shared.util.core.SecurityUtils;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +40,9 @@ public class FormLoginSecurityConfig {
   public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
-    SecurityUtils.configureDevEnvironmentAccess(http, environment);
+    if (Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV)) {
+      http.headers().frameOptions().sameOrigin().and().csrf().disable();
+    }
 
     http.authorizeRequests()
         .antMatchers(SecurityConstants.getPublicMatchers().toArray(new String[0]))

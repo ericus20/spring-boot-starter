@@ -1,9 +1,9 @@
 package com.developersboard.web.controller;
 
+import com.developersboard.annotation.Loggable;
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.config.properties.SystemProperties;
 import com.developersboard.constant.ContactConstants;
-import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.util.core.SecurityUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
@@ -61,18 +61,14 @@ public class ContactController {
    * @param model the model
    * @return the status
    */
+  @Loggable
   @PostMapping
   public String contactUs(@ModelAttribute @Valid FeedbackRequest feedback, Model model) {
-    try {
-      feedback.setFrom(feedback.getEmail());
-      feedback.setTo(systemProperties.getEmail());
-      emailService.sendMailWithFeedback(feedback);
+    feedback.setFrom(feedback.getEmail());
+    feedback.setTo(systemProperties.getEmail());
+    emailService.sendMailWithFeedback(feedback);
 
-      model.addAttribute(ContactConstants.FEEDBACK_SUCCESS_KEY, true);
-    } catch (Exception e) {
-      LOG.error(ContactConstants.FEEDBACK_ERROR_MESSAGE, e);
-      model.addAttribute(ErrorConstants.ERROR, ContactConstants.FEEDBACK_ERROR_MESSAGE);
-    }
+    model.addAttribute(ContactConstants.FEEDBACK_SUCCESS_KEY, true);
 
     model.addAttribute(ContactConstants.FEEDBACK, new FeedbackRequest());
     return ContactConstants.CONTACT_VIEW_NAME;

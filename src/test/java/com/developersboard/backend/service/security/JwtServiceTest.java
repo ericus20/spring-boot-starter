@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JwtServiceTest {
@@ -19,8 +18,7 @@ class JwtServiceTest {
 
   @BeforeAll
   void beforeAll() {
-    jwtService = new JwtServiceImpl();
-    ReflectionTestUtils.setField(jwtService, "jwtSecret", "secret");
+    jwtService = new JwtServiceImpl("secret");
   }
 
   @Test
