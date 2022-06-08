@@ -2,13 +2,13 @@ package com.developersboard.backend.service.mail;
 
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.constant.EmailConstants;
+import com.developersboard.exception.InvalidServiceRequestException;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.WebUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Objects;
 import javax.mail.Message;
@@ -75,7 +75,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendEmailWithFeedback() throws Exception {
+  void sendEmailWithFeedback() {
 
     var feedback = new FeedbackRequest();
     feedback.setMessage(body);
@@ -99,7 +99,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendHtmlEmail() throws Exception {
+  void sendHtmlEmail() {
 
     var userDto = UserUtils.createUserDto(false);
     var links = WebUtils.getDefaultEmailUrls();
@@ -143,7 +143,8 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
     subject = emailRequest.getSubject();
 
     Assertions.assertThrows(
-        FileNotFoundException.class, () -> emailService.sendHtmlEmailWithAttachment(emailRequest));
+        InvalidServiceRequestException.class,
+        () -> emailService.sendHtmlEmailWithAttachment(emailRequest));
   }
 
   @Test
@@ -175,7 +176,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendAccountVerificationEmail() throws Exception {
+  void sendAccountVerificationEmail() {
 
     var userDto = UserUtils.createUserDto(false);
     var token = jwtService.generateJwtToken(userDto.getUsername());
@@ -188,7 +189,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendAccountConfirmationEmail() throws Exception {
+  void sendAccountConfirmationEmail() {
 
     var userDto = UserUtils.createUserDto(false);
     subject = EmailConstants.CONFIRMATION_SUCCESS_EMAIL_SUBJECT;
@@ -200,7 +201,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendPasswordResetEmail() throws Exception {
+  void sendPasswordResetEmail() {
 
     var userDto = UserUtils.createUserDto(false);
     var token = jwtService.generateJwtToken(userDto.getUsername());
@@ -213,7 +214,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void sendPasswordResetConfirmationEmail() throws Exception {
+  void sendPasswordResetConfirmationEmail() {
 
     var userDto = UserUtils.createUserDto(false);
     subject = EmailConstants.PASSWORD_RESET_SUCCESS_SUBJECT;

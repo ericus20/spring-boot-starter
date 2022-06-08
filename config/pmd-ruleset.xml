@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<ruleset name="All Java Rules"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>Every Java Rule in PMD</description>
+
+  <exclude-pattern>.*/src/test/.*</exclude-pattern>
+  <exclude-pattern>.*/src/integration/.*</exclude-pattern>
+
+  <rule ref="category/java/bestpractices.xml">
+    <exclude name="GuardLogStatement"/>
+  </rule>
+
+  <rule ref="category/java/errorprone.xml">
+    <exclude name="DataflowAnomalyAnalysis"/>
+  </rule>
+
+  <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod">
+    <properties>
+      <property name="ignoredAnnotations" value="javax.persistence.PrePersist"/>
+    </properties>
+  </rule>
+
+  <!--The PMD UseUtilityClass rule can be suppressed just for classes with @SpringBootApplication annotation-->
+  <rule ref="category/java/design.xml/UseUtilityClass">
+    <properties>
+      <property name="violationSuppressXPath"
+        value="//ClassOrInterfaceDeclaration/preceding-sibling::Annotation/MarkerAnnotation/Name[@Image='SpringBootApplication']"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/design.xml">
+    <!-- Too many violations, will be suppressed until we find out how use these metrics. -->
+    <exclude name="LawOfDemeter"/>
+    <exclude name="LoosePackageCoupling"/>
+  </rule>
+
+  <!-- Ignore all method signatures in the config/security that throws Exception -->
+  <rule ref="category/java/design.xml/SignatureDeclareThrowsException">
+    <properties>
+      <property name="violationSuppressXPath"
+        value="//PackageDeclaration/Name[starts-with(@Image, 'com.developersboard.config.security')]"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/design.xml/TooManyFields">
+    <properties>
+      <property name="maxfields" value="20"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/design.xml/TooManyMethods">
+    <properties>
+      <property name="maxmethods" value="20"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/design.xml/ExcessiveImports">
+    <properties>
+      <property name="minimum" value="40.0"/>
+    </properties>
+  </rule>
+
+  <rule ref="category/java/multithreading.xml"/>
+  <rule ref="category/java/performance.xml"/>
+  <rule ref="category/java/security.xml"/>
+
+</ruleset>

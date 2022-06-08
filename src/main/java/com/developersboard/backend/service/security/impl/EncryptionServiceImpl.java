@@ -49,12 +49,16 @@ public class EncryptionServiceImpl implements EncryptionService {
   private static final int ITERATION_COUNT = 65536;
   private static final int KEY_LENGTH = 256;
   private final transient SecureRandom RANDOM = new SecureRandom();
+  private final transient String password;
+  private final transient String salt;
 
-  @Value("${encryption.secret.password}")
-  private transient String password;
+  public EncryptionServiceImpl(
+      @Value("${encryption.secret.password}") String password,
+      @Value("${encryption.secret.salt}") String salt) {
 
-  @Value("${encryption.secret.salt}")
-  private transient String salt;
+    this.password = password;
+    this.salt = salt;
+  }
 
   /**
    * Encrypts the text to be sent out.
@@ -63,7 +67,7 @@ public class EncryptionServiceImpl implements EncryptionService {
    * @return the encrypted text
    */
   @Override
-  public String encrypt(String text) {
+  public String encrypt(final String text) {
     try {
       if (StringUtils.isBlank(text)) {
         return null;
@@ -100,7 +104,7 @@ public class EncryptionServiceImpl implements EncryptionService {
    * @return the decrypted uri
    */
   @Override
-  public String decrypt(String encryptedText) {
+  public String decrypt(final String encryptedText) {
     try {
       if (StringUtils.isBlank(encryptedText)) {
         return null;
@@ -128,7 +132,7 @@ public class EncryptionServiceImpl implements EncryptionService {
   }
 
   @Override
-  public String encode(String text) {
+  public String encode(final String text) {
     if (StringUtils.isBlank(text)) {
       return null;
     }
@@ -136,7 +140,7 @@ public class EncryptionServiceImpl implements EncryptionService {
   }
 
   @Override
-  public String decode(String encodedTest) {
+  public String decode(final String encodedTest) {
     if (StringUtils.isBlank(encodedTest)) {
       return null;
     }

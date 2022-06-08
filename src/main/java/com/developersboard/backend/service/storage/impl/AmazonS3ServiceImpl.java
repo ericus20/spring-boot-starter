@@ -168,16 +168,8 @@ public class AmazonS3ServiceImpl extends AbstractAmazonS3Service {
     ValidationUtils.validateInputs(key);
 
     var bucketName = properties.getS3BucketName();
-    // Retrieve all the objects under the key given.
-    var objectListing = s3Client.listObjects(bucketName, key);
 
-    for (S3ObjectSummary s3ObjectSummary : objectListing.getObjectSummaries()) {
-      // for every object in the summaries, submit a delete request to delete it.
-      s3Client.deleteObject(new DeleteObjectRequest(bucketName, s3ObjectSummary.getKey()));
-      LOG.debug(
-          "Object successfully deleted from amazon s3 with bucket as {} and key as {}",
-          bucketName,
-          key);
-    }
+    s3Client.deleteObject(new DeleteObjectRequest(bucketName, key));
+    LOG.debug("Object successfully deleted from bucket {} and key {}", bucketName, key);
   }
 }

@@ -28,8 +28,9 @@ public class MethodLogger {
    * @throws Throwable if an error occurs
    */
   @Around("execution(* *(..)) && @annotation(loggable)")
-  public Object log(ProceedingJoinPoint joinPoint, Loggable loggable) throws Throwable {
-    var method = joinPoint.getSignature().toShortString();
+  public Object log(final ProceedingJoinPoint joinPoint, final Loggable loggable) throws Throwable {
+
+    var method = joinPoint.toShortString();
     var start = System.currentTimeMillis();
 
     switchStartingLogger(loggable.level(), method, joinPoint.getArgs());
@@ -39,7 +40,7 @@ public class MethodLogger {
     return response;
   }
 
-  private void switchStartingLogger(String level, String method, Object args) {
+  private void switchStartingLogger(final String level, final String method, final Object args) {
     final String format = "=> Starting -  {} args: {}";
 
     switch (level) {

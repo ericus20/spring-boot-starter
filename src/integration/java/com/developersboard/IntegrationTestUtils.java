@@ -42,29 +42,29 @@ import org.springframework.test.web.servlet.MockMvc;
 public abstract class IntegrationTestUtils {
   protected static final Faker FAKER = new Faker();
 
-  @Autowired protected transient MockMvc mockMvc;
-  @Autowired protected transient AuditService auditService;
-  @Autowired protected transient AwsProperties awsProperties;
-  @Autowired protected transient AmazonS3Service amazonS3Service;
-  @Autowired protected transient CookieService cookieService;
-  @Autowired protected transient JwtService jwtService;
-  @Autowired protected transient EncryptionService encryptionService;
-  @Autowired protected transient I18NService i18NService;
-  @Autowired protected transient UserService userService;
-  @Autowired protected transient RoleServiceImpl roleService;
-  @Autowired protected transient UserPruningScheduler userPruningScheduler;
-  @Autowired protected transient SystemProperties systemProperties;
-  @Autowired protected transient EmailService emailService;
-  @Autowired protected transient GreenMail greenMail;
+  @Autowired protected MockMvc mockMvc;
+  @Autowired protected AuditService auditService;
+  @Autowired protected AwsProperties awsProperties;
+  @Autowired protected AmazonS3Service amazonS3Service;
+  @Autowired protected CookieService cookieService;
+  @Autowired protected JwtService jwtService;
+  @Autowired protected EncryptionService encryptionService;
+  @Autowired protected I18NService i18NService;
+  @Autowired protected UserService userService;
+  @Autowired protected RoleServiceImpl roleService;
+  @Autowired protected UserPruningScheduler userPruningScheduler;
+  @Autowired protected SystemProperties systemProperties;
+  @Autowired protected EmailService emailService;
+  @Autowired protected GreenMail greenMail;
 
-  @Autowired protected transient PasswordController passwordController;
+  @Autowired protected PasswordController passwordController;
 
-  @Mock protected transient MockMultipartFile multipartFile;
+  @Mock protected MockMultipartFile multipartFile;
 
   // We are mocking the entire dateTimeProvider since there is only one method in it.
-  @MockBean protected transient DateTimeProvider dateTimeProvider;
+  @MockBean protected DateTimeProvider dateTimeProvider;
   // We want to mock just the dateTimeProvider method within the auditHandler
-  @SpyBean protected transient AuditingHandler auditingHandler;
+  @SpyBean protected AuditingHandler auditingHandler;
 
   /**
    * Creates and verify user with flexible field creation.

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.env.MockEnvironment;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class CookieServiceTest {
@@ -34,8 +33,7 @@ class CookieServiceTest {
 
   @BeforeAll
   void beforeAll() {
-    jwtService = new JwtServiceImpl();
-    ReflectionTestUtils.setField(jwtService, "jwtSecret", "secret");
+    jwtService = new JwtServiceImpl("secret");
 
     var environment = new MockEnvironment();
     environment.addActiveProfile(ProfileTypeConstants.TEST);

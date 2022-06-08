@@ -4,7 +4,6 @@ import com.developersboard.TestUtils;
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.config.properties.SystemProperties;
 import com.developersboard.constant.ContactConstants;
-import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.shared.util.core.SecurityUtils;
 import com.developersboard.web.payload.request.mail.FeedbackRequest;
@@ -67,30 +66,6 @@ class ContactControllerTest extends TestUtils {
     mockMvc
         .perform(MockMvcRequestBuilders.post(ContactConstants.CONTACT_URL_MAPPING))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
-  }
-
-  @Test
-  void testSubmitContactFeedbackFormHandlesExceptionThrown() throws Exception {
-    Mockito.when(systemProperties.getEmail())
-        .thenAnswer(
-            invocation -> {
-              throw new Exception();
-            });
-
-    var feedback = getFeedbackRequest();
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post(ContactConstants.CONTACT_URL_MAPPING)
-                .param("name", FAKER.name().fullName())
-                .param("email", FAKER.internet().emailAddress())
-                .flashAttr(ContactConstants.FEEDBACK, feedback))
-        .andExpect(MockMvcResultMatchers.view().name(ContactConstants.CONTACT_VIEW_NAME))
-        .andExpect(MockMvcResultMatchers.model().attributeExists(ContactConstants.FEEDBACK))
-        .andExpect(MockMvcResultMatchers.model().attributeExists(ErrorConstants.ERROR))
-        .andExpect(
-            MockMvcResultMatchers.model()
-                .attributeDoesNotExist(ContactConstants.FEEDBACK_SUCCESS_KEY))
-        .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test

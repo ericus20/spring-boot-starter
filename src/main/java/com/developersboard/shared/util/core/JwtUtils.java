@@ -40,22 +40,25 @@ public final class JwtUtils {
         var payload = separatedJwtToken[JWT_PAYLOAD_PART];
         var signature = separatedJwtToken[JWT_SIGNATURE_PART];
 
-        if (StringUtils.isNotBlank(header)
-            && StringUtils.isNotBlank(payload)
-            && StringUtils.isNotBlank(signature)) {
+        return generateToken(tokenType, header, payload, signature);
+      }
+    }
+    return null;
+  }
 
-          if (tokenType == JwtTokenType.BAD_SIGNATURE) {
-            return String.join(
-                DELIMITER,
-                header,
-                payload.substring(payload.length() / JWT_SIGNATURE_PART),
-                signature);
-          } else if (tokenType == JwtTokenType.MALFORMED) {
-            return String.join(DELIMITER, header, payload);
-          } else if (tokenType == JwtTokenType.UNSUPPORTED) {
-            return String.join(DELIMITER, header, payload, StringUtils.EMPTY);
-          }
-        }
+  private static String generateToken(
+      JwtTokenType tokenType, String header, String payload, String signature) {
+    if (StringUtils.isNotBlank(header)
+        && StringUtils.isNotBlank(payload)
+        && StringUtils.isNotBlank(signature)) {
+
+      if (tokenType == JwtTokenType.BAD_SIGNATURE) {
+        return String.join(
+            DELIMITER, header, payload.substring(payload.length() / JWT_SIGNATURE_PART), signature);
+      } else if (tokenType == JwtTokenType.MALFORMED) {
+        return String.join(DELIMITER, header, payload);
+      } else if (tokenType == JwtTokenType.UNSUPPORTED) {
+        return String.join(DELIMITER, header, payload, StringUtils.EMPTY);
       }
     }
     return null;

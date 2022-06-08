@@ -103,19 +103,23 @@ public class User extends BaseEntity<Long> implements Serializable {
   /**
    * Add userRole to this User.
    *
-   * @param userRole userRole to be added if not already present.
+   * @param user the user
+   * @param role the role
    */
-  public void addUserRole(UserRole userRole) {
-    userRoles.add(userRole);
+  public void addUserRole(final User user, final Role role) {
+    var userRole = new UserRole(user, role);
+    userRoles.add(new UserRole(user, role));
     userRole.setUser(this);
   }
 
   /**
    * Remove userRole from this User.
    *
-   * @param userRole userRole to be removed if present.
+   * @param user the user
+   * @param role the role
    */
-  public void removeUserRole(UserRole userRole) {
+  public void removeUserRole(final User user, final Role role) {
+    var userRole = new UserRole(user, role);
     userRoles.remove(userRole);
     userRole.setUser(null);
   }
@@ -125,7 +129,7 @@ public class User extends BaseEntity<Long> implements Serializable {
    *
    * @param userHistory userHistory to be added.
    */
-  public void addUserHistory(UserHistory userHistory) {
+  public void addUserHistory(final UserHistory userHistory) {
     userHistories.add(userHistory);
     userHistory.setUser(this);
   }

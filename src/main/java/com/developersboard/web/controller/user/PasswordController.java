@@ -65,28 +65,23 @@ public class PasswordController {
    */
   @PostMapping
   public String forgetPassword(Model model, @RequestParam final String email) {
-    try {
-      var userDto = userService.findByEmail(email);
-      if (Objects.nonNull(userDto)) {
-        model.addAttribute(UserConstants.EMAIL, userDto.getEmail());
+    var userDto = userService.findByEmail(email);
+    if (Objects.nonNull(userDto)) {
+      model.addAttribute(UserConstants.EMAIL, userDto.getEmail());
 
-        // send email to the user to verify email to complete sign-up process.
-        String token = jwtService.generateJwtToken(userDto.getUsername());
-        userDto.setVerificationToken(token);
-        userService.saveOrUpdate(UserUtils.convertToUser(userDto), false);
+      // send email to the user to verify email to complete sign-up process.
+      String token = jwtService.generateJwtToken(userDto.getUsername());
+      userDto.setVerificationToken(token);
+      userService.saveOrUpdate(UserUtils.convertToUser(userDto), false);
 
-        var encryptedToken = encryptionService.encrypt(token);
-        var encodedToken = encryptionService.encode(encryptedToken);
-        emailService.sendPasswordResetEmail(userDto, encodedToken);
-      } else {
-        LOG.debug(UserConstants.USER_NOT_FOUND + " email: {}", email);
-      }
-
-      model.addAttribute(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY, true);
-    } catch (Exception e) {
-      LOG.error(PasswordConstants.PASSWORD_UPDATE_ERROR, e);
-      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
+      var encryptedToken = encryptionService.encrypt(token);
+      var encodedToken = encryptionService.encode(encryptedToken);
+      emailService.sendPasswordResetEmail(userDto, encodedToken);
+    } else {
+      LOG.debug(UserConstants.USER_NOT_FOUND + " email: {}", email);
     }
+
+    model.addAttribute(PasswordConstants.PASSWORD_RESET_EMAIL_SENT_KEY, true);
 
     return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
   }
@@ -100,37 +95,31 @@ public class PasswordController {
    */
   @GetMapping(PasswordConstants.PASSWORD_CHANGE_PATH)
   public String changePassword(@RequestParam final String token, Model model) {
-    try {
-      if (SecurityUtils.isAuthenticated()) {
-        // if the user is already logged in, abort the process.
-        LOG.debug(PasswordConstants.ACCOUNT_IN_SESSION);
-        model.addAttribute(ErrorConstants.ERROR, PasswordConstants.ACCOUNT_IN_SESSION);
-        return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
-      }
-
-      var decodedToken = encryptionService.decode(token);
-      var decryptedToken = encryptionService.decrypt(decodedToken);
-
-      if (StringUtils.isBlank(decryptedToken) || !jwtService.isValidJwtToken(decryptedToken)) {
-        LOG.debug(ErrorConstants.INVALID_TOKEN);
-        model.addAttribute(ErrorConstants.ERROR, ErrorConstants.INVALID_TOKEN);
-        return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
-      }
-
-      var username = jwtService.getUsernameFromToken(decryptedToken);
-      if (StringUtils.isBlank(username)
-          || !userService.isValidUsernameAndToken(username, decryptedToken)) {
-        LOG.debug(ErrorConstants.UNAUTHORIZED_ACCESS);
-        model.addAttribute(ErrorConstants.ERROR, ErrorConstants.UNAUTHORIZED_ACCESS);
-        return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
-      }
-
-      model.addAttribute(UserConstants.USERNAME, username);
-    } catch (Exception e) {
-      LOG.error(PasswordConstants.PASSWORD_UPDATE_ERROR, e);
-      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
+    if (SecurityUtils.isAuthenticated()) {
+      // if the user is already logged in, abort the process.
+      LOG.debug(PasswordConstants.ACCOUNT_IN_SESSION);
+      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.ACCOUNT_IN_SESSION);
+      return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
     }
 
+    var decodedToken = encryptionService.decode(token);
+    var decryptedToken = encryptionService.decrypt(decodedToken);
+
+    if (StringUtils.isBlank(decryptedToken) || !jwtService.isValidJwtToken(decryptedToken)) {
+      LOG.debug(ErrorConstants.INVALID_TOKEN);
+      model.addAttribute(ErrorConstants.ERROR, ErrorConstants.INVALID_TOKEN);
+      return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
+    }
+
+    var username = jwtService.getUsernameFromToken(decryptedToken);
+    if (StringUtils.isBlank(username)
+        || !userService.isValidUsernameAndToken(username, decryptedToken)) {
+      LOG.debug(ErrorConstants.UNAUTHORIZED_ACCESS);
+      model.addAttribute(ErrorConstants.ERROR, ErrorConstants.UNAUTHORIZED_ACCESS);
+      return PasswordConstants.PASSWORD_RESET_START_VIEW_NAME;
+    }
+
+    model.addAttribute(UserConstants.USERNAME, username);
     return PasswordConstants.PASSWORD_RESET_COMPLETE_VIEW_NAME;
   }
 
@@ -146,37 +135,31 @@ public class PasswordController {
   @PostMapping(PasswordConstants.PASSWORD_CHANGE_PATH)
   public String changePassword(
       @ModelAttribute UserDto userDto, Model model, RedirectAttributes redirectAttributes) {
-    try {
-      var storedUserDto = userService.findByUsername(userDto.getUsername());
-      if (Objects.isNull(storedUserDto)) {
-        LOG.debug(UserConstants.USER_NOT_FOUND + " username: {}", userDto.getUsername());
-        redirectAttributes.addFlashAttribute(ErrorConstants.ERROR, UserConstants.USER_NOT_FOUND);
-        return HomeConstants.REDIRECT_TO_LOGIN;
-      }
-      // check if user's new password is the same as the current one
-      if (passwordEncoder.matches(userDto.getPassword(), storedUserDto.getPassword())) {
-        model.addAttribute(ErrorConstants.ERROR, PasswordConstants.SAME_PASSWORD);
-        model.addAttribute(UserConstants.USERNAME, userDto.getUsername());
-        return PasswordConstants.PASSWORD_RESET_COMPLETE_VIEW_NAME;
-      }
+    var storedUserDto = userService.findByUsername(userDto.getUsername());
+    if (Objects.isNull(storedUserDto)) {
+      LOG.debug(UserConstants.USER_NOT_FOUND + " username: {}", userDto.getUsername());
+      redirectAttributes.addFlashAttribute(ErrorConstants.ERROR, UserConstants.USER_NOT_FOUND);
+      return HomeConstants.REDIRECT_TO_LOGIN;
+    }
+    // check if user's new password is the same as the current one
+    if (passwordEncoder.matches(userDto.getPassword(), storedUserDto.getPassword())) {
+      model.addAttribute(ErrorConstants.ERROR, PasswordConstants.SAME_PASSWORD);
+      model.addAttribute(UserConstants.USERNAME, userDto.getUsername());
+      return PasswordConstants.PASSWORD_RESET_COMPLETE_VIEW_NAME;
+    }
 
-      UserUtils.enableUser(storedUserDto);
-      storedUserDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-      var updatedUserDto = userService.updateUser(storedUserDto, UserHistoryType.PASSWORD_UPDATE);
-      if (Objects.isNull(updatedUserDto)) {
-        LOG.debug(PasswordConstants.PASSWORD_UPDATE_ERROR);
-        redirectAttributes.addAttribute(
-            ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
-        return HomeConstants.REDIRECT_TO_LOGIN;
-      }
-
-      emailService.sendPasswordResetConfirmationEmail(storedUserDto);
-      redirectAttributes.addFlashAttribute(PasswordConstants.PASSWORD_RESET_SUCCESS, true);
-    } catch (Exception e) {
-      LOG.error(PasswordConstants.PASSWORD_UPDATE_ERROR, e);
+    UserUtils.enableUser(storedUserDto);
+    storedUserDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    var updatedUserDto = userService.updateUser(storedUserDto, UserHistoryType.PASSWORD_UPDATE);
+    if (Objects.isNull(updatedUserDto)) {
+      LOG.debug(PasswordConstants.PASSWORD_UPDATE_ERROR);
       redirectAttributes.addAttribute(
           ErrorConstants.ERROR, PasswordConstants.PASSWORD_UPDATE_ERROR);
+      return HomeConstants.REDIRECT_TO_LOGIN;
     }
+
+    emailService.sendPasswordResetConfirmationEmail(storedUserDto);
+    redirectAttributes.addFlashAttribute(PasswordConstants.PASSWORD_RESET_SUCCESS, true);
 
     return HomeConstants.REDIRECT_TO_LOGIN;
   }

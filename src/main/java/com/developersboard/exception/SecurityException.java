@@ -1,19 +1,16 @@
 package com.developersboard.exception;
 
 import java.io.Serial;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Responsible for user not found exception specifically.
+ * Used in storage service related exceptions.
  *
  * @author Eric Opoku
  * @version 1.0
  * @since 1.0
  */
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "User does not exist")
-public class UserNotFoundException extends RuntimeException {
-  @Serial private static final long serialVersionUID = 4992489948815528687L;
+public class SecurityException extends RuntimeException {
+  @Serial private static final long serialVersionUID = 2292821525781156962L;
 
   /**
    * Constructs a new runtime exception with the specified detail message. The cause is not
@@ -22,7 +19,17 @@ public class UserNotFoundException extends RuntimeException {
    * @param message the detail message. The detail message is saved for later retrieval by the
    *     {@link #getMessage()} method.
    */
-  public UserNotFoundException(String message) {
+  public SecurityException(String message) {
     super(message);
+  }
+
+  /**
+   * A convenient way to initialize with a given message and exception.
+   *
+   * @param message the message
+   * @param cause the exception
+   */
+  public SecurityException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

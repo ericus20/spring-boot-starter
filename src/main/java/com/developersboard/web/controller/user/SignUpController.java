@@ -69,33 +69,29 @@ public class SignUpController {
   @Loggable
   @PostMapping
   public String signUp(@Valid @ModelAttribute final UserDto userDto, final Model model) {
-    try {
-      if (userService.existsByUsernameOrEmailAndEnabled(
-          userDto.getUsername(), userDto.getEmail())) {
 
-        LOG.warn(UserConstants.USERNAME_OR_EMAIL_EXITS);
-        model.addAttribute(ErrorConstants.ERROR, UserConstants.USERNAME_OR_EMAIL_EXITS);
-      } else {
+    if (userService.existsByUsernameOrEmailAndEnabled(userDto.getUsername(), userDto.getEmail())) {
+      LOG.warn(UserConstants.USERNAME_OR_EMAIL_EXITS);
+      model.addAttribute(ErrorConstants.ERROR, UserConstants.USERNAME_OR_EMAIL_EXITS);
 
-        var verificationToken = jwtService.generateJwtToken(userDto.getUsername());
-        userDto.setVerificationToken(verificationToken);
-
-        var savedUserDto = userService.createUser(userDto);
-        if (Objects.isNull(savedUserDto)) {
-          LOG.error(UserConstants.COULD_NOT_CREATE_USER + "{}", userDto);
-          model.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_CREATE_USER);
-        } else {
-          var encryptedToken = encryptionService.encrypt(verificationToken);
-          var encodedToken = encryptionService.encode(encryptedToken);
-
-          emailService.sendAccountVerificationEmail(savedUserDto, encodedToken);
-          model.addAttribute(SignUpConstants.SIGN_UP_PENDING_KEY, true);
-        }
-      }
-    } catch (final Exception e) {
-      LOG.error(UserConstants.COULD_NOT_CREATE_USER + "{}", userDto, e);
-      model.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_CREATE_USER);
+      return SignUpConstants.SIGN_UP_VIEW_NAME;
     }
+
+    var verificationToken = jwtService.generateJwtToken(userDto.getUsername());
+    userDto.setVerificationToken(verificationToken);
+
+    var savedUserDto = userService.createUser(userDto);
+    if (Objects.isNull(savedUserDto)) {
+      LOG.error(UserConstants.COULD_NOT_CREATE_USER);
+      model.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_CREATE_USER);
+    } else {
+      var encryptedToken = encryptionService.encrypt(verificationToken);
+      var encodedToken = encryptionService.encode(encryptedToken);
+
+      emailService.sendAccountVerificationEmail(savedUserDto, encodedToken);
+      model.addAttribute(SignUpConstants.SIGN_UP_PENDING_KEY, true);
+    }
+
     model.addAttribute(UserConstants.USER_MODEL_KEY, new SignUpRequest());
     return SignUpConstants.SIGN_UP_VIEW_NAME;
   }
@@ -110,30 +106,24 @@ public class SignUpController {
   @Loggable
   @GetMapping(SignUpConstants.SIGN_UP_VERIFY_MAPPING)
   public String completeSignUp(@RequestParam String token, RedirectAttributes redirectAttributes) {
-    try {
-      var decodedToken = encryptionService.decode(token);
-      var verificationToken = encryptionService.decrypt(decodedToken);
+    var decodedToken = encryptionService.decode(token);
+    var verificationToken = encryptionService.decrypt(decodedToken);
 
-      var userDto = validateTokenAndUpdateUser(verificationToken, redirectAttributes);
-      if (Objects.nonNull(userDto) && !redirectAttributes.containsAttribute(ErrorConstants.ERROR)) {
+    var userDto = validateTokenAndUpdateUser(verificationToken, redirectAttributes);
+    if (Objects.nonNull(userDto) && !redirectAttributes.containsAttribute(ErrorConstants.ERROR)) {
 
-        // send an account confirmation to the user.
-        emailService.sendAccountConfirmationEmail(userDto);
+      // send an account confirmation to the user.
+      emailService.sendAccountConfirmationEmail(userDto);
 
-        // automatically authenticate the userDto since there will be a redirection to profile page
-        UserDetails userDetails = userService.getUserDetails(userDto.getUsername());
-        SecurityUtils.authenticateUser(userDetails);
-        redirectAttributes.addFlashAttribute(SignUpConstants.SIGN_UP_SUCCESS_KEY, true);
-        redirectAttributes.addFlashAttribute(ProfileConstants.NEW_PROFILE, true);
+      // automatically authenticate the userDto since there will be a redirection to profile page
+      UserDetails userDetails = userService.getUserDetails(userDto.getUsername());
+      SecurityUtils.authenticateUser(userDetails);
+      redirectAttributes.addFlashAttribute(SignUpConstants.SIGN_UP_SUCCESS_KEY, true);
+      redirectAttributes.addFlashAttribute(ProfileConstants.NEW_PROFILE, true);
 
-        return ProfileConstants.REDIRECT_TO_PROFILE;
-      }
-    } catch (final Exception e) {
-      LOG.error(UserConstants.COULD_NOT_VERIFY_USER, e);
-      redirectAttributes.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_VERIFY_USER);
+      return ProfileConstants.REDIRECT_TO_PROFILE;
     }
 
-    redirectAttributes.addAttribute(UserConstants.USER_MODEL_KEY, new SignUpRequest());
     return SignUpConstants.SIGN_UP_VIEW_NAME;
   }
 

@@ -152,3 +152,10 @@ spotless {
     googleJavaFormat()
   }
 }
+
+pmd {
+  consoleOutput = true
+  toolVersion = "6.46.0"
+  ruleSetFiles = files("${project.rootDir}/config/pmd-ruleset.xml")
+  ruleSets = []
+}
