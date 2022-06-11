@@ -270,7 +270,6 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  @Transactional
   @Caching(
       evict = {
         @CacheEvict(value = CacheConstants.USERS, key = "#userDto.username"),
@@ -278,6 +277,7 @@ public class UserServiceImpl implements UserService {
         @CacheEvict(value = CacheConstants.USERS, key = "#userDto.email"),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
+  @Transactional
   public UserDto updateUser(UserDto userDto, UserHistoryType userHistoryType) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
@@ -293,12 +293,12 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  @Transactional
   @Caching(
       evict = {
         @CacheEvict(value = CacheConstants.USERS),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
+  @Transactional
   public UserDto enableUser(final String publicId) {
     Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
 
@@ -322,12 +322,12 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  @Transactional
   @Caching(
       evict = {
         @CacheEvict(value = CacheConstants.USERS),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
+  @Transactional
   public UserDto disableUser(final String publicId) {
     Validate.notNull(publicId, UserConstants.BLANK_PUBLIC_ID);
 
@@ -348,12 +348,12 @@ public class UserServiceImpl implements UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   @Override
-  @Transactional
   @Caching(
       evict = {
         @CacheEvict(value = CacheConstants.USERS, key = "#publicId"),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
+  @Transactional
   public void deleteUser(final String publicId) {
     ValidationUtils.validateInputsWithMessage(UserConstants.BLANK_PUBLIC_ID, publicId);
 

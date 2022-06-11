@@ -20,14 +20,6 @@ public interface RoleService {
   Role save(final Role role);
 
   /**
-   * Retrieves the role with the specified id.
-   *
-   * @param id the id of the role to retrieve
-   * @return the role tuple that matches the id given
-   */
-  Role findById(final Integer id);
-
-  /**
    * Retrieves the role with the specified name.
    *
    * @param name the name of the role to retrieve

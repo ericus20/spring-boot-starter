@@ -14,6 +14,7 @@ import com.developersboard.shared.dto.UserHistoryDto;
 import com.developersboard.shared.dto.mapper.UserDtoMapper;
 import com.developersboard.shared.dto.mapper.UserHistoryDtoMapper;
 import com.developersboard.shared.util.core.ValidationUtils;
+import com.developersboard.web.payload.request.SignUpRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -194,6 +195,18 @@ public final class UserUtils {
    */
   public static UserDto convertToUserDto(final User user) {
     var userDto = UserDtoMapper.MAPPER.toUserDto(user);
+    Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
+    return userDto;
+  }
+
+  /**
+   * Transfers data from signUpRequest object to transfer object.
+   *
+   * @param signUpRequest the signup request
+   * @return user dto
+   */
+  public static UserDto convertToUserDto(final SignUpRequest signUpRequest) {
+    var userDto = UserDtoMapper.MAPPER.toUserDto(signUpRequest);
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
     return userDto;
   }

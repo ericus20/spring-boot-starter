@@ -3,8 +3,8 @@ package com.developersboard.backend.persistent.repository;
 import com.developersboard.backend.persistent.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import lombok.NonNull;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
@@ -19,11 +19,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  @NonNull
-  @Override
-  @RestResource(exported = false)
-  Optional<User> findById(@NonNull Long id);
-
   /**
    * Find user by email.
    *
@@ -33,19 +28,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findByEmail(String email);
 
   /**
-   * Check if user exists by email.
-   *
-   * @param email email to check if user exists.
-   * @return True if user exists or false otherwise.
-   */
-  Boolean existsByEmailOrderById(String email);
-
-  /**
    * Find user by username.
    *
    * @param username username used to search for user.
    * @return User found.
    */
+  @EntityGraph(
+      type = EntityGraphType.FETCH,
+      attributePaths = {"userRoles"})
   User findByUsername(String username);
 
   /**
@@ -75,6 +65,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @return if user exists with the given verification token
    */
   Boolean existsByUsernameAndVerificationTokenOrderById(String username, String verificationToken);
+
+  Boolean existsByUsernameAndFailedLoginAttemptsGreaterThanOrderById(String username, int attempts);
 
   /**
    * Find user by public id.

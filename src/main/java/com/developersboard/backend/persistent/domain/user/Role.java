@@ -30,7 +30,7 @@ import org.hibernate.envers.Audited;
 public class Role implements Serializable {
   @Serial private static final long serialVersionUID = 7008351760784988067L;
 
-  @Id private int id;
+  @Id private Integer id;
   private String name;
 
   /**

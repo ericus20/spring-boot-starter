@@ -17,13 +17,6 @@ class RoleServiceIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void getRoleById() {
-
-    Role storedRole = roleService.findById(RoleType.ROLE_ADMIN.getId());
-    Assertions.assertNotNull(storedRole);
-  }
-
-  @Test
   void getRoleByName() {
     Role storedRole = roleService.findByName(RoleType.ROLE_ADMIN.getName());
     Assertions.assertNotNull(storedRole);

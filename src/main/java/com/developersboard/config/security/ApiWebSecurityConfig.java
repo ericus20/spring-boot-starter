@@ -26,7 +26,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration
 @RequiredArgsConstructor
 public class ApiWebSecurityConfig {
-
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
   private final AuthenticationManager authenticationManager;
@@ -41,6 +40,8 @@ public class ApiWebSecurityConfig {
   @Bean
   @Order(1)
   public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+
+    http.cors();
 
     http.exceptionHandling()
         .authenticationEntryPoint(unauthorizedHandler)

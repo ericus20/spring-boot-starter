@@ -3,6 +3,7 @@ package com.developersboard.shared.dto.mapper;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.web.payload.request.SignUpRequest;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -34,6 +35,14 @@ public interface UserDtoMapper {
   @Mapping(target = "role", expression = "java(UserUtils.getTopmostRole(user))")
   @Mapping(target = "profileImage", expression = "java(UserUtils.getUserProfileImage(user))")
   UserDto toUserDto(User user);
+
+  /**
+   * Convert and populate a signUpRequest to userDto object.
+   *
+   * @param signUpRequest the signup request
+   * @return the userDto
+   */
+  UserDto toUserDto(SignUpRequest signUpRequest);
 
   /**
    * Convert and populate users to list of userDto objects.
