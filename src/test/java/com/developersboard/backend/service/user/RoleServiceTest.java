@@ -4,7 +4,6 @@ import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.repository.RoleRepository;
 import com.developersboard.backend.service.user.impl.RoleServiceImpl;
 import com.developersboard.enums.RoleType;
-import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,19 +29,10 @@ class RoleServiceTest {
 
   @Test
   void saveRole() {
-    Mockito.when(roleEntityRepository.save(roleEntity)).thenReturn(roleEntity);
+    Mockito.when(roleEntityRepository.merge(roleEntity)).thenReturn(roleEntity);
 
     Role storedRoleDetails = roleService.save(this.roleEntity);
     Assertions.assertNotNull(storedRoleDetails);
-  }
-
-  @Test
-  void getRoleById() {
-    Mockito.when(roleEntityRepository.findById(roleEntity.getId()))
-        .thenReturn(Optional.of(roleEntity));
-
-    Role storedRoleDetails = roleService.findById(roleEntity.getId());
-    Assertions.assertEquals(roleEntity, storedRoleDetails);
   }
 
   @Test

@@ -51,12 +51,12 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
   }
 
   @Override
-  @Transactional
   @Caching(
       evict = {
         @CacheEvict(value = CacheConstants.USERS, key = "#username"),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
+  @Transactional
   public void registerLoginFailure(final String username) {
     ValidationUtils.validateInputs(username, UserConstants.BLANK_USERNAME);
 
@@ -73,19 +73,18 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
         user.setFailedLoginAttempts(failedAttempts + 1);
         LOG.debug("User {} has {} failed login attempts", username, failedAttempts + 1);
       }
-      userRepository.save(user);
     } else {
       LOG.warn("User {} is not found or is already locked", username);
     }
   }
 
   @Override
-  @Transactional
   @Caching(
       evict = {
         @CacheEvict(value = CacheConstants.USERS, key = "#username"),
         @CacheEvict(value = CacheConstants.USER_DETAILS, allEntries = true)
       })
+  @Transactional
   public void resetBruteForceCounter(final String username) {
     ValidationUtils.validateInputs(username, UserConstants.BLANK_USERNAME);
 
@@ -98,7 +97,6 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
       if (!user.isAccountNonLocked()) {
         user.setAccountNonLocked(true);
       }
-      userRepository.save(user);
     } else {
       LOG.warn("User {} is not found", username);
     }
@@ -108,14 +106,14 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
   public boolean isBruteForceAttack(final String username) {
     ValidationUtils.validateInputs(username, UserConstants.BLANK_USERNAME);
 
-    var user = userRepository.findByUsername(username);
+    if (userRepository.existsByUsernameAndFailedLoginAttemptsGreaterThanOrderById(
+        username, maxFailedLogins)) {
 
-    if (Objects.nonNull(user)) {
       LOG.debug(
-          "Failed attempts {} and maxFailedLogins {}",
-          user.getFailedLoginAttempts(),
+          "Possible bruteforce attack on username {} and maxFailedLogins {}",
+          username,
           maxFailedLogins);
-      return user.getFailedLoginAttempts() >= maxFailedLogins;
+      return true;
     }
     return false;
   }

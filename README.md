@@ -60,7 +60,7 @@ https://spring-boot-starter.herokuapp.com/
 
 ## Sample *ongoing* project using this template
 
-[A Simple E-Commerce Application](https://github.com/ericus20/e-commerce)
+- Used as the API module along with NextJS and AngularJS for [Upsidle: An E-Commerce Application](https://github.com/stevartz/upsidle)
 
 ## Production Ready Folder Structure
 

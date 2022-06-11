@@ -23,6 +23,7 @@ public final class SecurityConstants {
   public static final String API_ROOT_URL_MAPPING = "/api/**";
   public static final String BEARER = "Bearer";
   public static final String BEARER_PREFIX = "Bearer ";
+  public static final String X_XSRF_TOKEN = "x-xsrf-token";
   public static final String H2_CONSOLE_URL_MAPPING = "/console/*";
   public static final String JSESSIONID = "JSESSIONID";
   public static final String LOGIN_LOGOUT = "/login?logout";
@@ -48,7 +49,22 @@ public final class SecurityConstants {
           HttpMethod.PATCH.name(),
           HttpMethod.OPTIONS.name());
   public static final List<String> ALLOWED_HTTP_HEADERS =
-      List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL, HttpHeaders.CONTENT_TYPE);
+      List.of(
+          HttpHeaders.AUTHORIZATION,
+          HttpHeaders.CACHE_CONTROL,
+          HttpHeaders.CONTENT_TYPE,
+          X_XSRF_TOKEN,
+          HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+          HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
+          HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN);
+  public static final List<String> EXPOSED_HTTP_HEADERS =
+      List.of(
+          HttpHeaders.AUTHORIZATION,
+          HttpHeaders.CACHE_CONTROL,
+          HttpHeaders.CONTENT_TYPE,
+          HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+          HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
+          HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN);
   private static final String[] PUBLIC_MATCHERS = {
     "/css/**",
     "/js/**",

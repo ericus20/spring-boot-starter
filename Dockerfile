@@ -9,6 +9,9 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 
+# Copy the libs folder
+COPY libs libs
+
 # Set permission to execute file
 RUN chmod +x gradlew
 

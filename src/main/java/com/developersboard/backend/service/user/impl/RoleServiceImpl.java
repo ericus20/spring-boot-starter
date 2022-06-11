@@ -4,7 +4,6 @@ import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.repository.RoleRepository;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.constant.CacheConstants;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
@@ -38,28 +37,10 @@ public class RoleServiceImpl implements RoleService {
   public Role save(Role roleEntity) {
     Validate.notNull(roleEntity, "The roleEntity cannot be null");
 
-    Role storedRole = roleRepository.findByName(roleEntity.getName());
-    if (Objects.nonNull(storedRole)) {
-      LOG.warn("The role with the name {} already exists", roleEntity.getName());
-      return storedRole;
-    }
-
-    var persistedRole = roleRepository.save(roleEntity);
-    LOG.info("Role persisted successfully {}", persistedRole);
+    var persistedRole = roleRepository.merge(roleEntity);
+    LOG.info("Role merged successfully {}", persistedRole);
 
     return persistedRole;
-  }
-
-  /**
-   * Retrieves the role with the specified id.
-   *
-   * @param id the id of the role to retrieve
-   * @return the role tuple that matches the id given
-   */
-  @Override
-  public Role findById(Integer id) {
-    Validate.notNull(id, "The id cannot be null");
-    return roleRepository.findById(id).orElse(null);
   }
 
   /**
@@ -72,6 +53,7 @@ public class RoleServiceImpl implements RoleService {
   @Cacheable(CacheConstants.ROLES)
   public Role findByName(String name) {
     Validate.notNull(name, "The name cannot be null");
+
     return roleRepository.findByName(name);
   }
 }

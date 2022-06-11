@@ -66,7 +66,7 @@ public class BaseEntity<T extends Serializable> {
   private String publicId;
 
   /** Manages the version of Entities to measure the amount of modifications made to this entity. */
-  @Version private int version;
+  @Version private short version;
 
   @CreatedDate
   @Column(updatable = false)
