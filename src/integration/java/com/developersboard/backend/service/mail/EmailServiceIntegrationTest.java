@@ -127,14 +127,14 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
   void sendHtmlEmailWithInvalidAttachmentThrowsException() {
     var file = new File(StringUtils.EMPTY);
 
-    var userDto = UserUtils.createUserDto(true);
+    var userDto = UserUtils.createUserDto(false);
     var links = WebUtils.getDefaultEmailUrls();
 
     var emailRequest = new HtmlEmailRequest();
     emailRequest.setUrls(links);
     emailRequest.setSubject(subject);
-    emailRequest.setTo(userDto.getEmail());
     emailRequest.setFrom(userDto.getEmail());
+    emailRequest.setTo(userDto.getEmail());
     emailRequest.setAttachments(Collections.singleton(file));
     emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
 

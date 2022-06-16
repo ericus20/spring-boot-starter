@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 /**
  * The user model for the application.
@@ -69,10 +70,12 @@ public class User extends BaseEntity<Long> implements Serializable {
   private boolean accountNonLocked;
   private boolean credentialsNonExpired;
 
+  @NotAudited
   @ToString.Exclude
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private Set<UserRole> userRoles = new HashSet<>();
 
+  @NotAudited
   @ToString.Exclude
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private Set<UserHistory> userHistories = new HashSet<>();

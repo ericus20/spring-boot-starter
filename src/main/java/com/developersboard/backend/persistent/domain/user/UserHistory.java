@@ -9,13 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.envers.Audited;
 
 /**
  * Class UserHistory captures activities happening to user such as profile update, password reset
@@ -27,7 +25,6 @@ import org.hibernate.envers.Audited;
  */
 @Getter
 @Entity
-@Audited
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class UserHistory extends BaseEntity<Long> implements Serializable {
@@ -35,8 +32,7 @@ public class UserHistory extends BaseEntity<Long> implements Serializable {
 
   @Setter
   @ToString.Exclude
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
   private User user;
 
   @Enumerated(EnumType.ORDINAL)
