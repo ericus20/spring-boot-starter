@@ -7,13 +7,11 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.envers.Audited;
 
 /**
  * The user role model for the application.
@@ -25,22 +23,17 @@ import org.hibernate.envers.Audited;
 @Getter
 @Setter
 @Entity
-@Audited
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class UserRole extends BaseEntity<Long> implements Serializable {
   @Serial private static final long serialVersionUID = 2803657434288286128L;
 
   @ToString.Exclude
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
   private User user;
 
   @ToString.Exclude
-  @ManyToOne(
-      fetch = FetchType.LAZY,
-      cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-  @JoinColumn(name = "role_id")
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = Role.class, cascade = CascadeType.MERGE)
   private Role role;
 
   /**

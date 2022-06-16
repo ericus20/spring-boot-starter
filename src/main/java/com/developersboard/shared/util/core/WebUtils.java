@@ -19,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  */
 public final class WebUtils {
 
+  public static final String TOKEN = "token";
+
   private WebUtils() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
   }
@@ -34,9 +36,19 @@ public final class WebUtils {
 
     return ServletUriComponentsBuilder.fromCurrentContextPath()
         .path(path)
-        .queryParam("token", publicUserId)
+        .queryParam(TOKEN, publicUserId)
         .build()
         .toUriString();
+  }
+
+  /**
+   * Generates a uri dynamically by constructing url.
+   *
+   * @param path the custom path
+   * @return a dynamically formulated uri
+   */
+  public static String getGenericUri(String path) {
+    return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
   }
 
   /**
@@ -53,19 +65,9 @@ public final class WebUtils {
   public static String getUri(HttpServletRequest request, String path, String publicUserId) {
     return ServletUriComponentsBuilder.fromOriginHeader(request.getHeader(HttpHeaders.ORIGIN))
         .path(path)
-        .queryParam("token", publicUserId)
+        .queryParam(TOKEN, publicUserId)
         .build()
         .toUriString();
-  }
-
-  /**
-   * Generates a uri dynamically by constructing url.
-   *
-   * @param path the custom path
-   * @return a dynamically formulated uri
-   */
-  public static String getGenericUri(String path) {
-    return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
   }
 
   /**
