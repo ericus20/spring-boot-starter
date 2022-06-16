@@ -2,11 +2,15 @@
 fail_fast: true
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.3.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-case-conflict
+      - id: detect-aws-credentials
+      - id: detect-private-key
+      - id: mixed-line-ending
       - id: no-commit-to-branch
         args: [ --branch, main, --branch, develop ]
       - id: check-merge-conflict

@@ -60,7 +60,13 @@ https://spring-boot-starter.herokuapp.com/
 
 ## Sample *ongoing* project using this template
 
-- Used as the API module along with NextJS and AngularJS for [Upsidle: An E-Commerce Application](https://github.com/stevartz/upsidle)
+- Used as the API module along with NextJS and AngularJS
+  for <a href="https://github.com/stevartz/upsidle" target="_blank">Upsidle: An E-Commerce
+  Application</a>
+
+## Entity Relational Diagram (ERD)
+
+![img.png](documents/images/erd.png)
 
 ## Production Ready Folder Structure
 
