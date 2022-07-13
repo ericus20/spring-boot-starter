@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
  * @since 1.0
  */
 @Repository
+@RestResource(exported = false)
 public interface UserRepository
     extends DataTablesRepository<User, Long>, JpaRepository<User, Long> {
 
