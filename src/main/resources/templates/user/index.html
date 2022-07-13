@@ -84,7 +84,7 @@
     $("#users").DataTable({
       ajax: {
         contentType: "application/json",
-        url: "http://localhost:8080/users/datatables",
+        url: "/users/datatables",
         type: "POST",
         data: (d) => JSON.stringify(d),
       },
@@ -117,7 +117,7 @@
 
       $.ajax({
         type: "PUT",
-        url: `http://localhost:8080/api/v1/users/${anchor.getAttribute("href")}`,
+        url: `/api/v1/users/${anchor.getAttribute("href")}`,
       })
       .done(function (data) {
         console.log("data: ", data);
