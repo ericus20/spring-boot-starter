@@ -13,6 +13,7 @@ import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.ValidationUtils;
+import com.developersboard.web.payload.response.UserResponse;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -27,6 +28,8 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -112,6 +115,17 @@ public class UserServiceImpl implements UserService {
       return persistUser(userDto, roleTypes, UserHistoryType.CREATED, false);
     }
     return null;
+  }
+
+  /**
+   * Returns users according to the details in the dataTablesInput or null if no user exists.
+   *
+   * @param dataTablesInput the dataTablesInput
+   * @return the dataTablesOutput
+   */
+  @Override
+  public DataTablesOutput<UserResponse> getUsers(final DataTablesInput dataTablesInput) {
+    return userRepository.findAll(dataTablesInput, UserUtils.getUserResponse());
   }
 
   /**

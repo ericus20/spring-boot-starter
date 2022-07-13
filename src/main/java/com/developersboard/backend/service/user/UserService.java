@@ -4,8 +4,11 @@ import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.web.payload.response.UserResponse;
 import java.util.List;
 import java.util.Set;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -45,6 +48,14 @@ public interface UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   UserDto createUser(final UserDto userDto, final Set<RoleType> roleTypes);
+
+  /**
+   * Returns users according to the details in the dataTablesInput or null if no user exists.
+   *
+   * @param dataTablesInput the dataTablesInput
+   * @return the dataTablesOutput
+   */
+  DataTablesOutput<UserResponse> getUsers(final DataTablesInput dataTablesInput);
 
   /**
    * Returns a user for the given id or null if a user could not be found.

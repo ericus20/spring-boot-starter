@@ -4,6 +4,7 @@ import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.web.payload.request.SignUpRequest;
+import com.developersboard.web.payload.response.UserResponse;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,6 +20,7 @@ import org.mapstruct.factory.Mappers;
  * @since 1.0
  */
 @Mapper(
+    uses = {UserHistoryDtoMapper.class},
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
     imports = {com.developersboard.shared.util.UserUtils.class})
 public interface UserDtoMapper {
@@ -67,4 +69,12 @@ public interface UserDtoMapper {
    * @return the user
    */
   User toUser(UserDto userDto);
+
+  /**
+   * Convert and populate a User to UserResponse object.
+   *
+   * @param user the user
+   * @return the userResponse
+   */
+  UserResponse toUserResponse(User user);
 }

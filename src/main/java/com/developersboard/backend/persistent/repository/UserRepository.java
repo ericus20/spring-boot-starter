@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
+import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Repository;
  * @since 1.0
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository
+    extends DataTablesRepository<User, Long>, JpaRepository<User, Long> {
 
   @NonNull
   @Override

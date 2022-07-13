@@ -41,7 +41,7 @@ public class FormLoginSecurityConfig {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
     if (Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV)) {
-      http.headers().frameOptions().sameOrigin().and().csrf().disable();
+      http.cors().and().csrf().disable().headers().frameOptions().sameOrigin();
     }
 
     http.authorizeRequests()
