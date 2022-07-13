@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
 /**
@@ -48,23 +47,8 @@ public final class SecurityConstants {
           HttpMethod.DELETE.name(),
           HttpMethod.PATCH.name(),
           HttpMethod.OPTIONS.name());
-  public static final List<String> ALLOWED_HTTP_HEADERS =
-      List.of(
-          HttpHeaders.AUTHORIZATION,
-          HttpHeaders.CACHE_CONTROL,
-          HttpHeaders.CONTENT_TYPE,
-          X_XSRF_TOKEN,
-          HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
-          HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
-          HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN);
-  public static final List<String> EXPOSED_HTTP_HEADERS =
-      List.of(
-          HttpHeaders.AUTHORIZATION,
-          HttpHeaders.CACHE_CONTROL,
-          HttpHeaders.CONTENT_TYPE,
-          HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
-          HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
-          HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN);
+  public static final List<String> ALLOWED_HTTP_HEADERS = List.of("*");
+  public static final List<String> EXPOSED_HTTP_HEADERS = List.of("*");
   private static final String[] PUBLIC_MATCHERS = {
     "/css/**",
     "/js/**",
@@ -83,6 +67,7 @@ public final class SecurityConstants {
     String.join("/", SignUpConstants.SIGN_UP_MAPPING, "**"),
     String.join("/", ContactConstants.CONTACT_URL_MAPPING, "**"),
     String.join("/", PasswordConstants.PASSWORD_RESET_ROOT_MAPPING, "**"),
+    "/api/v1/users/datatables"
   };
 
   private SecurityConstants() {

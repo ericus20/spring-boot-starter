@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -30,7 +31,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableCaching
 @EnableTransactionManagement
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-@EnableJpaRepositories(basePackages = "com.developersboard.backend.persistent.repository")
+@EnableJpaRepositories(
+    repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class,
+    basePackages = "com.developersboard.backend.persistent.repository")
 @EntityScan(basePackages = "com.developersboard.backend.persistent.domain")
 public class JpaConfig {
 

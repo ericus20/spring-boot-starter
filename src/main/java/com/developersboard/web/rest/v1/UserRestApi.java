@@ -117,7 +117,7 @@ public class UserRestApi {
       emailService.sendAccountVerificationEmail(savedUserDto, encodedToken);
       var location =
           ServletUriComponentsBuilder.fromCurrentRequest()
-              .path("/{id}")
+              .path("/{publicId}")
               .buildAndExpand(savedUserDto.getId())
               .toUriString();
 

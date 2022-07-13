@@ -39,9 +39,11 @@ https://spring-boot-starter.herokuapp.com/
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 * [Validation](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-validation)
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#using-boot-devtools)
+* [Spring Data Jpa DataTables](https://github.com/darrachequesne/spring-data-jpa-datatables)
 
 ## Features
 
+- [DataTables with Spring Data JPA](documents/datatables.md)
 - [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Form Validation](https://formvalidation.io/)
 - [Last Successful Login](documents/AUTHENTICATION.MD)

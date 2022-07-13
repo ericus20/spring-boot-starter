@@ -15,10 +15,12 @@ import com.developersboard.shared.dto.mapper.UserDtoMapper;
 import com.developersboard.shared.dto.mapper.UserHistoryDtoMapper;
 import com.developersboard.shared.util.core.ValidationUtils;
 import com.developersboard.web.payload.request.SignUpRequest;
+import com.developersboard.web.payload.response.UserResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import net.datafaker.Faker;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -334,5 +336,14 @@ public final class UserUtils {
     }
 
     return user.getProfileImage();
+  }
+
+  /**
+   * Transfers data from entity to returnable object.
+   *
+   * @return user dto
+   */
+  public static Function<User, UserResponse> getUserResponse() {
+    return UserDtoMapper.MAPPER::toUserResponse;
   }
 }

@@ -5,11 +5,18 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" th:if="${_csrf}"/>
+  <meta id="_csrf_header" th:content="${_csrf.headerName}" th:if="${_csrf}" th:name="_csrf_header"/>
 
   <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}" type="text/css">
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
-  <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}"
-        type="text/css">
+
+  <!-- jQuery UI -->
+  <link rel="stylesheet" th:href="@{/webjars/jquery-ui/jquery-ui.css}" type="text/css">
+
+  <!--Data Tables CSS-->
+  <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css}">
+  <link rel="stylesheet" th:href="@{/webjars/datatables/css/dataTables.bootstrap.min.css}">
 
   <!--/*@thymesVar id="formValidation" type="java.lang.Boolean"*/-->
   <link rel="stylesheet" th:href="@{/css/formValidation.min.css}" th:if="${formValidation}"
@@ -28,7 +35,8 @@
 <nav class="navbar navbar-expand-lg fixed-top bg-light navbar-light" th:fragment="common-navbar">
   <div class="container">
     <a class="navbar-brand" th:href="@{/}" th:text="#{navbar.logo.text}"></a>
-    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+    <button aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation"
             class="navbar-toggler" data-bs-target="#navbarSupportedContent"
             data-bs-toggle="collapse" type="button">
       <span class="navbar-toggler-icon"></span>
@@ -43,14 +51,21 @@
             <i class="fas fa-mail-bulk pe-2"></i> <span th:text="#{navbar.contact.text}"></span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link mx-2" th:href="@{/users}">
+            <i class="fas fa-user-circle pe-2"></i> <span>Users</span>
+          </a>
+        </li>
       </ul>
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item">
           <select class="nav-link mx-2" data-width="fit" id="locale">
-            <option data-content='<span class="fa-regular fa-flag-usa"></span> English' th:selected="__${#locale}__== 'en'"
+            <option data-content='<span class="fa-regular fa-flag-usa"></span> English'
+                    th:selected="__${#locale}__== 'en'"
                     value="en">English
             </option>
-            <option data-content='<i class="flag-icon flag-icon-mx"></i> Español' th:selected="__${#locale}__== 'es'"
+            <option data-content='<i class="flag-icon flag-icon-mx"></i> Español'
+                    th:selected="__${#locale}__== 'es'"
                     value="es">Español
             </option>
           </select>
@@ -61,7 +76,8 @@
           </a>
         </li>
         <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
-          <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+          <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+             href="#"
              id="navbarDropdown" role="button">
             <span sec:authentication="name"></span>
           </a>
@@ -92,6 +108,15 @@
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script>
+    $(document).ready(() => {
+      let token = $('meta[name="_csrf"]').attr('content');
+      $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': token, 'X-XSRF-TOKEN': token}
+      });
+    });
+  </script>
+  <script th:src="@{/webjars/jquery-ui/jquery-ui.js}"></script>
   <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
   <script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
