@@ -1,6 +1,7 @@
 package com.developersboard.backend.service.security.impl;
 
 import com.developersboard.backend.service.security.AuditService;
+import com.developersboard.backend.service.user.UserService;
 import java.util.List;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AuditServiceImpl implements AuditService {
 
+  private final UserService userService;
   private final EntityManager entityManager;
 
   /**

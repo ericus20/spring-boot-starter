@@ -11,6 +11,7 @@
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="GuardLogStatement"/>
+    <exclude name="SwitchStmtsShouldHaveDefault"/>
   </rule>
 
   <rule ref="category/java/errorprone.xml">
