@@ -1,9 +1,9 @@
 plugins {
-  id 'org.springframework.boot' version '2.7.3'
-  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-  id 'com.coditory.integration-test' version '1.4.2'
-  id 'org.owasp.dependencycheck' version '7.1.2'
-  id 'com.diffplug.spotless' version '6.10.0'
+  id 'org.springframework.boot' version '2.7.5'
+  id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+  id 'com.coditory.integration-test' version '1.4.4'
+  id 'org.owasp.dependencycheck' version '7.2.1'
+  id 'com.diffplug.spotless' version '6.11.0'
   id 'eclipse'
   id 'jacoco'
   id 'idea'
@@ -27,8 +27,8 @@ repositories {
 }
 
 ext {
-  mapstructVersion = '1.5.2.Final'
-  springDocVersion = '1.6.11'
+  mapstructVersion = '1.5.3.Final'
+  springDocVersion = '1.6.12'
 }
 
 dependencies {
@@ -56,8 +56,8 @@ dependencies {
   // Utilities
   implementation 'io.jsonwebtoken:jjwt:0.9.1'
   implementation 'commons-io:commons-io:2.11.0'
-  implementation 'net.datafaker:datafaker:1.5.0'
-  implementation 'com.google.code.gson:gson:2.9.0'
+  implementation 'net.datafaker:datafaker:1.6.0'
+  implementation 'com.google.code.gson:gson:2.10'
   implementation 'commons-validator:commons-validator:1.7'
   implementation 'com.github.darrachequesne:spring-data-jpa-datatables:5.2.0'
 
@@ -72,7 +72,7 @@ dependencies {
   implementation 'com.h2database:h2'
   runtimeOnly 'org.postgresql:postgresql'
   implementation 'org.hibernate:hibernate-envers'
-  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.296'
+  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.328'
   implementation files('libs/hypersistence-optimizer-2.6.0.jar')
 
   // MapStruct for Object Mapping
@@ -81,11 +81,11 @@ dependencies {
 
   // Webjars
   implementation 'org.webjars:jquery:3.6.1'
-  implementation 'org.webjars:bootstrap:5.2.0'
+  implementation 'org.webjars:bootstrap:5.2.2'
   implementation 'org.webjars:popper.js:2.9.3'
   implementation 'org.webjars:jquery-ui:1.13.2'
   implementation 'org.webjars:datatables:1.12.1'
-  implementation 'org.webjars:font-awesome:6.1.2'
+  implementation 'org.webjars:font-awesome:6.2.0'
   implementation 'org.webjars:webjars-locator:0.45'
 
   // Testing
@@ -94,7 +94,7 @@ dependencies {
 
   testImplementation 'org.mockito:mockito-inline'
   testImplementation 'io.findify:s3mock_2.13:0.2.6'
-  testImplementation 'com.icegreen:greenmail-junit5:1.6.10'
+  testImplementation  'com.icegreen:greenmail-junit5:1.6.11'
   testImplementation 'com.jparams:to-string-verifier:1.4.8'
   testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.10.1'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
