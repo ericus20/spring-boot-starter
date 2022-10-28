@@ -3,11 +3,14 @@ package com.developersboard.config.security;
 import com.developersboard.config.security.jwt.JwtAuthTokenFilter;
 import com.developersboard.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.developersboard.constant.AdminConstants;
+import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +29,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration
 @RequiredArgsConstructor
 public class ApiWebSecurityConfig {
+
+  private final Environment environment;
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
   private final AuthenticationManager authenticationManager;
@@ -41,15 +46,18 @@ public class ApiWebSecurityConfig {
   @Order(1)
   public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
-    http.cors();
-
     http.exceptionHandling()
         .authenticationEntryPoint(unauthorizedHandler)
         .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+        .cors()
+        .and()
         .csrf()
+        .requireCsrfProtectionMatcher(
+            request ->
+                !Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV))
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
     http.antMatcher(SecurityConstants.API_ROOT_URL_MAPPING)
