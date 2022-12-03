@@ -29,7 +29,7 @@ class I18NServiceIntegrationTest extends IntegrationTestUtils {
   @Test
   void getMessageWithSpanishLocale() {
     String expected = "Este es un mensaje de prueba.";
-    LocaleContextHolder.setDefaultLocale(new Locale("es"));
+    LocaleContextHolder.setDefaultLocale(new Locale.Builder().setLanguage("es").build());
 
     Assertions.assertEquals(expected, i18NService.getMessage(MESSAGE_TEST_KEY));
   }

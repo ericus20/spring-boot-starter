@@ -4,42 +4,21 @@ import com.developersboard.IntegrationTestUtils;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.user.PasswordConstants;
-import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@TestInstance(Lifecycle.PER_CLASS)
+@Isolated
+@Disabled
 class PasswordControllerIntegrationTest extends IntegrationTestUtils {
-
-  private transient UserDto storedUser;
-
-  @BeforeAll
-  void beforeAll() {
-    var userDto = UserUtils.createUserDto(true);
-    storedUser = createAndAssertUser(userDto);
-  }
-
-  @BeforeEach
-  void setUp() {
-    greenMail.start();
-  }
-
-  @AfterEach
-  void tearDown() {
-    greenMail.stop();
-  }
 
   @Test
   void startingForgotPasswordWithUserNotExisting(TestInfo testInfo) throws Exception {
@@ -57,6 +36,11 @@ class PasswordControllerIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void startingForgotPasswordShouldPresentSendPasswordResetEmail() throws Exception {
+
+    var userDto = UserUtils.createUserDto(true);
+    var storedUser = createAndAssertUser(userDto);
+
+    greenMail.start();
 
     this.mockMvc
         .perform(
@@ -81,5 +65,7 @@ class PasswordControllerIntegrationTest extends IntegrationTestUtils {
     Assertions.assertTrue(
         messages[0].getRecipients(RecipientType.TO)[0].toString().contains(storedUser.getEmail()));
     Assertions.assertEquals(1, messages.length);
+
+    greenMail.stop();
   }
 }
