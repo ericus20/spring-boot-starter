@@ -2,8 +2,8 @@ package com.developersboard.backend.persistent.repository.impl;
 
 import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.persistent.repository.RoleRepository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -4,9 +4,9 @@ import com.developersboard.constant.ContactConstants;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.HomeConstants;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

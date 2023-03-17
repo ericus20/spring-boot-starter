@@ -1,8 +1,8 @@
 package com.developersboard.web.payload.request;
 
 import com.developersboard.constant.user.UserConstants;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

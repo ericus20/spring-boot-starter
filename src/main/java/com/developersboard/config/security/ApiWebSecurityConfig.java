@@ -60,16 +60,15 @@ public class ApiWebSecurityConfig {
                 !Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV))
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
-    http.antMatcher(SecurityConstants.API_ROOT_URL_MAPPING)
-        .authorizeRequests()
-        // allow anonymous resource requests to authenticate
-        .antMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING)
-        .permitAll()
-        // allow anonymous resource requests to create new user
-        .antMatchers(HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL)
-        .permitAll()
-        .anyRequest()
-        .authenticated();
+    http.authorizeHttpRequests(
+        authorizeRequests -> {
+          authorizeRequests.requestMatchers(SecurityConstants.API_ROOT_URL_MAPPING);
+          authorizeRequests.requestMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING).permitAll();
+          authorizeRequests
+              .requestMatchers(HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL)
+              .permitAll();
+          authorizeRequests.anyRequest().authenticated();
+        });
 
     http.authenticationManager(authenticationManager);
 

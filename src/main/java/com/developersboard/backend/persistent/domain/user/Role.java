@@ -1,12 +1,12 @@
 package com.developersboard.backend.persistent.domain.user;
 
 import com.developersboard.enums.RoleType;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- Head -->
-<th:block th:replace="common/template :: common-head(title='Contact')"/>
+<th:block th:replace="~{common/template :: common-head(title='Contact')}"/>
 
 <body>
 
@@ -10,7 +10,7 @@
 <main class="container">
 
   <!--Common Body Scripts-->
-  <nav th:replace="common/template :: common-navbar"></nav>
+  <nav th:replace="~{common/template :: common-navbar}"></nav>
 
 
   <!--Section: Contact v.2-->
@@ -124,7 +124,7 @@
 <!-- Container ends-->
 
 <!--Common Body Scripts-->
-<th:block th:replace="common/template :: common-scripts"/>
+<th:block th:replace="~{common/template :: common-scripts}"/>
 
 </body>
 </html>

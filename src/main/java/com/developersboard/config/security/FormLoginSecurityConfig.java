@@ -44,18 +44,20 @@ public class FormLoginSecurityConfig {
       http.cors().and().csrf().disable().headers().frameOptions().sameOrigin();
     }
 
-    http.authorizeRequests()
-        .antMatchers(SecurityConstants.getPublicMatchers().toArray(new String[0]))
-        .permitAll()
-        .and()
-        .authorizeRequests()
-        .anyRequest()
-        .authenticated();
-    http.formLogin()
-        .loginPage(SecurityConstants.LOGIN)
-        .failureUrl(SecurityConstants.LOGIN_FAILURE_URL)
-        .defaultSuccessUrl(HomeConstants.INDEX_URL_MAPPING)
-        .permitAll();
+    http.authorizeHttpRequests(
+            authorizeRequests -> {
+              authorizeRequests
+                  .requestMatchers(SecurityConstants.getPublicMatchers().toArray(new String[0]))
+                  .permitAll();
+              authorizeRequests.anyRequest().authenticated();
+            })
+        .formLogin(
+            (form) ->
+                form.loginPage(SecurityConstants.LOGIN)
+                    .failureUrl(SecurityConstants.LOGIN_FAILURE_URL)
+                    .defaultSuccessUrl(HomeConstants.INDEX_URL_MAPPING)
+                    .permitAll());
+
     http.logout()
         .logoutRequestMatcher(new AntPathRequestMatcher(SecurityConstants.LOGOUT))
         .logoutSuccessUrl(SecurityConstants.LOGIN_LOGOUT)

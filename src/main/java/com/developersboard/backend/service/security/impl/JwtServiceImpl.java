@@ -7,13 +7,14 @@ import com.developersboard.enums.TokenType;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Objects;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -65,12 +66,14 @@ public class JwtServiceImpl implements JwtService {
   public String generateJwtToken(final String username, final Date expiration) {
     Validate.notBlank(username, UserConstants.BLANK_USERNAME);
 
+    var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+
     var jwtToken =
         Jwts.builder()
             .setSubject(username)
             .setIssuedAt(new Date())
             .setExpiration(expiration)
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .signWith(key)
             .compact();
 
     LOG.debug(TOKEN_CREATED_SUCCESS, jwtToken);
@@ -87,7 +90,14 @@ public class JwtServiceImpl implements JwtService {
   public String getUsernameFromToken(final String token) {
     Validate.notBlank(token, "Token cannot be blank");
 
-    return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+
+    return Jwts.parserBuilder()
+        .setSigningKey(key)
+        .build()
+        .parseClaimsJws(token)
+        .getBody()
+        .getSubject();
   }
 
   /**
@@ -114,10 +124,11 @@ public class JwtServiceImpl implements JwtService {
    */
   @Override
   public boolean isValidJwtToken(final String token) {
+    var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     try {
-      Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+      Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
       return true;
-    } catch (SignatureException e) {
+    } catch (SecurityException e) {
       LOG.error("Invalid JWT signature: {}", e.getMessage());
     } catch (MalformedJwtException e) {
       LOG.error("Invalid JWT token: {}", e.getMessage());

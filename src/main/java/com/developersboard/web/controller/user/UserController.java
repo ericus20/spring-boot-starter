@@ -5,7 +5,7 @@ import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.backend.service.security.AuditService;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.web.payload.response.UserResponse;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;

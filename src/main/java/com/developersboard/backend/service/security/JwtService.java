@@ -1,7 +1,7 @@
 package com.developersboard.backend.service.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * This is the contract for the jwt service operations.

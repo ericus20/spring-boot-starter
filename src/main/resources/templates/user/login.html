@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- Head -->
 <th:block
-    th:replace="common/template :: common-head(title='Login', formValidation=true, togglePassword=true)"/>
+    th:replace="~{common/template :: common-head(title='Login', formValidation=true, togglePassword=true)}"/>
 
 <body>
 
@@ -10,7 +10,7 @@
 <main class="container">
 
   <!--Common Body Scripts-->
-  <nav th:replace="common/template :: common-navbar"></nav>
+  <nav th:replace="~{common/template :: common-navbar}"></nav>
 
   <!-- Row starts-->
   <div class="row mt-5">
@@ -89,7 +89,7 @@
 
 
 <!--Common Body Scripts-->
-<th:block th:replace="common/template :: common-scripts(formValidation=true, togglePassword=true)"/>
+<th:block th:replace="~{common/template :: common-scripts(formValidation=true, togglePassword=true)}"/>
 
 </body>
 </html>

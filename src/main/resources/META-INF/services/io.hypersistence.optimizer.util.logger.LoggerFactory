@@ -1,2 +1,0 @@
-io.hypersistence.optimizer.util.logger.Slf4jLoggerFactory
-io.hypersistence.optimizer.util.logger.JBossLoggerFactory

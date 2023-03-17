@@ -67,7 +67,6 @@ public final class SecurityConstants {
     String.join("/", SignUpConstants.SIGN_UP_MAPPING, "**"),
     String.join("/", ContactConstants.CONTACT_URL_MAPPING, "**"),
     String.join("/", PasswordConstants.PASSWORD_RESET_ROOT_MAPPING, "**"),
-    "/api/v1/users/datatables"
   };
 
   private SecurityConstants() {

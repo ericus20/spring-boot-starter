@@ -2,8 +2,8 @@ package com.developersboard.backend.service.security.impl;
 
 import com.developersboard.backend.service.security.AuditService;
 import com.developersboard.backend.service.user.UserService;
+import jakarta.persistence.EntityManager;
 import java.util.List;
-import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
