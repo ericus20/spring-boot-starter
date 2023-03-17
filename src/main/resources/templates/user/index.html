@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- Head -->
 <th:block
-    th:replace="common/template :: common-head(title='Users')"/>
+    th:replace="~{common/template :: common-head(title='Users')}"/>
 
 <body>
 
@@ -10,7 +10,7 @@
 <main class="container">
 
   <!--Common Body Scripts-->
-  <nav th:replace="common/template :: common-navbar"></nav>
+  <nav th:replace="~{common/template :: common-navbar}"></nav>
 
   <!-- Row starts-->
   <div class="row mt-5">
@@ -70,7 +70,7 @@
 
 
 <!--Common Body Scripts-->
-<th:block th:replace="common/template :: common-scripts"/>
+<th:block th:replace="~{common/template :: common-scripts}"/>
 
 <script type="text/javascript">
   //initialize datatable

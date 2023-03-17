@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <!-- Head -->
-<th:block th:replace="common/template :: common-head(title='Profile')"/>
+<th:block th:replace="~{common/template :: common-head(title='Profile')}"/>
 
 <body>
 
@@ -212,7 +212,7 @@
 <!-- Container ends-->
 
 <!--Common Body Scripts-->
-<th:block th:replace="common/template :: common-scripts"/>
+<th:block th:replace="~{common/template :: common-scripts}"/>
 
 </body>
 </html>

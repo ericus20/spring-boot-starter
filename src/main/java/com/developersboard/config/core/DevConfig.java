@@ -8,7 +8,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
-import org.h2.server.web.WebServlet;
+import org.h2.server.web.JakartaWebServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,9 +51,9 @@ public class DevConfig {
    * @return the h2 registered bean.
    */
   @Bean
-  public ServletRegistrationBean<WebServlet> h2servletRegistration() {
+  public ServletRegistrationBean<JakartaWebServlet> h2servletRegistration() {
     return new ServletRegistrationBean<>(
-        new WebServlet(), SecurityConstants.H2_CONSOLE_URL_MAPPING);
+        new JakartaWebServlet(), SecurityConstants.H2_CONSOLE_URL_MAPPING);
   }
 
   /**

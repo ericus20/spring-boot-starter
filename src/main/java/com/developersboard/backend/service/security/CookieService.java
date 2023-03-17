@@ -1,8 +1,8 @@
 package com.developersboard.backend.service.security;
 
 import com.developersboard.enums.TokenType;
+import jakarta.servlet.http.Cookie;
 import java.time.Duration;
-import javax.servlet.http.Cookie;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 

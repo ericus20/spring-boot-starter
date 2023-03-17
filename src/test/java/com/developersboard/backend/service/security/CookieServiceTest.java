@@ -5,6 +5,7 @@ import com.developersboard.backend.service.security.impl.JwtServiceImpl;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
+import com.developersboard.shared.util.core.JwtUtils;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ class CookieServiceTest {
 
   @BeforeAll
   void beforeAll() {
-    jwtService = new JwtServiceImpl("secret");
+    jwtService = new JwtServiceImpl(JwtUtils.generateSecretKey());
 
     var environment = new MockEnvironment();
     environment.addActiveProfile(ProfileTypeConstants.TEST);

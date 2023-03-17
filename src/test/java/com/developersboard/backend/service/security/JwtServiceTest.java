@@ -18,7 +18,7 @@ class JwtServiceTest {
 
   @BeforeAll
   void beforeAll() {
-    jwtService = new JwtServiceImpl("secret");
+    jwtService = new JwtServiceImpl(JwtUtils.generateSecretKey());
   }
 
   @Test

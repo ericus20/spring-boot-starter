@@ -1,6 +1,8 @@
 package com.developersboard.shared.util.core;
 
 import com.developersboard.constant.ErrorConstants;
+import java.security.SecureRandom;
+import java.util.Base64;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,6 +24,12 @@ public final class JwtUtils {
 
   private JwtUtils() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
+  }
+
+  public enum JwtTokenType {
+    BAD_SIGNATURE,
+    MALFORMED,
+    UNSUPPORTED
   }
 
   /**
@@ -64,9 +72,12 @@ public final class JwtUtils {
     return null;
   }
 
-  public enum JwtTokenType {
-    BAD_SIGNATURE,
-    MALFORMED,
-    UNSUPPORTED
+  public static String generateSecretKey() {
+    SecureRandom random = new SecureRandom();
+    byte[] bytes = new byte[36];
+    // the 256 required bits
+    random.nextBytes(bytes);
+    var encoder = Base64.getUrlEncoder().withoutPadding();
+    return encoder.encodeToString(bytes);
   }
 }

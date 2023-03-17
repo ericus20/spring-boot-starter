@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!-- Head -->
-<th:block th:replace="common/template :: common-head(title='Home')"/>
+<th:block th:replace="~{common/template :: common-head(title='Home')}"/>
 
 <body>
 
@@ -10,7 +10,7 @@
 <main class="container">
 
   <!--Common Body Scripts-->
-  <nav th:replace="common/template :: common-navbar"></nav>
+  <nav th:replace="~{common/template :: common-navbar}"></nav>
 
   <!-- Row starts-->
   <div class="row">
@@ -55,6 +55,6 @@
 
 
 <!--Common Body Scripts-->
-<div th:replace="common/template :: common-scripts"></div>
+<div th:replace="~{common/template :: common-scripts}"></div>
 </body>
 </html>

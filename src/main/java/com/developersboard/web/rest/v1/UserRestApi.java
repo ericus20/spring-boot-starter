@@ -9,9 +9,9 @@ import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.OperationStatus;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.web.payload.request.SignUpRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import jakarta.validation.Valid;
 import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -54,7 +54,7 @@ public class UserRestApi {
    */
   @PreAuthorize(
       "isFullyAuthenticated() && hasRole(T(com.developersboard.enums.RoleType).ROLE_ADMIN)")
-  @PutMapping(value = "/{publicId}/enable", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(value = "/{publicId}/enable")
   public ResponseEntity<OperationStatus> enableUser(@PathVariable String publicId) {
     var userDto = userService.enableUser(publicId);
 
@@ -94,8 +94,8 @@ public class UserRestApi {
   }
 
   @PostMapping
-  public ResponseEntity<String> createUser(
-      @Valid @RequestBody SignUpRequest signUpRequest, HttpServletRequest request) {
+  @SecurityRequirements
+  public ResponseEntity<String> createUser(@Valid @RequestBody SignUpRequest signUpRequest) {
     var userDto = UserUtils.convertToUserDto(signUpRequest);
 
     if (userService.existsByUsernameOrEmailAndEnabled(userDto.getUsername(), userDto.getEmail())) {

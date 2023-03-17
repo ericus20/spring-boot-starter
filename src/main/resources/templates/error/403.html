@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- Head -->
-<th:block th:replace="common/template :: common-head(title='..:: Spring Boot Starter | 403 ::..')"/>
+<th:block th:replace="~{common/template :: common-head(title='..:: Spring Boot Starter | 403 ::..')}"/>
 
 <body>
 
@@ -30,7 +30,7 @@
 </div>
 
 <!--Common Body Scripts-->
-<div th:replace="common/template :: common-scripts"></div>
+<div th:replace="~{common/template :: common-scripts}"></div>
 
 </body>
 </html>

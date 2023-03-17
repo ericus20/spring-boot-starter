@@ -6,7 +6,7 @@ import java.time.Duration;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.tomcat.util.http.LegacyCookieProcessor;
+import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -86,7 +86,7 @@ public class SecurityBean {
 
     return tomcatServletWebServerFactory ->
         tomcatServletWebServerFactory.addContextCustomizers(
-            context -> context.setCookieProcessor(new LegacyCookieProcessor()));
+            context -> context.setCookieProcessor(new Rfc6265CookieProcessor()));
   }
 
   /**

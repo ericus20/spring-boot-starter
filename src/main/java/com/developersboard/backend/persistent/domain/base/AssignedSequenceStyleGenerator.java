@@ -22,6 +22,6 @@ public class AssignedSequenceStyleGenerator extends SequenceStyleGenerator {
         return id;
       }
     }
-    return super.generate(session, object);
+    return (Serializable) super.generate(session, object);
   }
 }
