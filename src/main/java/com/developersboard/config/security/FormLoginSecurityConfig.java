@@ -11,7 +11,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * This configuration handles form login requests with session. This configuration is considered
@@ -30,8 +29,8 @@ public class FormLoginSecurityConfig {
   private final PersistentTokenRepository persistentRepository;
 
   /**
-   * Override this method to configure the {@link HttpSecurity}. Typically, subclasses should not
-   * call super as it may override their configuration.
+   * Configure the {@link HttpSecurity}. Typically, subclasses should not call super as it may
+   * override their configuration.
    *
    * @param http the {@link HttpSecurity} to modify.
    * @throws Exception thrown when error happens during authentication.
@@ -45,27 +44,26 @@ public class FormLoginSecurityConfig {
     }
 
     http.authorizeHttpRequests(
-            authorizeRequests -> {
-              authorizeRequests
-                  .requestMatchers(SecurityConstants.getPublicMatchers().toArray(new String[0]))
-                  .permitAll();
-              authorizeRequests.anyRequest().authenticated();
-            })
+            (requests) ->
+                requests
+                    .requestMatchers(SecurityConstants.getPublicMatchers().toArray(new String[0]))
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
         .formLogin(
             (form) ->
                 form.loginPage(SecurityConstants.LOGIN)
                     .failureUrl(SecurityConstants.LOGIN_FAILURE_URL)
-                    .defaultSuccessUrl(HomeConstants.INDEX_URL_MAPPING)
-                    .permitAll());
-
-    http.logout()
-        .logoutRequestMatcher(new AntPathRequestMatcher(SecurityConstants.LOGOUT))
-        .logoutSuccessUrl(SecurityConstants.LOGIN_LOGOUT)
-        .deleteCookies(SecurityConstants.JSESSIONID)
-        .permitAll()
-        .deleteCookies(SecurityConstants.REMEMBER_ME)
-        .permitAll();
-    http.rememberMe().tokenRepository(persistentRepository);
+                    .defaultSuccessUrl(HomeConstants.INDEX_URL_MAPPING))
+        .logout(
+            (logout) ->
+                logout
+                    .deleteCookies(SecurityConstants.JSESSIONID, SecurityConstants.REMEMBER_ME)
+                    .invalidateHttpSession(false)
+                    .logoutUrl(SecurityConstants.LOGOUT)
+                    .logoutSuccessUrl(SecurityConstants.LOGIN_LOGOUT)
+                    .permitAll())
+        .rememberMe((rememberMe) -> rememberMe.tokenRepository(persistentRepository));
 
     return http.build();
   }

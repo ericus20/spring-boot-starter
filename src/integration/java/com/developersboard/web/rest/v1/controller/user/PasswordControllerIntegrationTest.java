@@ -8,16 +8,12 @@ import com.developersboard.shared.util.UserUtils;
 import jakarta.mail.Message;
 import jakarta.mail.Message.RecipientType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@Isolated
-@Disabled
 class PasswordControllerIntegrationTest extends IntegrationTestUtils {
 
   @Test

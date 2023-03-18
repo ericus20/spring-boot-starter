@@ -12,13 +12,11 @@ import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
-import com.developersboard.shared.util.core.SecurityUtils;
 import com.developersboard.web.payload.request.SignUpRequest;
 import jakarta.validation.Valid;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -114,10 +112,6 @@ public class SignUpController {
 
       // send an account confirmation to the user.
       emailService.sendAccountConfirmationEmail(userDto);
-
-      // automatically authenticate the userDto since there will be a redirection to profile page
-      UserDetails userDetails = userService.getUserDetails(userDto.getUsername());
-      SecurityUtils.authenticateUser(userDetails);
       redirectAttributes.addFlashAttribute(SignUpConstants.SIGN_UP_SUCCESS_KEY, true);
       redirectAttributes.addFlashAttribute(ProfileConstants.NEW_PROFILE, true);
 
@@ -142,7 +136,7 @@ public class SignUpController {
         if (userDto.getUsername().equals(username) && userDto.isEnabled()) {
           LOG.debug(SignUpConstants.ACCOUNT_EXISTS);
           model.addAttribute(ErrorConstants.ERROR, SignUpConstants.ACCOUNT_EXISTS);
-        } else if (userDto.getUsername().equals(username) && !userDto.isEnabled()) {
+        } else if (userDto.getUsername().equals(username)) {
           UserUtils.enableUser(userDto);
 
           return userService.updateUser(userDto, UserHistoryType.VERIFIED);

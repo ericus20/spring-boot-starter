@@ -36,8 +36,8 @@ public class ApiWebSecurityConfig {
   private final AuthenticationManager authenticationManager;
 
   /**
-   * Override this method to configure the {@link HttpSecurity}. Typically, subclasses should not
-   * call super as it may override their configuration.
+   * Configure the {@link HttpSecurity}. Typically, subclasses should not call super as it may
+   * override their configuration.
    *
    * @param http the {@link HttpSecurity} to modify.
    * @throws Exception thrown when error happens during authentication.
@@ -45,6 +45,8 @@ public class ApiWebSecurityConfig {
   @Bean
   @Order(1)
   public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+
+    http.securityMatcher(SecurityConstants.API_ROOT_URL_MAPPING);
 
     http.exceptionHandling()
         .authenticationEntryPoint(unauthorizedHandler)
@@ -62,8 +64,8 @@ public class ApiWebSecurityConfig {
 
     http.authorizeHttpRequests(
         authorizeRequests -> {
-          authorizeRequests.requestMatchers(SecurityConstants.API_ROOT_URL_MAPPING);
           authorizeRequests.requestMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING).permitAll();
+          authorizeRequests.requestMatchers(SecurityConstants.API_ROOT_URL_MAPPING);
           authorizeRequests
               .requestMatchers(HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL)
               .permitAll();
