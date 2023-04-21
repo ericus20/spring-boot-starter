@@ -16,9 +16,13 @@ https://spring-boot-starter.herokuapp.com/
 ![Java CI with Gradle](https://github.com/ericus20/spring-boot-starter/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
 
+## Test Coverage
+![Coverage](.github/badges/jacoco.svg)
+![Branches](.github/badges/branches.svg)
+
 ## Built With
 
-* [Spring Boot 3.0.5](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
+* [Spring Boot 3.0.6](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
 * [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) - HTML, CSS, and
   JavaScript framework
 * [Thymeleaf](https://www.thymeleaf.org/) - Modern server-side Java template engine
