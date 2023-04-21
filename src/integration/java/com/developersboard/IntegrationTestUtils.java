@@ -1,5 +1,6 @@
 package com.developersboard;
 
+import com.developersboard.backend.persistent.repository.UserRepository;
 import com.developersboard.backend.service.i18n.I18NService;
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.backend.service.security.AuditService;
@@ -56,6 +57,7 @@ public abstract class IntegrationTestUtils {
   @Autowired protected SystemProperties systemProperties;
   @Autowired protected EmailService emailService;
   @Autowired protected GreenMail greenMail;
+  @Autowired protected UserRepository userRepository;
 
   @Autowired protected PasswordController passwordController;
 

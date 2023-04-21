@@ -14,6 +14,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 
 class UserServiceIntegrationTest extends IntegrationTestUtils {
 
@@ -66,6 +67,22 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
     var existingUser = persistUser(true, userDto);
 
     Assertions.assertNull(existingUser);
+  }
+
+  @Test
+  void getUsersByDataTablesInput() {
+    var dataTablesInput = new DataTablesInput();
+    var defaultLength = dataTablesInput.getLength();
+
+    createAndAssertUser(UserUtils.createUserDto(true));
+
+    var users = userService.getUsers(dataTablesInput);
+
+    Assertions.assertFalse(users.getData().isEmpty());
+    // results should be limited to the default length of dataTable or less
+    Assertions.assertTrue(users.getData().size() <= defaultLength);
+    // all data in the database can be more, but we only fetched less.
+    Assertions.assertTrue(userRepository.count() >= users.getData().size());
   }
 
   /** Test checks that an existing user can be retrieved using the username provided. */
