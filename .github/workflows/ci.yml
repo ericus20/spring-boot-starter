@@ -51,7 +51,6 @@ jobs:
         with:
           default_author: github_actions
           message: 'commit badge'
-          new_branch: test-coverage
           add: '*.svg'
   docker:
     needs: build
