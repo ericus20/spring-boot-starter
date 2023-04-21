@@ -11,7 +11,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Running Instance on Heroku
 
-https://spring-boot-starter.herokuapp.com/
+<a href="https://spring-boot-starter.herokuapp.com/" target="_blank">https://spring-boot-starter.herokuapp.com/</a>
 
 ![Java CI with Gradle](https://github.com/ericus20/spring-boot-starter/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
