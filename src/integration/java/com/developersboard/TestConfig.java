@@ -9,6 +9,7 @@ import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +63,10 @@ public class TestConfig {
 
   @Bean
   public GreenMail greenMail() {
-    return new GreenMail(ServerSetupTest.SMTP)
+    ServerSetup smtp = ServerSetupTest.SMTP;
+    smtp.setServerStartupTimeout(5000);
+
+    return new GreenMail(smtp)
         .withConfiguration(GreenMailConfiguration.aConfig().withUser(mailUsername, mailPassword));
   }
 

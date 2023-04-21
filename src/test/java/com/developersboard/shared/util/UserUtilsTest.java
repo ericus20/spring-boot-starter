@@ -4,6 +4,7 @@ import com.developersboard.TestUtils;
 import com.developersboard.backend.persistent.domain.user.User;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.web.payload.request.SignUpRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -94,6 +95,21 @@ class UserUtilsTest extends TestUtils {
 
     var userFromUserDto = UserUtils.convertToUser(userDto);
     Assertions.assertEquals(user, userFromUserDto);
+  }
+
+  @Test
+  void convertSignUpRequestToUserDto() {
+    var signUpRequest = new SignUpRequest();
+    signUpRequest.setUsername(FAKER.name().username());
+    signUpRequest.setPassword(FAKER.internet().password());
+    signUpRequest.setEmail(FAKER.internet().emailAddress());
+
+    UserDto userFromSignUpRequest = UserUtils.convertToUserDto(signUpRequest);
+
+    Assertions.assertNotNull(userFromSignUpRequest);
+    Assertions.assertNotNull(signUpRequest.getUsername(), userFromSignUpRequest.getUsername());
+    Assertions.assertNotNull(signUpRequest.getPassword(), userFromSignUpRequest.getPassword());
+    Assertions.assertNotNull(signUpRequest.getEmail(), userFromSignUpRequest.getEmail());
   }
 
   @Test
