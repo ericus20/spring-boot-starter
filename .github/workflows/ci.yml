@@ -8,6 +8,10 @@ name: Java CI with Gradle
 on:
   pull_request:
     branches: [ develop, main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -47,6 +51,7 @@ jobs:
         with:
           default_author: github_actions
           message: 'commit badge'
+          new_branch: test-coverage
           add: '*.svg'
   docker:
     needs: build
