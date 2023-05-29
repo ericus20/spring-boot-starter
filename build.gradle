@@ -111,7 +111,6 @@ tasks.withType(Test).configureEach {
 
 tasks.withType(JavaCompile).configureEach {
   options.compilerArgs += ['-Xlint:deprecation']
-  dependsOn 'spotlessApply'
 }
 
 jacocoTestReport {
