@@ -40,8 +40,6 @@ public class BaseEntity<T extends Serializable> {
 
   private static final String SEQUENCE_NAME = "SpringBootStarterSequence";
   private static final String SEQUENCE_INITIAL_VALUE = "1";
-  private static final String STRATEGY =
-      "com.developersboard.backend.persistent.domain.base.AssignedSequenceStyleGenerator";
   private static final String SEQUENCE_GENERATOR_NAME = "SpringBootStarterSequenceGenerator";
 
   /**
@@ -51,7 +49,7 @@ public class BaseEntity<T extends Serializable> {
    */
   @GenericGenerator(
       name = SEQUENCE_GENERATOR_NAME,
-      strategy = STRATEGY,
+      type = AssignedSequenceStyleGenerator.class,
       parameters = {
         @Parameter(name = "sequence_name", value = SEQUENCE_NAME),
         @Parameter(name = "initial_value", value = SEQUENCE_INITIAL_VALUE),

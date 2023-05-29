@@ -111,7 +111,7 @@ public class User extends BaseEntity<Long> implements Serializable {
    */
   public void addUserRole(final User user, final Role role) {
     var userRole = new UserRole(user, role);
-    userRoles.add(new UserRole(user, role));
+    userRoles.add(userRole);
     userRole.setUser(this);
   }
 

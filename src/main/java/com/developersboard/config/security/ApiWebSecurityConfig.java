@@ -1,5 +1,7 @@
 package com.developersboard.config.security;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import com.developersboard.config.security.jwt.JwtAuthTokenFilter;
 import com.developersboard.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.developersboard.constant.AdminConstants;
@@ -48,29 +50,31 @@ public class ApiWebSecurityConfig {
 
     http.securityMatcher(SecurityConstants.API_ROOT_URL_MAPPING);
 
-    http.exceptionHandling()
-        .authenticationEntryPoint(unauthorizedHandler)
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .cors()
-        .and()
-        .csrf()
-        .requireCsrfProtectionMatcher(
-            request ->
-                !Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV))
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-
-    http.authorizeHttpRequests(
-        authorizeRequests -> {
-          authorizeRequests.requestMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING).permitAll();
-          authorizeRequests.requestMatchers(SecurityConstants.API_ROOT_URL_MAPPING);
-          authorizeRequests
-              .requestMatchers(HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL)
-              .permitAll();
-          authorizeRequests.anyRequest().authenticated();
-        });
+    http.exceptionHandling(
+            (exceptionHandling) -> exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
+        .authorizeHttpRequests(
+            authorizeRequests -> {
+              authorizeRequests
+                  .requestMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING)
+                  .permitAll();
+              authorizeRequests.requestMatchers(SecurityConstants.API_ROOT_URL_MAPPING);
+              authorizeRequests
+                  .requestMatchers(HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL)
+                  .permitAll();
+              authorizeRequests.anyRequest().authenticated();
+            })
+        .sessionManagement(
+            (sessionManagement) ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .cors(withDefaults())
+        .csrf(
+            httpSecurityCsrfConfigurer ->
+                httpSecurityCsrfConfigurer
+                    .requireCsrfProtectionMatcher(
+                        request ->
+                            !Arrays.asList(environment.getActiveProfiles())
+                                .contains(ProfileTypeConstants.DEV))
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
     http.authenticationManager(authenticationManager);
 

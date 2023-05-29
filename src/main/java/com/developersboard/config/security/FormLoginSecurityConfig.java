@@ -1,14 +1,19 @@
 package com.developersboard.config.security;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import com.developersboard.constant.HomeConstants;
 import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -41,7 +46,18 @@ public class FormLoginSecurityConfig {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
     if (Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV)) {
-      http.cors().and().csrf().disable().headers().frameOptions().sameOrigin();
+      http.headers(
+          (headers) ->
+              headers
+                  .contentTypeOptions(withDefaults())
+                  .xssProtection(withDefaults())
+                  .cacheControl(withDefaults())
+                  .httpStrictTransportSecurity(withDefaults())
+                  .frameOptions(withDefaults())
+                  .frameOptions(FrameOptionsConfig::sameOrigin));
+      http.authorizeHttpRequests(req -> req.requestMatchers(PathRequest.toH2Console()).permitAll())
+          .csrf(AbstractHttpConfigurer::disable)
+          .cors(AbstractHttpConfigurer::disable);
     }
 
     http.authorizeHttpRequests(
