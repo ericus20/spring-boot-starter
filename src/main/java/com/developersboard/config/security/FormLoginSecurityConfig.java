@@ -53,7 +53,6 @@ public class FormLoginSecurityConfig {
                   .xssProtection(withDefaults())
                   .cacheControl(withDefaults())
                   .httpStrictTransportSecurity(withDefaults())
-                  .frameOptions(withDefaults())
                   .frameOptions(FrameOptionsConfig::sameOrigin));
       http.authorizeHttpRequests(req -> req.requestMatchers(PathRequest.toH2Console()).permitAll())
           .csrf(AbstractHttpConfigurer::disable)
@@ -77,7 +76,7 @@ public class FormLoginSecurityConfig {
                 logout
                     .logoutRequestMatcher(new AntPathRequestMatcher(SecurityConstants.LOGOUT))
                     .logoutSuccessUrl(SecurityConstants.LOGIN_LOGOUT)
-                    .invalidateHttpSession(false)
+                    .invalidateHttpSession(true)
                     .deleteCookies(SecurityConstants.JSESSIONID, SecurityConstants.REMEMBER_ME)
                     .permitAll())
         .rememberMe((rememberMe) -> rememberMe.tokenRepository(persistentRepository));
