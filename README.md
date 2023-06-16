@@ -11,7 +11,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Running Instance on Heroku
 
-<a href="https://spring-boot-starter.herokuapp.com/" target="_blank">https://spring-boot-starter.herokuapp.com/</a>
+<a href="https://spring-boot-starter.herokuapp.com/" target="_blank">https://spring-boot-starter.ericopoku.com/</a>
 
 ![Java CI with Gradle](https://github.com/ericus20/spring-boot-starter/workflows/Java%20CI%20with%20Gradle/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
@@ -47,6 +47,8 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Features
 
+- [Form and Rest Api Authentication based](documents/AUTHENTICATION.MD)
+- [JWT Access and Refresh Tokens Support](documents/AUTHENTICATION.MD)
 - [DataTables with Spring Data JPA](documents/datatables.md)
 - [OpenApi3 Swagger](documents/SWAGGER.md)
 - [Form Validation](https://formvalidation.io/)
@@ -78,38 +80,58 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ```bash
 .
-|-- documents
-|-- gradle
-|   `-- wrapper
-`-- src
-    |-- integration
-    |   |-- java
-    |   |   `-- com
-    |   |       `-- developersboard
-    |   |           |-- backend
-    |   |           `-- web
-    |   `-- resources
-    |-- main
-    |   |-- java
-    |   |   `-- com
-    |   |       `-- developersboard
-    |   |           |-- annotation  # All custom annotations used in the application
-    |   |           |-- backend     # Business Logic and Data Access implementation
-    |   |           |-- config      # Configuration classes and properties
-    |   |           |-- constant    # Constants used in the application
-    |   |           |-- enums       # Enums used in the application
-    |   |           |-- exception   # Custom exceptions used in the application
-    |   |           |-- shared      # Resources like dto, utils, etc. used in the application
-    |   |           `-- web         # Web layer implementation
-    |   `-- resources
-    |       `-- i18n                # I18n property files, comes with 'en', 'fr', 'es' and 'zn_CN'
-    `-- test
-        |-- java
-        |   `-- com
-        |       `-- developersboard
-        |           |-- backend
-        |           `-- web
-        `-- resources
+├── config                            # Can hold project level configurations like pmd, checkstyle, etc.
+├── documents                         # Holds project documentations. Markdown sections, etc.
+│   └── images
+├── libs                              # Holds special libraries used by the application.
+│   └── newrelic
+└── src
+    ├── integration                   # Integration test suites separated from unit tests.
+    │   ├── java
+    │   │   └── com
+    │   │       └── developersboard
+    │   │           ├── backend
+    │   │           ├── task
+    │   │           └── web
+    │   └── resources
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── developersboard
+    │   │           ├── annotation     # All custom annotations used in the application
+    │   │           ├── backend        # Business Logic and Data Access implementation
+    │   │           ├── config         # Configuration classes and properties
+    │   │           ├── constant       # Constants used in the application
+    │   │           ├── enums          # Enums used in the application
+    │   │           ├── exception      # Custom exceptions used in the application
+    │   │           ├── shared         # Resources like dto, utils, etc. used in the application
+    │   │           ├── task           # Scheduled tasks and cron jobs used in the application
+    │   │           └── web            # Web layer implementation
+    │   ├── resources
+    │   │   ├── i18n                   # I18n property files, comes with 'en', 'fr', 'es' and 'zn_CN'
+    │   │   ├── static
+    │   │   │   ├── css
+    │   │   │   ├── fonts
+    │   │   │   ├── images
+    │   │   │   └── js
+    │   │   │       └── form-validation
+    │   │   └── templates
+    │   │       ├── common
+    │   │       │   └── email
+    │   │       ├── email
+    │   │       ├── error
+    │   │       └── user
+    │   └── scripts                     # Scripts used in the application as part of docker build, etc.
+    └── test
+        ├── java
+        │   └── com
+        │       └── developersboard
+        │           ├── backend
+        │           ├── config
+        │           ├── shared
+        │           └── web
+        └── resources
+
 
 ```
 
@@ -180,7 +202,7 @@ TBD
 * Run integration tests using - **./gradlew integrationTest**
 * Run all tests using - **./gradlew testAll**
 *
-    * Access application on *http://localhost:8080/*
+* Access application on *http://localhost:8080/*
 * Access in-memory database on *http://localhost:8080/console*
 * Run owasp dependency check - **./gradlew dependencyCheckAnalyze --info**
 * Access Swagger UI - **http://localhost:8080/swagger-ui/index.html**
