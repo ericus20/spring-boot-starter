@@ -5,9 +5,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import com.developersboard.config.security.jwt.JwtAuthTokenFilter;
 import com.developersboard.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.developersboard.constant.AdminConstants;
-import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +14,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
  * This configuration handles api web requests with stateless session.
@@ -67,14 +65,7 @@ public class ApiWebSecurityConfig {
             (sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .cors(withDefaults())
-        .csrf(
-            httpSecurityCsrfConfigurer ->
-                httpSecurityCsrfConfigurer
-                    .requireCsrfProtectionMatcher(
-                        request ->
-                            !Arrays.asList(environment.getActiveProfiles())
-                                .contains(ProfileTypeConstants.DEV))
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+        .csrf(AbstractHttpConfigurer::disable);
 
     http.authenticationManager(authenticationManager);
 

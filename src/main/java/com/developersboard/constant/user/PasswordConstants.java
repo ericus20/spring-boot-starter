@@ -11,13 +11,16 @@ public final class PasswordConstants {
 
   /** URL Mapping Constants for forget password path. */
   public static final String PASSWORD_RESET_ROOT_MAPPING = "/password-reset";
+
   /** URL Mapping Constants for change password path. */
   public static final String PASSWORD_CHANGE_PATH = "/change";
 
   /** View Name Constant for email form. */
   public static final String PASSWORD_RESET_START_VIEW_NAME = "user/password-reset-start";
+
   /** View Name Constant for change password. */
   public static final String PASSWORD_RESET_COMPLETE_VIEW_NAME = "user/password-reset-complete";
+
   /** Model Key Constant for email success. */
   public static final String PASSWORD_RESET_EMAIL_SENT_KEY = "passwordResetEmailSent";
 
@@ -25,6 +28,7 @@ public final class PasswordConstants {
 
   /** Model Key Constant for forget password attribute name. */
   public static final String PASSWORD_RESET_SUCCESS = "passwordResetSuccess";
+
   /** Model Key Constant message. */
   public static final String ACCOUNT_IN_SESSION = "Account is currently in session!";
 

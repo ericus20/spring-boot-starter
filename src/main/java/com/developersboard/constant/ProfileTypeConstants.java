@@ -18,6 +18,9 @@ public final class ProfileTypeConstants {
   /** The test profile exposes testing specific beans and configurations. */
   public static final String TEST = "test";
 
+  /** The test profile exposes docker specific beans and configurations. */
+  public static final String DOCKER = "docker";
+
   private ProfileTypeConstants() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
   }
