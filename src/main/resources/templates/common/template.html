@@ -61,12 +61,10 @@
         <li class="nav-item">
           <select class="nav-link mx-2" data-width="fit" id="locale">
             <option data-content='<span class="fa-regular fa-flag-usa"></span> English'
-                    th:selected="__${#locale}__== 'en'"
-                    value="en">English
+                    th:selected="__${#locale}__== 'en'" value="en">English
             </option>
             <option data-content='<i class="flag-icon flag-icon-mx"></i> Español'
-                    th:selected="__${#locale}__== 'es'"
-                    value="es">Español
+                    th:selected="__${#locale}__== 'es'" value="es">Español
             </option>
           </select>
         </li>
@@ -75,7 +73,7 @@
             <i class="fa fa-sign-in"></i> <span th:text="#{login.text}"></span>
           </a>
         </li>
-        <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
+        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
           <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
              href="#"
              id="navbarDropdown" role="button">
