@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -39,10 +40,12 @@ public class FormLoginSecurityConfig {
    * override their configuration.
    *
    * @param http the {@link HttpSecurity} to modify.
+   * @param mvc the {@link MvcRequestMatcher.Builder}
    * @throws Exception thrown when error happens during authentication.
    */
   @Bean
-  public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain formLoginFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
+      throws Exception {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
     if (Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV)) {
@@ -62,7 +65,10 @@ public class FormLoginSecurityConfig {
     http.authorizeHttpRequests(
             (requests) ->
                 requests
-                    .requestMatchers(SecurityConstants.getPublicMatchers().toArray(new String[0]))
+                    //
+                    // .requestMatchers(SecurityConstants.getPublicMatchers().toArray(new
+                    // String[0]))
+                    .requestMatchers(SecurityConstants.getPublicMatchers(mvc))
                     .permitAll()
                     .anyRequest()
                     .authenticated())

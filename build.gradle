@@ -1,9 +1,9 @@
 plugins {
-  id 'org.springframework.boot' version '3.1.0'
-  id 'io.spring.dependency-management' version '1.1.0'
+  id 'org.springframework.boot' version '3.1.2'
+  id 'io.spring.dependency-management' version '1.1.2'
   id 'com.coditory.integration-test' version '1.4.5'
-  id 'org.owasp.dependencycheck' version '8.2.1'
-  id 'com.diffplug.spotless' version '6.19.0'
+  id 'org.owasp.dependencycheck' version '8.3.1'
+  id 'com.diffplug.spotless' version '6.20.0'
   id 'eclipse'
   id 'jacoco'
   id 'idea'
@@ -59,7 +59,7 @@ dependencies {
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
   implementation 'commons-io:commons-io:2.13.0'
-  implementation 'net.datafaker:datafaker:2.0.0'
+  implementation 'net.datafaker:datafaker:2.0.1'
   implementation 'com.google.code.gson:gson:2.10.1'
   implementation 'commons-validator:commons-validator:1.7'
   implementation 'com.github.darrachequesne:spring-data-jpa-datatables:6.0.1'
@@ -74,7 +74,7 @@ dependencies {
   implementation 'com.h2database:h2'
   runtimeOnly 'org.postgresql:postgresql'
   implementation 'org.hibernate.orm:hibernate-envers'
-  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.488'
+  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.511'
   implementation files('libs/hypersistence-optimizer-2.6.3-jakarta.jar')
 
   // MapStruct for Object Mapping
@@ -163,4 +163,8 @@ pmd {
   consoleOutput = true
   ruleSetFiles = files("${project.rootDir}/config/pmd-ruleset.xml")
   ruleSets = []
+}
+
+jacoco {
+  toolVersion = "0.8.9"
 }
