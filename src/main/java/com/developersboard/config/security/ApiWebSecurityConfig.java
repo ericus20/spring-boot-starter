@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * This configuration handles api web requests with stateless session.
@@ -53,11 +54,15 @@ public class ApiWebSecurityConfig {
         .authorizeHttpRequests(
             authorizeRequests -> {
               authorizeRequests
-                  .requestMatchers(SecurityConstants.API_V1_AUTH_URL_MAPPING)
+                  .requestMatchers(
+                      new AntPathRequestMatcher(SecurityConstants.API_V1_AUTH_URL_MAPPING))
                   .permitAll();
-              authorizeRequests.requestMatchers(SecurityConstants.API_ROOT_URL_MAPPING);
+              authorizeRequests.requestMatchers(
+                  new AntPathRequestMatcher(SecurityConstants.API_ROOT_URL_MAPPING));
               authorizeRequests
-                  .requestMatchers(HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL)
+                  .requestMatchers(
+                      new AntPathRequestMatcher(
+                          AdminConstants.API_V1_USERS_ROOT_URL, HttpMethod.POST.name()))
                   .permitAll();
               authorizeRequests.anyRequest().authenticated();
             })
