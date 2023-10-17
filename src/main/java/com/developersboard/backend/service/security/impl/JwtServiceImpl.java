@@ -70,9 +70,9 @@ public class JwtServiceImpl implements JwtService {
 
     var jwtToken =
         Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(new Date())
-            .setExpiration(expiration)
+            .subject(username)
+            .issuedAt(new Date())
+            .expiration(expiration)
             .signWith(key)
             .compact();
 
@@ -92,12 +92,7 @@ public class JwtServiceImpl implements JwtService {
 
     var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
-    return Jwts.parserBuilder()
-        .setSigningKey(key)
-        .build()
-        .parseClaimsJws(token)
-        .getBody()
-        .getSubject();
+    return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
   }
 
   /**
@@ -126,7 +121,7 @@ public class JwtServiceImpl implements JwtService {
   public boolean isValidJwtToken(final String token) {
     var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     try {
-      Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+      Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
       return true;
     } catch (SecurityException e) {
       LOG.error("Invalid JWT signature: {}", e.getMessage());

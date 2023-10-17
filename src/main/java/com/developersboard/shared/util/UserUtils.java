@@ -54,7 +54,7 @@ public final class UserUtils {
    * @return a user
    */
   public static User createUser() {
-    return createUser(FAKER.name().username());
+    return createUser(FAKER.internet().username());
   }
 
   /**
@@ -65,7 +65,7 @@ public final class UserUtils {
    */
   public static User createUser(final boolean enabled) {
     return createUser(
-        FAKER.name().username(),
+        FAKER.internet().username(),
         FAKER.internet().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH),
         FAKER.internet().emailAddress(),
         enabled);
@@ -157,7 +157,7 @@ public final class UserUtils {
    * @return the userDto
    */
   public static UserDto createUserDto(final boolean enabled) {
-    return createUserDto(FAKER.name().username(), enabled);
+    return createUserDto(FAKER.internet().username(), enabled);
   }
 
   /**
@@ -240,7 +240,7 @@ public final class UserUtils {
   }
 
   /**
-   * Transfers data from transfer object to entity.
+   * Transfers data from a transfer object to an entity.
    *
    * @param userDto the userDto
    * @return user
@@ -252,7 +252,7 @@ public final class UserUtils {
   }
 
   /**
-   * Transfers data from entity to returnable object.
+   * Transfers data from entity to a returnable object.
    *
    * @param userHistories stored userHistories details
    * @return userHistories dto
@@ -281,7 +281,7 @@ public final class UserUtils {
    * Verifies input string is an email.
    *
    * @param email email.
-   * @return true if pattern matches valid3 email, otherwise false.
+   * @return true if a pattern matches valid3 email, otherwise false.
    */
   public static boolean isEmail(String email) {
     return EmailValidator.getInstance().isValid(email);
@@ -291,7 +291,7 @@ public final class UserUtils {
    * Retrieves the roles from the userRoles.
    *
    * @param userRoles the userRoles
-   * @return set of the roles as strings
+   * @return list of the roles as strings
    */
   public static List<String> getRoles(Set<UserRole> userRoles) {
     List<String> roles = new ArrayList<>();
@@ -341,7 +341,7 @@ public final class UserUtils {
   }
 
   /**
-   * Transfers data from entity to returnable object.
+   * Transfers data from entity to a returnable object.
    *
    * @return user dto
    */

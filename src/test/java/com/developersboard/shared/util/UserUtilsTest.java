@@ -47,7 +47,7 @@ class UserUtilsTest extends TestUtils {
 
     UserDto userDto =
         UserUtils.createUserDto(
-            FAKER.name().username(),
+            FAKER.internet().username(),
             FAKER.elderScrolls().city(),
             FAKER.pokemon().name(),
             Boolean.TRUE);
@@ -100,7 +100,7 @@ class UserUtilsTest extends TestUtils {
   @Test
   void convertSignUpRequestToUserDto() {
     var signUpRequest = new SignUpRequest();
-    signUpRequest.setUsername(FAKER.name().username());
+    signUpRequest.setUsername(FAKER.internet().username());
     signUpRequest.setPassword(FAKER.internet().password());
     signUpRequest.setEmail(FAKER.internet().emailAddress());
 

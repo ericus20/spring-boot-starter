@@ -51,7 +51,7 @@ class UserDetailsServiceImplTest extends TestUtils {
   void testShouldThrowExceptionForNonExistingUsername() {
     Assertions.assertThrows(
         UsernameNotFoundException.class,
-        () -> userDetailsService.loadUserByUsername(FAKER.name().username()));
+        () -> userDetailsService.loadUserByUsername(FAKER.internet().username()));
   }
 
   @Test
