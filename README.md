@@ -7,7 +7,7 @@
 
 # Spring Boot Starter
 
-A highly opinionated and complete starter for Spring Boot production ready projects.
+A highly opinionated and complete template for Spring Boot production ready projects.
 
 ## Running Instance on Heroku
 
