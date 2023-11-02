@@ -61,7 +61,7 @@ class JwtResponseBuilderTest {
   @Test
   void givenJwtTokenAndUserDetailsShouldBuildSuccessfully(TestInfo testInfo) {
     var user = UserUtils.createUser(testInfo.getDisplayName());
-    user.addUserRole(user, new Role(RoleType.ROLE_USER));
+    user.addUserRole(new Role(RoleType.ROLE_USER));
 
     var userDetails = UserDetailsBuilder.buildUserDetails(user);
     var jwtResponse = JwtResponseBuilder.buildJwtResponse(JWT_TOKEN, userDetails);
