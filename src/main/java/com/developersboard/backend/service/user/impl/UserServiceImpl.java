@@ -400,7 +400,7 @@ public class UserServiceImpl implements UserService {
     var user = UserUtils.convertToUser(userDto);
     for (RoleType roleType : localRoleTypes) {
       var storedRole = roleService.findByName(roleType.name());
-      user.addUserRole(user, storedRole);
+      user.addUserRole(storedRole);
     }
     user.addUserHistory(new UserHistory(UUID.randomUUID().toString(), user, historyType));
 
