@@ -2,7 +2,7 @@ package com.developersboard.backend.service.security;
 
 import com.developersboard.backend.service.security.impl.CookieServiceImpl;
 import com.developersboard.backend.service.security.impl.JwtServiceImpl;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
 import com.developersboard.shared.util.core.JwtUtils;
@@ -37,7 +37,7 @@ class CookieServiceTest {
     jwtService = new JwtServiceImpl(JwtUtils.generateSecretKey());
 
     var environment = new MockEnvironment();
-    environment.addActiveProfile(ProfileTypeConstants.TEST);
+    environment.addActiveProfile(EnvConstants.TEST);
 
     cookieService = new CookieServiceImpl(environment);
   }

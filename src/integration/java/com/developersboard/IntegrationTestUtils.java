@@ -12,7 +12,7 @@ import com.developersboard.backend.service.user.UserService;
 import com.developersboard.backend.service.user.impl.RoleServiceImpl;
 import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.config.properties.SystemProperties;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles({ProfileTypeConstants.TEST})
+@ActiveProfiles({EnvConstants.TEST})
 public abstract class IntegrationTestUtils {
   protected static final Faker FAKER = new Faker();
 

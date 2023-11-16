@@ -7,6 +7,8 @@ import com.developersboard.shared.dto.UserDto;
 import com.developersboard.web.payload.response.UserResponse;
 import java.util.List;
 import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +50,14 @@ public interface UserService {
    * @throws NullPointerException in case the given entity is {@literal null}
    */
   UserDto createUser(final UserDto userDto, final Set<RoleType> roleTypes);
+
+  /**
+   * Returns users.
+   *
+   * @param pageable the pageable
+   * @return the users
+   */
+  Page<UserResponse> findAll(final Pageable pageable);
 
   /**
    * Returns users according to the details in the dataTablesInput or null if no user exists.

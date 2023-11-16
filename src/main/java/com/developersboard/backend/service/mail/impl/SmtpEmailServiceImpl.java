@@ -2,7 +2,7 @@ package com.developersboard.backend.service.mail.impl;
 
 import com.developersboard.config.properties.SystemProperties;
 import com.developersboard.constant.EmailConstants;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.exception.InvalidServiceRequestException;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
 import jakarta.mail.MessagingException;
@@ -35,7 +35,7 @@ import org.thymeleaf.context.Context;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Profile({ProfileTypeConstants.PROD, ProfileTypeConstants.TEST})
+@Profile({EnvConstants.PRODUCTION, EnvConstants.TEST})
 public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
 
   private final SystemProperties systemProps;

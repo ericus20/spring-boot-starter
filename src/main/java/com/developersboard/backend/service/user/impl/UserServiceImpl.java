@@ -11,6 +11,7 @@ import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.dto.mapper.UserDtoMapper;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.shared.util.core.ValidationUtils;
 import com.developersboard.web.payload.response.UserResponse;
@@ -28,6 +29,8 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -115,6 +118,13 @@ public class UserServiceImpl implements UserService {
       return persistUser(userDto, roleTypes, UserHistoryType.CREATED, false);
     }
     return null;
+  }
+
+  @Override
+  public Page<UserResponse> findAll(Pageable pageable) {
+    Page<User> usersPage = userRepository.findAll(pageable);
+
+    return usersPage.map(UserDtoMapper.MAPPER::toUserResponse);
   }
 
   /**

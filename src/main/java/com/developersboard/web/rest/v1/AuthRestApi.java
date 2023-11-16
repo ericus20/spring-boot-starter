@@ -21,6 +21,7 @@ import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,8 +35,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * This class attempt to authenticate with AuthenticationManager bean, add authentication object to
- * SecurityContextHolder then Generate JWT token, then return JWT to client.
+ * This class attempt to authenticate with AuthenticationManager bean, add an authentication object
+ * to SecurityContextHolder then Generate JWT token, then return JWT to a client.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -47,7 +48,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(SecurityConstants.API_V1_AUTH_ROOT_URL)
 public class AuthRestApi {
 
-  private static final int NUMBER_OF_MINUTES_TO_EXPIRE = 30;
+  @Value("${access-token-expiration-in-minutes}")
+  private int accessTokenExpirationInMinutes;
 
   private final JwtService jwtService;
   private final CookieService cookieService;
@@ -114,7 +116,7 @@ public class AuthRestApi {
     SecurityUtils.validateUserDetailsStatus(userDetails);
     SecurityUtils.authenticateUser(request, userDetails);
 
-    var expiration = DateUtils.addMinutes(new Date(), NUMBER_OF_MINUTES_TO_EXPIRE);
+    var expiration = DateUtils.addMinutes(new Date(), accessTokenExpirationInMinutes);
     var newAccessToken = jwtService.generateJwtToken(username, expiration);
     var encryptedAccessToken = encryptionService.encrypt(newAccessToken);
 
@@ -159,7 +161,7 @@ public class AuthRestApi {
       cookieService.addCookieToHeaders(headers, TokenType.REFRESH, encryptedToken, refreshDuration);
     }
 
-    var accessTokenExpiration = DateUtils.addMinutes(new Date(), NUMBER_OF_MINUTES_TO_EXPIRE);
+    var accessTokenExpiration = DateUtils.addMinutes(new Date(), accessTokenExpirationInMinutes);
     return jwtService.generateJwtToken(username, accessTokenExpiration);
   }
 }

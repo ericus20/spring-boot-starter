@@ -8,7 +8,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.developersboard.config.properties.AwsProperties;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.constant.StorageConstants;
 import com.developersboard.exception.InvalidFileFormatException;
 import com.developersboard.shared.util.core.FileUtils;
@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Profile({ProfileTypeConstants.PROD, ProfileTypeConstants.TEST})
+@Profile({EnvConstants.PRODUCTION, EnvConstants.TEST})
 public class AmazonS3ServiceImpl extends AbstractAmazonS3Service {
 
   /**
