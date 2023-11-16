@@ -18,4 +18,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Loggable {
   String level() default "info";
+
+  /** {@return Whether to ignore the response data from the method. In case it is a massive list} */
+  boolean ignoreResponseData() default false;
 }

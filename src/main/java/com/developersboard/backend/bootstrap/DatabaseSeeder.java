@@ -3,7 +3,7 @@ package com.developersboard.backend.bootstrap;
 import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.backend.service.user.UserService;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.util.UserUtils;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     Arrays.stream(RoleType.values()).forEach(roleType -> roleService.save(new Role(roleType)));
 
     // only run these initial data if we are not in test mode.
-    if (!Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.TEST)) {
+    if (!Arrays.asList(environment.getActiveProfiles()).contains(EnvConstants.TEST)) {
       persistDefaultAdminUser();
     }
   }

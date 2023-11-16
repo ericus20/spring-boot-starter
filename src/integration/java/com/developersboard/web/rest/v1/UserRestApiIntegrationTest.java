@@ -1,5 +1,7 @@
 package com.developersboard.web.rest.v1;
 
+import static org.hamcrest.Matchers.hasSize;
+
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.TestUtils;
 import com.developersboard.constant.AdminConstants;
@@ -47,6 +49,42 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
         String.join(delimiter, SecurityConstants.API_V1_AUTH_ROOT_URL, SecurityConstants.LOGIN);
   }
 
+  @Test
+  void getUsersWithoutAuthorization() throws Exception {
+    performRequest(MockMvcRequestBuilders.get(AdminConstants.API_V1_USERS_ROOT_URL))
+        .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+        .andReturn();
+  }
+
+  @Test
+  void getUsersWithAuthorization() throws Exception {
+    createAndAssertUser(UserUtils.createUserDto(true));
+
+    // Authenticate to retrieve access token
+    var jwtResponse = getJwtResponse();
+    Assertions.assertNotNull(jwtResponse);
+
+    var accessToken = jwtResponse.getAccessToken();
+    var bearerToken = getBearerToken(accessToken);
+
+    performRequest(
+            MockMvcRequestBuilders.get(AdminConstants.API_V1_USERS_ROOT_URL)
+                .cookie(new Cookie(TokenType.ACCESS.getName(), accessToken))
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
+                .param("size", "1"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$").isMap())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.content").value(hasSize(1)));
+  }
+
+  @Test
+  void enableUserWithoutAuthorization() throws Exception {
+    var publicId = UUID.randomUUID().toString();
+    var enableUrl = String.format("%s/%s/enable", AdminConstants.API_V1_USERS_ROOT_URL, publicId);
+    performRequest(MockMvcRequestBuilders.put(enableUrl))
+        .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+  }
+
   /** Enabling user with authorization should return 200. */
   @Test
   void enableUserWithAuthorization() throws Exception {
@@ -66,8 +104,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
             MockMvcRequestBuilders.put(enableUrl)
                 .cookie(new Cookie(TokenType.ACCESS.getName(), accessToken))
                 .header(HttpHeaders.AUTHORIZATION, bearerToken))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andReturn();
+        .andExpect(MockMvcResultMatchers.status().isOk());
 
     // Assert that user is enabled
     Assertions.assertTrue(
@@ -113,8 +150,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
 
     performRequest(
             MockMvcRequestBuilders.put(disableUrl).header(HttpHeaders.AUTHORIZATION, bearerToken))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andReturn();
+        .andExpect(MockMvcResultMatchers.status().isOk());
 
     // Assert that user is enabled
     Assertions.assertFalse(

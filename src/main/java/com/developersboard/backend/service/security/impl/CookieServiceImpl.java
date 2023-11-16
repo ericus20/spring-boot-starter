@@ -1,7 +1,7 @@
 package com.developersboard.backend.service.security.impl;
 
 import com.developersboard.backend.service.security.CookieService;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.constant.SecurityConstants;
 import com.developersboard.enums.TokenType;
 import jakarta.servlet.http.Cookie;
@@ -53,7 +53,7 @@ public class CookieServiceImpl implements CookieService {
 
     var cookie = new Cookie(httpCookie.getName(), httpCookie.getValue());
     cookie.setSecure(
-        Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.PROD));
+        Arrays.asList(environment.getActiveProfiles()).contains(EnvConstants.PRODUCTION));
     cookie.setHttpOnly(true);
 
     return cookie;
@@ -72,7 +72,7 @@ public class CookieServiceImpl implements CookieService {
     Validate.notBlank(name, "The name cannot be null or empty");
 
     return ResponseCookie.from(name, value)
-        .secure(Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.PROD))
+        .secure(Arrays.asList(environment.getActiveProfiles()).contains(EnvConstants.PRODUCTION))
         .sameSite(SecurityConstants.SAME_SITE)
         .path(SecurityConstants.ROOT_PATH)
         .maxAge(Objects.isNull(duration) ? this.duration : duration)

@@ -1,7 +1,7 @@
 package com.developersboard.backend.service.mail.impl;
 
 import com.developersboard.constant.EmailConstants;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.web.payload.request.mail.EmailRequest;
 import com.developersboard.web.payload.request.mail.HtmlEmailRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@Profile(ProfileTypeConstants.DEV)
+@Profile(EnvConstants.DEVELOPMENT)
 public class MockEmailServiceImpl extends AbstractEmailServiceImpl {
 
   /**

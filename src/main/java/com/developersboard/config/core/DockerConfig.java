@@ -8,7 +8,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.developersboard.backend.service.mail.EmailService;
 import com.developersboard.backend.service.mail.impl.MockEmailServiceImpl;
 import com.developersboard.config.properties.AwsProperties;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,7 +24,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * @since 1.0
  */
 @Configuration
-@Profile(ProfileTypeConstants.DOCKER)
+@Profile(EnvConstants.DOCKER)
 public class DockerConfig {
 
   /**

@@ -175,6 +175,7 @@ TBD
         ENCRYPTION_SECRET_PASSWORD=password
         JWT_SECRET=salt
         SPRING_PROFILES_ACTIVE=dev
+        ACCESS_TOKEN_EXPIRATION_IN_MINUTES=5
 
 - The AWS Properties and defaults are:
 

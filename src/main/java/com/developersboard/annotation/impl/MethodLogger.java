@@ -35,7 +35,13 @@ public class MethodLogger {
 
     switchStartingLogger(loggable.level(), method, joinPoint.getArgs());
     Object response = joinPoint.proceed();
-    switchFinishingLogger(loggable.level(), method, response, start);
+
+    // if a response object is ignored, don't include response data.
+    if (loggable.ignoreResponseData()) {
+      switchFinishingLogger(loggable.level(), method, "{...}", start);
+    } else {
+      switchFinishingLogger(loggable.level(), method, response, start);
+    }
 
     return response;
   }

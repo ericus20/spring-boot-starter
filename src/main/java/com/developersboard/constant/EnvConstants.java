@@ -7,21 +7,21 @@ package com.developersboard.constant;
  * @version 1.0
  * @since 1.0
  */
-public final class ProfileTypeConstants {
+public final class EnvConstants {
 
   /** The dev profile exposes development specific beans and configurations. */
-  public static final String DEV = "development";
+  public static final String DEVELOPMENT = "development";
 
-  /** The prod profile exposes production specific beans and configurations. */
-  public static final String PROD = "production";
+  /** The prod profile exposes production-specific beans and configurations. */
+  public static final String PRODUCTION = "production";
 
   /** The test profile exposes testing specific beans and configurations. */
   public static final String TEST = "test";
 
-  /** The test profile exposes docker specific beans and configurations. */
+  /** The test profile exposes docker-specific beans and configurations. */
   public static final String DOCKER = "docker";
 
-  private ProfileTypeConstants() {
+  private EnvConstants() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
   }
 }

@@ -6,10 +6,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.developersboard.config.properties.AwsProperties;
-import com.developersboard.constant.ProfileTypeConstants;
-import com.developersboard.constant.SecurityConstants;
-import org.h2.server.web.JakartaWebServlet;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import com.developersboard.constant.EnvConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -25,7 +22,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * @since 1.0
  */
 @Configuration
-@Profile(ProfileTypeConstants.DEV)
+@Profile(EnvConstants.DEVELOPMENT)
 public class DevConfig {
 
   /**
@@ -43,17 +40,6 @@ public class DevConfig {
         .withRegion(Regions.fromName(props.getRegion()))
         .withCredentials(new AWSStaticCredentialsProvider(credentials))
         .build();
-  }
-
-  /**
-   * A bean to register the path /h2-console for the h2 database.
-   *
-   * @return the h2 registered bean.
-   */
-  @Bean
-  public ServletRegistrationBean<JakartaWebServlet> h2servletRegistration() {
-    return new ServletRegistrationBean<>(
-        new JakartaWebServlet(), SecurityConstants.H2_CONSOLE_URL_MAPPING);
   }
 
   /**

@@ -2,8 +2,8 @@ package com.developersboard.config.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.constant.HomeConstants;
-import com.developersboard.constant.ProfileTypeConstants;
 import com.developersboard.constant.SecurityConstants;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,7 @@ public class FormLoginSecurityConfig {
       throws Exception {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
-    if (Arrays.asList(environment.getActiveProfiles()).contains(ProfileTypeConstants.DEV)) {
+    if (Arrays.asList(environment.getActiveProfiles()).contains(EnvConstants.DEVELOPMENT)) {
       http.headers(
           (headers) ->
               headers

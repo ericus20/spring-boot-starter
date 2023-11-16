@@ -1,6 +1,6 @@
 package com.developersboard.backend.service.storage.impl;
 
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.developersboard.shared.util.core.ValidationUtils;
 import java.io.InputStream;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Slf4j
 @Service
-@Profile({ProfileTypeConstants.DEV})
+@Profile({EnvConstants.DEVELOPMENT})
 public class MockAmazonS3ServiceImpl extends AbstractAmazonS3Service {
   /**
    * It stores the given file name in S3 and returns the key under which the file has been stored.

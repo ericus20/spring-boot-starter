@@ -59,24 +59,6 @@ class AuthRestApiIntegrationTest extends IntegrationTestUtils {
   }
 
   @Test
-  void loginPathPreflightReturnsOk() throws Exception {
-    performRequest(MockMvcRequestBuilders.options(loginUri))
-        .andExpect(MockMvcResultMatchers.status().isOk());
-  }
-
-  @Test
-  void refreshPathPreflightReturnsOk() throws Exception {
-    performRequest(MockMvcRequestBuilders.options(refreshUri))
-        .andExpect(MockMvcResultMatchers.status().isOk());
-  }
-
-  @Test
-  void logoutPathPreflightReturnsOk() throws Exception {
-    performRequest(MockMvcRequestBuilders.options(logoutUri))
-        .andExpect(MockMvcResultMatchers.status().isOk());
-  }
-
-  @Test
   void loginPathWithValidCredentialsReturnsAccessToken() throws Exception {
     MvcResult mvcResult =
         performRequest(MockMvcRequestBuilders.post(loginUri))

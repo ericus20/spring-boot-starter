@@ -6,7 +6,7 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.developersboard.config.properties.AwsProperties;
-import com.developersboard.constant.ProfileTypeConstants;
+import com.developersboard.constant.EnvConstants;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
@@ -26,7 +26,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * @since 1.0
  */
 @Configuration
-@Profile(ProfileTypeConstants.TEST)
+@Profile(EnvConstants.TEST)
 public class TestConfig {
 
   @Value("${spring.mail.username}")
