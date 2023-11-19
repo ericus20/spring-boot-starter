@@ -194,7 +194,7 @@ TBD
         EMAIL_PASSWORD # If using gmail, this must be a 2 step verification enabled app password
 
 * The profiles defined in the application are **development**, **test**,
-  **integration-test**, **integration-test-ci**, and **prod** to test out production
+  **integration-test**, **integration-test-ci**, and **production** to test out production
   functionalities.
     - Datasource must be provided for production profile for the application to run.
 

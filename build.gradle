@@ -98,9 +98,6 @@ dependencies {
   implementation 'org.webjars:datatables:1.13.2'
   implementation 'org.webjars:font-awesome:6.3.0'
   implementation 'org.webjars:webjars-locator:0.46'
-
-//  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
 }
 
 testing {
