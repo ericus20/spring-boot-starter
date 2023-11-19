@@ -12,7 +12,6 @@ import com.developersboard.backend.service.user.UserService;
 import com.developersboard.backend.service.user.impl.RoleServiceImpl;
 import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.config.properties.SystemProperties;
-import com.developersboard.constant.EnvConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
@@ -34,12 +33,10 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles({EnvConstants.TEST})
 public abstract class IntegrationTestUtils {
   protected static final Faker FAKER = new Faker();
 

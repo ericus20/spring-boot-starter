@@ -22,7 +22,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Built With
 
-* [Spring Boot 3.1.4](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
+* [Spring Boot 3.1.5](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
 * [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) - HTML, CSS, and
   JavaScript framework
 * [Thymeleaf](https://www.thymeleaf.org/) - Modern server-side Java template engine
@@ -44,6 +44,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 * [Validation](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#boot-features-validation)
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#using-boot-devtools)
 * [Spring Data Jpa DataTables](https://github.com/darrachequesne/spring-data-jpa-datatables)
+* [Test Containers](https://java.testcontainers.org/)
 
 ## Features
 
@@ -192,7 +193,8 @@ TBD
         EMAIL_USERNAME
         EMAIL_PASSWORD # If using gmail, this must be a 2 step verification enabled app password
 
-* Default profile for the application is **dev**, **test** and **prod** to test out production
+* The profiles defined in the application are **development**, **test**,
+  **integration-test**, **integration-test-ci**, and **prod** to test out production
   functionalities.
     - Datasource must be provided for production profile for the application to run.
 

@@ -38,7 +38,32 @@ class UserTest {
 }
 ```
 
-## Local Amazons3 Integration Tests
+## Integration Tests
+
+### Default (H2 in memory)
+
+Integration tests can be run in two (2)
+profiles which are `integration-test` and `integration-test-ci`
+
+`integration-test` profile can be dynamically activated using the run syntax:
+
+```bash
+./gradlew clean build # Profile will be set to integration-test if none is provided
+```
+
+This will run liquibase migration script against H2 in memory database running in Postgres Mode
+
+
+### Docker based (Test Container) Postgres Database Integration Test
+`integration-test-ci` profile can be dynamically activated using the syntax:
+
+```bash
+SPRING_PROFILES_ACTIVE=integration-test-ci ./gradlew clean build
+```
+
+This will run the integration test in a docker container using test containers and postgres database.
+
+### Local Amazons3
 
 Tests are powered by [S3 mock library for Java/Scala](https://github.com/findify/s3mock)
 

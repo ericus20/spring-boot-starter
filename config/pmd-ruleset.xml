@@ -7,7 +7,7 @@
   <description>Every Java Rule in PMD</description>
 
   <exclude-pattern>.*/src/test/.*</exclude-pattern>
-  <exclude-pattern>.*/src/integration/.*</exclude-pattern>
+  <exclude-pattern>.*/src/integrationTest/.*</exclude-pattern>
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="GuardLogStatement"/>

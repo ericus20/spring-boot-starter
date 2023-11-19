@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Profile({EnvConstants.PRODUCTION, EnvConstants.TEST})
+@Profile({EnvConstants.PRODUCTION, EnvConstants.INTEGRATION_TEST_CI, EnvConstants.INTEGRATION_TEST})
 public class AmazonS3ServiceImpl extends AbstractAmazonS3Service {
 
   /**

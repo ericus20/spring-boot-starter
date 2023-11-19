@@ -18,6 +18,12 @@ public final class EnvConstants {
   /** The test profile exposes testing specific beans and configurations. */
   public static final String TEST = "test";
 
+  /** The test profile exposes integration testing specific beans and configurations. */
+  public static final String INTEGRATION_TEST = "integration-test";
+
+  /** The test profile exposes integration testing specific beans and configurations. */
+  public static final String INTEGRATION_TEST_CI = "integration-test-ci";
+
   /** The test profile exposes docker-specific beans and configurations. */
   public static final String DOCKER = "docker";
 

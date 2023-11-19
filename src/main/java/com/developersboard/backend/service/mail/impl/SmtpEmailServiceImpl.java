@@ -35,7 +35,7 @@ import org.thymeleaf.context.Context;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Profile({EnvConstants.PRODUCTION, EnvConstants.TEST})
+@Profile({EnvConstants.PRODUCTION, EnvConstants.INTEGRATION_TEST, EnvConstants.INTEGRATION_TEST_CI})
 public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
 
   private final SystemProperties systemProps;

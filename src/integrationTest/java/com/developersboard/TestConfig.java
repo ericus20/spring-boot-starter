@@ -6,7 +6,6 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.developersboard.config.properties.AwsProperties;
-import com.developersboard.constant.EnvConstants;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
@@ -14,7 +13,6 @@ import com.icegreen.greenmail.util.ServerSetupTest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -26,7 +24,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * @since 1.0
  */
 @Configuration
-@Profile(EnvConstants.TEST)
 public class TestConfig {
 
   @Value("${spring.mail.username}")
@@ -79,7 +76,7 @@ public class TestConfig {
   @Bean
   public AmazonS3 amazonS3(AwsProperties props) {
     var endpoint = new EndpointConfiguration(props.getServiceEndpoint(), props.getRegion());
-    // Create the credentials provider
+    // Create the credential provider
     var credentials = new AnonymousAWSCredentials();
 
     return AmazonS3ClientBuilder.standard()
