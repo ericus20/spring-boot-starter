@@ -26,6 +26,8 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
+        env:
+          SPRING_PROFILES_ACTIVE: integration-test-ci
         with:
           arguments: clean build
           build-root-directory: .

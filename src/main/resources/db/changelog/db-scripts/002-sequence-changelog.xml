@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+  <changeSet author="Eric" id="spring_boot_starter_sequence_0">
+    <sql endDelimiter="/">
+      create sequence spring_boot_starter_sequence start with 1 increment by 1
+    </sql>
+  </changeSet>
+
+  <changeSet author="Eric" id="revinfo_seq_0">
+    <sql endDelimiter="/">
+      create sequence revinfo_seq start with 1 increment by 50
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,33 @@
+# ===============================
+# = DATA SOURCE
+# ===============================
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:latest:////et-transit?TC_REUSABLE=true
+    username:
+    password:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+  ## ===============================
+  ## = JPA / HIBERNATE
+  ## ===============================
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+    show-sql: false
+    properties:
+      hibernate:
+        generate_statistics: false
+
+  # ===============================
+  # EMAIL PROPERTIES
+  # ===============================
+  mail:
+    host: 127.0.0.1
+    port: 3025
+    username: ${EMAIL_USERNAME:admin}
+    password: ${EMAIL_PASSWORD:admin}
+    protocol: smtp
+
+  liquibase:
+    enabled: true

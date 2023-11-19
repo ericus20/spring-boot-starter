@@ -1,0 +1,29 @@
+# ===============================
+# = DATA SOURCE
+# ===============================
+spring:
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  ## ===============================
+  ## = JPA / HIBERNATE
+  ## ===============================
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        generate_statistics: false
+
+  # ===============================
+  # EMAIL PROPERTIES
+  # ===============================
+  mail:
+    host: 127.0.0.1
+    port: 3025
+    username: ${EMAIL_USERNAME:admin}
+    password: ${EMAIL_PASSWORD:admin}
+    protocol: smtp

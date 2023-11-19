@@ -1,7 +1,6 @@
 plugins {
   id 'org.springframework.boot' version '3.1.5'
   id 'io.spring.dependency-management' version '1.1.3'
-  id 'com.coditory.integration-test' version '1.4.5'
   id 'org.owasp.dependencycheck' version '8.4.0'
   id 'com.diffplug.spotless' version '6.22.0'
   id 'eclipse'
@@ -13,9 +12,16 @@ plugins {
 
 group = 'com.developersboard'
 version = '0.0.1-SNAPSHOT'
+
 java {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+  // You can uncomment this to include javadoc jar generation
+  //  withJavadocJar()
+
+  // You can comment this line to exclude source jar
+  withSourcesJar()
 }
 
 
@@ -75,6 +81,7 @@ dependencies {
   // Database and File Storage Tools
   implementation 'com.h2database:h2'
   runtimeOnly 'org.postgresql:postgresql'
+  implementation 'org.liquibase:liquibase-core'
   implementation 'org.hibernate.orm:hibernate-envers'
   implementation 'com.amazonaws:aws-java-sdk-s3:1.12.566'
   implementation files('libs/hypersistence-optimizer-2.6.3-jakarta.jar')
@@ -91,24 +98,64 @@ dependencies {
   implementation 'org.webjars:datatables:1.13.2'
   implementation 'org.webjars:font-awesome:6.3.0'
   implementation 'org.webjars:webjars-locator:0.46'
-
-  // Testing
-  testCompileOnly 'org.projectlombok:lombok'
-  testAnnotationProcessor 'org.projectlombok:lombok'
-
-  testImplementation 'org.mockito:mockito-inline:5.2.0'
-  testImplementation 'io.findify:s3mock_2.13:0.2.6'
-  testImplementation 'com.icegreen:greenmail-junit5:2.0.0'
-  testImplementation 'com.jparams:to-string-verifier:1.4.8'
-  testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.15.2'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.security:spring-security-test'
 }
 
-tasks.withType(Test).configureEach {
-  useJUnitPlatform()
-  finalizedBy jacocoTestReport
-  maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+testing {
+  //noinspection GroovyAssignabilityCheck
+  suites {
+    configureEach {
+      useJUnitJupiter()
+
+      dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        implementation 'org.mockito:mockito-inline:5.2.0'
+        implementation 'io.findify:s3mock_2.13:0.2.6'
+        implementation 'com.icegreen:greenmail-junit5:2.0.0'
+        implementation 'com.jparams:to-string-verifier:1.4.8'
+        implementation 'nl.jqno.equalsverifier:equalsverifier:3.15.2'
+        implementation 'org.springframework.security:spring-security-test'
+        implementation 'org.springframework.boot:spring-boot-starter-test'
+      }
+    }
+    //noinspection GroovyAssignabilityCheck
+    integrationTest(JvmTestSuite) {
+      sources.java.srcDirs = ['src/integrationTest/java']
+      sources.resources.srcDirs = ['src/integrationTest/resources']
+      dependencies {
+        implementation project()
+        implementation sourceSets.test.output
+
+        implementation 'org.springframework.boot:spring-boot-testcontainers'
+        implementation 'org.testcontainers:junit-jupiter'
+        implementation 'org.testcontainers:postgresql'
+      }
+      targets {
+        configureEach {
+          testTask.configure {
+            shouldRunAfter(test)
+            finalizedBy 'jacocoTestReport'
+            // Fail the 'test' task on the first test failure
+            failFast = true
+            // If no active profile is set, use integration-test is the active profile
+            environment 'SPRING_PROFILES_ACTIVE', System.getenv("SPRING_PROFILES_ACTIVE") ?: "integration-test"
+          }
+        }
+      }
+    }
+  }
+}
+
+configurations {
+  integrationTestImplementation.extendsFrom testImplementation
+}
+
+tasks.named('check') {
+  dependsOn(testing.suites.integrationTest)
+}
+
+tasks.named('bootBuildImage') {
+  builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -117,7 +164,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 jacocoTestReport {
-  executionData(fileTree(project.buildDir).include("jacoco/*.exec"))
+  executionData(fileTree(layout.buildDirectory).include("jacoco/*.exec"))
   reports {
     xml.required = true
     html.required = true

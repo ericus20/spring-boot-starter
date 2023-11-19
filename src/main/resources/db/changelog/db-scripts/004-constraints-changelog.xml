@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+  <changeSet author="Eric" id="constraints_0">
+    <sql endDelimiter="/">
+
+-- UserHistory Constraints
+      alter table if exists user_history
+      drop constraint if exists UK_b9aiadh5fvuj1ssnxyya4yclu;
+
+      alter table if exists user_history
+        add constraint UK_b9aiadh5fvuj1ssnxyya4yclu unique (public_id);
+
+-- UserRole Constraints
+      alter table if exists user_role
+      drop constraint if exists UK_fly41lfcts7ihspkv2f1wbuv5;
+
+      alter table if exists user_role
+        add constraint UK_fly41lfcts7ihspkv2f1wbuv5 unique (public_id);
+
+-- User Constraints
+      alter table if exists users
+      drop constraint if exists UK_s24bux761rbgowsl7a4b386ba;
+
+      alter table if exists users
+        add constraint UK_s24bux761rbgowsl7a4b386ba unique (public_id);
+
+      alter table if exists users
+      drop constraint if exists UK_6dotkott2kjsp8vw4d0m25fb7;
+
+      alter table if exists users
+        add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email);
+
+      alter table if exists users
+      drop constraint if exists UK_r43af9ap4edm43mmtq01oddj6;
+
+      alter table if exists users
+        add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username);
+
+
+-- Foreign Key Constraints
+      alter table if exists user_history
+        add constraint FKd8f7md75uuycl5mgtl394nqoi
+        foreign key (user_id)
+        references users;
+
+      alter table if exists user_role
+        add constraint FKa68196081fvovjhkek5m97n3y
+        foreign key (role_id)
+        references role;
+
+      alter table if exists user_role
+        add constraint FKj345gk1bovqvfame88rcx7yyx
+        foreign key (user_id)
+        references users;
+
+      alter table if exists users_audit_log
+        add constraint FKow45ntskxdkud4v503r4el903
+        foreign key (rev)
+        references revinfo;
+
+      alter table if exists users_audit_log
+        add constraint FK9pghfu0u2mog4e24p1elit198
+        foreign key (revend)
+        references revinfo;
+
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>
