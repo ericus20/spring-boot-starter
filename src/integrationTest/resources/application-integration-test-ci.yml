@@ -3,7 +3,7 @@
 # ===============================
 spring:
   datasource:
-    url: jdbc:tc:postgresql:latest:////et-transit?TC_REUSABLE=true
+    url: jdbc:tc:postgresql:latest:////spring-boot-starter?TC_REUSABLE=true
     username:
     password:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
