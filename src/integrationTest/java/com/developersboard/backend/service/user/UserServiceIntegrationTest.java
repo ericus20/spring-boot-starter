@@ -10,7 +10,6 @@ import com.developersboard.shared.util.UserUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -111,7 +110,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   @Test
   void getUserByIdNotExisting() {
 
-    var storedUser = userService.findById(RandomUtils.nextLong());
+    var storedUser = userService.findById(FAKER.random().nextLong());
     Assertions.assertNull(storedUser);
   }
 

@@ -12,11 +12,14 @@ import com.developersboard.backend.service.user.UserService;
 import com.developersboard.backend.service.user.impl.RoleServiceImpl;
 import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.config.properties.SystemProperties;
+import com.developersboard.constant.AdminConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.shared.dto.UserDto;
+import com.developersboard.shared.util.SignUpUtils;
 import com.developersboard.shared.util.UserUtils;
 import com.developersboard.task.UserPruningScheduler;
 import com.developersboard.web.controller.user.PasswordController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icegreen.greenmail.util.GreenMail;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
@@ -32,8 +35,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -121,6 +130,38 @@ public abstract class IntegrationTestUtils {
     return admin;
   }
 
+  /**
+   * Creates a user using the mock mvc request.
+   *
+   * @return the signUpRequest
+   * @throws Exception if anything goes wrong
+   */
+  protected MvcResult createAndAssertUser() throws Exception {
+    return createAndAssertUser(FAKER.internet().username(), FAKER.internet().emailAddress());
+  }
+
+  /**
+   * Creates a user using the mock mvc request.
+   *
+   * @param username the username
+   * @param email the email
+   * @return the signUpRequest
+   * @throws Exception if anything goes wrong
+   */
+  protected MvcResult createAndAssertUser(String username, String email) throws Exception {
+    var signUpRequest = SignUpUtils.createSignUpRequest(username, email);
+
+    return mockMvc
+        .perform(
+            MockMvcRequestBuilders.post(AdminConstants.API_V1_USERS_ROOT_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(signUpRequest))
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andReturn();
+  }
+
   protected UserDto persistUser(boolean enabled, UserDto userDto) {
     Set<RoleType> roleTypes = new HashSet<>();
 
@@ -142,5 +183,13 @@ public abstract class IntegrationTestUtils {
         String.format("%s.png", fileName),
         "image",
         empty ? "".getBytes(StandardCharsets.UTF_8) : fileName.getBytes(StandardCharsets.UTF_8));
+  }
+
+  protected static String asJsonString(final Object obj) {
+    try {
+      return new ObjectMapper().writeValueAsString(obj);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }

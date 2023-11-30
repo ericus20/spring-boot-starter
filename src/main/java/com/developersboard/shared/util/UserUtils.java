@@ -27,7 +27,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
- * User utility class that holds methods used across application.
+ * User utility class that holds user-related methods used across application.
  *
  * @author Matthew Puentes
  * @version 1.0
