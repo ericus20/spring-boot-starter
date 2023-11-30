@@ -28,7 +28,7 @@ Below is an example of a successful authentication response.
 <= AuthRestApi.authenticateUser(..) : <200 OK OK,JwtResponseBuilder(accessToken=51gnEp5Wxy7k1CvZSVBmGq0/CKwMegZ9CyxIpv18JWBleUp/Q5QHQduAN5QhLKulOfy1zwg52BWYSYUtLE+DU9JgGYCxUdVKPMs8C3fxzmAbuaYuvHnpqYnWSzkdWJ/41BTbWzTvxmGGt8wc5y1YTiqnSTq5to5q8CkI872mm3YKQzMIFE7O3+nJZNUZxhIzpRe2NCPlJ/cC70GGPTfRL+slbYMc+ge7RYOk70/d11rGhQdoaOwsdnrwTzGpL6uEIMb3uu21, type=Bearer, publicId=6d84dac9-18d5-4a84-942d-a198970a0624, username=admin, email=admin@gmail.com, roles=[ROLE_ADMIN]),[Set-Cookie:"refreshToken=vHGfMEt7UlIABfQFvPHRkDmM/7Y+fJ3xAOXGBLGgBegNYfCpffSTSjyHWAsVoPbgRPvcVUKq/d1djPqi4UBdm4vSRg+4U3F7iAr9w38PWk5nl5UQHDPAP1PRcsHN8DsVcsog/T7/8sdbyxalKpBfs9B+pzjCWY2vf7zXT9MaYj4Xauuu8Es87RbOVIPwHWbXUwP62Xq5TEoWuO7LK/zsBDt7iAG9/GHCTlxCF9WH4yjYLvKq5TmZYcDoB5F6+5vlZkiYLykc; Path=/; Max-Age=604800; Expires=Fri, 06 May 2022 06:50:49 GMT; HttpOnly; SameSite=strict"]> - Finished, duration: 1315 ms
 ```
 
-The accessToken, which is the JWT token is encrypted.
+The accessToken, which is the JWT token, is encrypted.
 
 ## Authentication Response
 

@@ -1,6 +1,6 @@
 plugins {
-  id 'org.springframework.boot' version '3.1.5'
-  id 'io.spring.dependency-management' version '1.1.3'
+  id 'org.springframework.boot' version '3.2.0'
+  id 'io.spring.dependency-management' version '1.1.4'
   id 'org.owasp.dependencycheck' version '8.4.0'
   id 'com.diffplug.spotless' version '6.22.0'
   id 'eclipse'
@@ -63,10 +63,11 @@ dependencies {
   implementation 'org.ehcache:ehcache-transactions:3.10.8'
 
   // Utilities
+  implementation 'org.jsoup:jsoup:1.16.2'
   implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
-  implementation 'commons-io:commons-io:2.14.0'
+  implementation 'commons-io:commons-io:2.15.0'
   implementation 'net.datafaker:datafaker:2.0.2'
   implementation 'com.google.code.gson:gson:2.10.1'
   implementation 'commons-validator:commons-validator:1.7'
@@ -83,7 +84,7 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   implementation 'org.liquibase:liquibase-core'
   implementation 'org.hibernate.orm:hibernate-envers'
-  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.566'
+  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.595'
   implementation files('libs/hypersistence-optimizer-2.6.3-jakarta.jar')
 
   // MapStruct for Object Mapping
@@ -91,13 +92,13 @@ dependencies {
   annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
   // Webjars
-  implementation 'org.webjars:jquery:3.6.4'
-  implementation 'org.webjars:bootstrap:5.2.3'
-  implementation 'org.webjars:popper.js:2.9.3'
+  implementation 'org.webjars:jquery:3.7.1'
+  implementation 'org.webjars:bootstrap:5.3.2'
+  implementation 'org.webjars:popper.js:2.11.7'
   implementation 'org.webjars:jquery-ui:1.13.2'
-  implementation 'org.webjars:datatables:1.13.2'
-  implementation 'org.webjars:font-awesome:6.3.0'
-  implementation 'org.webjars:webjars-locator:0.46'
+  implementation 'org.webjars:datatables:1.13.5'
+  implementation 'org.webjars:font-awesome:6.4.2'
+  implementation 'org.webjars:webjars-locator:0.50'
 }
 
 testing {

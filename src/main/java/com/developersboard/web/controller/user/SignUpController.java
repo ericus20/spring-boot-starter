@@ -58,7 +58,7 @@ public class SignUpController {
   }
 
   /**
-   * Creates a new user and send verification email to the user.
+   * Creates a new user and send a verification email to the user.
    *
    * @param model model to transport objects to view
    * @param userDto the userDto
@@ -95,7 +95,7 @@ public class SignUpController {
   }
 
   /**
-   * Continuation of sign up is handled by this mapping.
+   * This mapping handles the continuation of sign up.
    *
    * @param token the token.
    * @param redirectAttributes the redirectAttributes
@@ -122,7 +122,7 @@ public class SignUpController {
   }
 
   /**
-   * Update the user at this point then send an email after an update if token is valid.
+   * Update the user at this point then send an email after an update if the token is valid.
    *
    * @param token the token
    * @return the user dto

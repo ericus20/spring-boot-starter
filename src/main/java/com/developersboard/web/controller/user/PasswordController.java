@@ -46,9 +46,9 @@ public class PasswordController {
   private final EncryptionService encryptionService;
 
   /**
-   * Processes the password reset form.
+   * Processes the password-reset form.
    *
-   * @return the view name of password reset form.
+   * @return the view name of a password reset form.
    */
   @GetMapping
   public String passwordReset() {
@@ -56,12 +56,12 @@ public class PasswordController {
   }
 
   /**
-   * Processes the forgot password email submitted and generates a link to resets password. Link is
-   * then emailed to user.
+   * Processes the forgot password email submitted and generates a link to reset password. The Link
+   * is then emailed to user.
    *
    * @param model the model
    * @param email the email of user
-   * @return the view name of password reset form.
+   * @return the view name of a password reset form.
    */
   @PostMapping
   public String forgetPassword(Model model, @RequestParam final String email) {
@@ -69,7 +69,7 @@ public class PasswordController {
     if (Objects.nonNull(userDto)) {
       model.addAttribute(UserConstants.EMAIL, userDto.getEmail());
 
-      // send email to the user to verify email to complete sign-up process.
+      // send email to the user to verify email to complete a sign-up process.
       String token = jwtService.generateJwtToken(userDto.getUsername());
       userDto.setVerificationToken(token);
       userService.saveOrUpdate(UserUtils.convertToUser(userDto), false);
@@ -124,7 +124,7 @@ public class PasswordController {
   }
 
   /**
-   * Processes the post request after the new password has been submitted to change the user's
+   * Processes the post-request after the new password has been submitted to change the user's
    * password.
    *
    * @param model the model

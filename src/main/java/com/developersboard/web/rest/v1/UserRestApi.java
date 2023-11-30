@@ -61,9 +61,9 @@ public class UserRestApi {
    * @param page Allows for pagination of the search results.
    * @return The ResponseEntity containing the search results as a Page of users
    */
+  @PreAuthorize(AUTHORIZE)
   @Loggable(ignoreResponseData = true)
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  @PreAuthorize(AUTHORIZE)
   public ResponseEntity<Page<UserResponse>> getUsers(final Pageable page) {
 
     Page<UserResponse> vehicles = userService.findAll(page);
@@ -114,6 +114,7 @@ public class UserRestApi {
     return ResponseEntity.ok(OperationStatus.SUCCESS);
   }
 
+  @Loggable
   @PostMapping
   @SecurityRequirements
   public ResponseEntity<String> createUser(@Valid @RequestBody SignUpRequest signUpRequest) {
@@ -139,7 +140,7 @@ public class UserRestApi {
       var location =
           ServletUriComponentsBuilder.fromCurrentRequest()
               .path("/{publicId}")
-              .buildAndExpand(savedUserDto.getId())
+              .buildAndExpand(savedUserDto.getPublicId())
               .toUriString();
 
       return ResponseEntity.status(HttpStatus.CREATED)
