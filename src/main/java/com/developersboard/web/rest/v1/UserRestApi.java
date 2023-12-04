@@ -55,8 +55,7 @@ public class UserRestApi {
       "isFullyAuthenticated() && hasRole(T(com.developersboard.enums.RoleType).ROLE_ADMIN)";
 
   /**
-   * Performs a search for users based on the provided search criteria. Retrieve vehicles without a
-   * contract matching the search term with a limit to 20 by default.
+   * Performs a search for users based on the provided search criteria.
    *
    * @param page Allows for pagination of the search results.
    * @return The ResponseEntity containing the search results as a Page of users
