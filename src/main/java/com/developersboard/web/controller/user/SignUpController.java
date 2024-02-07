@@ -69,8 +69,8 @@ public class SignUpController {
   public String signUp(@Valid @ModelAttribute final UserDto userDto, final Model model) {
 
     if (userService.existsByUsernameOrEmailAndEnabled(userDto.getUsername(), userDto.getEmail())) {
-      LOG.warn(UserConstants.USERNAME_OR_EMAIL_EXITS);
-      model.addAttribute(ErrorConstants.ERROR, UserConstants.USERNAME_OR_EMAIL_EXITS);
+      LOG.warn(UserConstants.USERNAME_OR_EMAIL_EXISTS);
+      model.addAttribute(ErrorConstants.ERROR, UserConstants.USERNAME_OR_EMAIL_EXISTS);
 
       return SignUpConstants.SIGN_UP_VIEW_NAME;
     }

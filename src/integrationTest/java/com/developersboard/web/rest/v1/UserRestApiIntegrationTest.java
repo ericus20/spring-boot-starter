@@ -315,7 +315,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
                 .content(asJsonString(SignUpUtils.createSignUpRequest(username)))
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(MockMvcResultMatchers.content().string(UserConstants.USERNAME_OR_EMAIL_EXITS));
+        .andExpect(MockMvcResultMatchers.content().string(UserConstants.USERNAME_OR_EMAIL_EXISTS));
   }
 
   private void createAndConfirmUserAccount() throws Exception {
