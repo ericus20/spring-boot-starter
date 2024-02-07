@@ -22,7 +22,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Built With
 
-* [Spring Boot 3.2.0](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
+* [Spring Boot 3.2.2](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
 * [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) - HTML, CSS, and
   JavaScript framework
 * [Thymeleaf](https://www.thymeleaf.org/) - Modern server-side Java template engine

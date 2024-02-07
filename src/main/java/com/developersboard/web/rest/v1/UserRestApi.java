@@ -120,8 +120,8 @@ public class UserRestApi {
     var userDto = UserUtils.convertToUserDto(signUpRequest);
 
     if (userService.existsByUsernameOrEmailAndEnabled(userDto.getUsername(), userDto.getEmail())) {
-      LOG.warn(UserConstants.USERNAME_OR_EMAIL_EXITS);
-      return ResponseEntity.badRequest().body(UserConstants.USERNAME_OR_EMAIL_EXITS);
+      LOG.warn(UserConstants.USERNAME_OR_EMAIL_EXISTS);
+      return ResponseEntity.badRequest().body(UserConstants.USERNAME_OR_EMAIL_EXISTS);
     }
 
     var verificationToken = jwtService.generateJwtToken(userDto.getUsername());
@@ -130,7 +130,7 @@ public class UserRestApi {
     var savedUserDto = userService.createUser(userDto);
     if (Objects.isNull(savedUserDto)) {
       LOG.error(UserConstants.COULD_NOT_CREATE_USER);
-      return ResponseEntity.badRequest().body(UserConstants.USERNAME_OR_EMAIL_EXITS);
+      return ResponseEntity.badRequest().body(UserConstants.USERNAME_OR_EMAIL_EXISTS);
     } else {
       var encryptedToken = encryptionService.encrypt(verificationToken);
       var encodedToken = encryptionService.encode(encryptedToken);
