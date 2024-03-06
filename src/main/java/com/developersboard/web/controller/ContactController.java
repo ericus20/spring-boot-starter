@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * The controller for handling all security related mappings.
+ * The controller for handling all contact-related mappings.
  *
  * @author Eric Opoku
  * @version 1.0

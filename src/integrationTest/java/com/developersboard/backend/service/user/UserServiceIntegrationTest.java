@@ -1,10 +1,13 @@
 package com.developersboard.backend.service.user;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.backend.persistent.domain.user.Role;
 import com.developersboard.backend.service.impl.UserDetailsBuilder;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
+import com.developersboard.exception.user.UserAlreadyExistsException;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.util.UserUtils;
 import java.util.List;
@@ -62,10 +65,8 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
     var userDto = createAndAssertUser(testInfo.getDisplayName(), true);
 
     // since the user is enabled, create another user using the same details from the first user
-    // should return null as the user already exists.
-    var existingUser = persistUser(true, userDto);
-
-    Assertions.assertNull(existingUser);
+    // should throw exception that the user already exists.
+    assertThrows(UserAlreadyExistsException.class, () -> persistUser(true, userDto));
   }
 
   @Test
@@ -181,7 +182,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void existsByUsernameWithNullThrowsException() {
-    Assertions.assertThrows(NullPointerException.class, () -> userService.existsByUsername(null));
+    assertThrows(NullPointerException.class, () -> userService.existsByUsername(null));
   }
 
   @Test
@@ -282,7 +283,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
 
   @Test
   void isValidUsernameAndTokenWithNullTokenThrowsException(TestInfo testInfo) {
-    Assertions.assertThrows(
+    assertThrows(
         NullPointerException.class,
         () -> userService.isValidUsernameAndToken(null, testInfo.getDisplayName()));
   }

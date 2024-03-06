@@ -42,7 +42,7 @@ public final class SecurityUtils {
    * Returns true if the user is authenticated.
    *
    * @param authentication the authentication object
-   * @return if user is authenticated
+   * @return if a user is authenticated
    */
   public static boolean isAuthenticated(Authentication authentication) {
     return Objects.nonNull(authentication)
@@ -53,7 +53,7 @@ public final class SecurityUtils {
   /**
    * Returns true if the user is authenticated.
    *
-   * @return if user is authenticated
+   * @return if a user is authenticated
    */
   public static boolean isAuthenticated() {
     return isAuthenticated(getAuthentication());

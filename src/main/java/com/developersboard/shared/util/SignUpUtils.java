@@ -1,6 +1,7 @@
 package com.developersboard.shared.util;
 
 import com.developersboard.constant.ErrorConstants;
+import com.developersboard.shared.util.core.ValidationUtils;
 import com.developersboard.web.payload.request.SignUpRequest;
 import java.util.Objects;
 import net.datafaker.Faker;
@@ -20,11 +21,11 @@ public final class SignUpUtils {
   /** Maximum password length for the password generation. */
   public static final int PASSWORD_MAX_LENGTH = 15;
 
+  /** Minimum password length for the password generation. */
+  public static final int PASSWORD_MIN_LENGTH = 4;
+
   /** The Constant FAKER. */
   private static final Faker FAKER = new Faker();
-
-  /** Minimum password length for the password generation. */
-  private static final int PASSWORD_MIN_LENGTH = 4;
 
   private SignUpUtils() {
     throw new AssertionError(ErrorConstants.NOT_INSTANTIABLE);
@@ -72,6 +73,8 @@ public final class SignUpUtils {
    * @return The confirmation button link or null if not found.
    */
   public static String extractConfirmAccountLink(String htmlString) {
+    ValidationUtils.validateInputs(htmlString);
+
     // Parse the HTML string using Jsoup
     Document document = Jsoup.parse(htmlString);
 

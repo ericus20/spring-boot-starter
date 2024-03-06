@@ -10,6 +10,7 @@ import com.developersboard.constant.CacheConstants;
 import com.developersboard.constant.user.UserConstants;
 import com.developersboard.enums.RoleType;
 import com.developersboard.enums.UserHistoryType;
+import com.developersboard.exception.user.UserAlreadyExistsException;
 import com.developersboard.shared.dto.UserDto;
 import com.developersboard.shared.dto.mapper.UserDtoMapper;
 import com.developersboard.shared.util.UserUtils;
@@ -33,6 +34,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Transactional
-  public UserDto createUser(final UserDto userDto) {
+  public @NonNull UserDto createUser(final UserDto userDto) {
     return createUser(userDto, Collections.emptySet());
   }
 
@@ -97,27 +99,29 @@ public class UserServiceImpl implements UserService {
    */
   @Override
   @Transactional
-  public UserDto createUser(final UserDto userDto, final Set<RoleType> roleTypes) {
+  public @NonNull UserDto createUser(final UserDto userDto, final Set<RoleType> roleTypes) {
     Validate.notNull(userDto, UserConstants.USER_DTO_MUST_NOT_BE_NULL);
 
     var localUser = userRepository.findByEmail(userDto.getEmail());
     if (Objects.nonNull(localUser)) {
+      // If the user exists but has not been verified, then treat this as a new sign-up.
       if (!localUser.isEnabled()) {
         LOG.debug(UserConstants.USER_EXIST_BUT_NOT_ENABLED, userDto.getEmail(), localUser);
         return UserUtils.convertToUserDto(localUser);
       }
+
       LOG.warn(UserConstants.USER_ALREADY_EXIST, userDto.getEmail());
-    } else {
-      // Assign a public id to the user. This is used to identify the user in the system and can be
-      // shared publicly over the internet.
-      userDto.setPublicId(UUID.randomUUID().toString());
-
-      // Update the user password with an encrypted copy of the password
-      userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-      return persistUser(userDto, roleTypes, UserHistoryType.CREATED, false);
+      throw new UserAlreadyExistsException(UserConstants.USER_ALREADY_EXIST);
     }
-    return null;
+
+    // Assign a public id to the user. This is used to identify the user in the system and can be
+    // shared publicly over the internet.
+    userDto.setPublicId(UUID.randomUUID().toString());
+
+    // Update the user password with an encrypted copy of the password
+    userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+    return persistUser(userDto, roleTypes, UserHistoryType.CREATED, false);
   }
 
   @Override

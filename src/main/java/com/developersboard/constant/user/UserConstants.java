@@ -15,9 +15,7 @@ public final class UserConstants {
 
   public static final String USER_MODEL_KEY = "user";
   public static final String EMAIL = "email";
-  public static final String PASSWORD = "password";
   public static final String USERNAME = "username";
-  public static final String PUBLIC_ID = "publicId";
 
   public static final String USER_PERSISTED_SUCCESSFULLY = "User successfully persisted {}";
 
@@ -46,8 +44,6 @@ public final class UserConstants {
 
   public static final String PASSWORD_SIZE = "Password should be at least 4 characters";
 
-  public static final String COULD_NOT_CREATE_USER = "Could not create user";
-  public static final String COULD_NOT_VERIFY_USER = "Could not create user";
   public static final String USER_ALREADY_EXIST = "Email {} already exist and nothing will be done";
   public static final String USER_NOT_FOUND = "User not found";
   public static final String USERNAME_OR_EMAIL_EXISTS = "Username or email already exist";

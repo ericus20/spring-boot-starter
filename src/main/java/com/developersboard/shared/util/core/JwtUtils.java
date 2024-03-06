@@ -72,6 +72,13 @@ public final class JwtUtils {
     return null;
   }
 
+  /**
+   * Generates a secure, random secret key. The method uses a strong instance of SecureRandom to
+   * generate 36 random bytes. These bytes are then encoded using Base64 URL encoding without
+   * padding. This encoding is suitable for use in URLs and file names.
+   *
+   * @return A secure, randomly generated secret key as a Base64 URL-encoded string without padding.
+   */
   public static String generateSecretKey() {
     SecureRandom random = new SecureRandom();
     byte[] bytes = new byte[36];

@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * The controller for handling all security related mappings.
+ * The controller for handling all security-related mappings.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -28,7 +28,7 @@ public class SecurityController {
   @GetMapping(path = SecurityConstants.LOGIN)
   public String login(Model model) {
 
-    // if the user is authenticated, redirect to the account overview.
+    // if the user is authenticated, redirect to the home page.
     if (SecurityUtils.isAuthenticated()) {
       return HomeConstants.REDIRECT_TO_INDEX;
     }

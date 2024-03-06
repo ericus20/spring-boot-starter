@@ -119,7 +119,7 @@ class DateUtilsTest {
     LocalDateTime localDateTime = LocalDateTime.now().plusHours(numberOfHours);
     String timeElapsedDescription = DateUtils.getTimeElapsedDescription(localDateTime);
 
-    Assertions.assertTrue(timeElapsedDescription.contains("hours ago"));
+    Assertions.assertEquals("1 hour ago", timeElapsedDescription);
   }
 
   @Test
@@ -128,7 +128,7 @@ class DateUtilsTest {
     LocalDateTime localDateTime = LocalDateTime.now().plusDays(numberOfDays);
     String timeElapsedDescription = DateUtils.getTimeElapsedDescription(localDateTime);
 
-    Assertions.assertTrue(timeElapsedDescription.contains("days ago"));
+    Assertions.assertEquals("1 day ago", timeElapsedDescription);
   }
 
   @Test
@@ -137,7 +137,7 @@ class DateUtilsTest {
     LocalDateTime localDateTime = LocalDateTime.now().plusWeeks(numberOfWeeks);
     String timeElapsedDescription = DateUtils.getTimeElapsedDescription(localDateTime);
 
-    Assertions.assertTrue(timeElapsedDescription.contains("weeks ago"));
+    Assertions.assertEquals("1 week ago", timeElapsedDescription);
   }
 
   @Test
