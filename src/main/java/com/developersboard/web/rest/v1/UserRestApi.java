@@ -128,23 +128,18 @@ public class UserRestApi {
     userDto.setVerificationToken(verificationToken);
 
     var savedUserDto = userService.createUser(userDto);
-    if (Objects.isNull(savedUserDto)) {
-      LOG.error(UserConstants.COULD_NOT_CREATE_USER);
-      return ResponseEntity.badRequest().body(UserConstants.USERNAME_OR_EMAIL_EXISTS);
-    } else {
-      var encryptedToken = encryptionService.encrypt(verificationToken);
-      var encodedToken = encryptionService.encode(encryptedToken);
 
-      emailService.sendAccountVerificationEmail(savedUserDto, encodedToken);
-      var location =
-          ServletUriComponentsBuilder.fromCurrentRequest()
-              .path("/{publicId}")
-              .buildAndExpand(savedUserDto.getPublicId())
-              .toUriString();
+    var encryptedToken = encryptionService.encrypt(verificationToken);
+    LOG.debug("Encrypted JWT token: {}", encryptedToken);
+    var encodedToken = encryptionService.encode(encryptedToken);
 
-      return ResponseEntity.status(HttpStatus.CREATED)
-          .header(HttpHeaders.LOCATION, location)
-          .build();
-    }
+    emailService.sendAccountVerificationEmail(savedUserDto, encodedToken);
+    var location =
+        ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{publicId}")
+            .buildAndExpand(savedUserDto.getPublicId())
+            .toUriString();
+
+    return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, location).build();
   }
 }

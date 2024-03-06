@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -39,6 +40,7 @@ public interface UserService {
    * @return the updated userDto.
    * @throws NullPointerException in case the given entity is {@literal null}
    */
+  @NonNull
   UserDto createUser(final UserDto userDto);
 
   /**
@@ -49,6 +51,7 @@ public interface UserService {
    * @return the updated userDto.
    * @throws NullPointerException in case the given entity is {@literal null}
    */
+  @NonNull
   UserDto createUser(final UserDto userDto, final Set<RoleType> roleTypes);
 
   /**

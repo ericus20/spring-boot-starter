@@ -1,8 +1,8 @@
 plugins {
-  id 'org.springframework.boot' version '3.2.2'
+  id 'org.springframework.boot' version '3.2.3'
   id 'io.spring.dependency-management' version '1.1.4'
   id 'org.owasp.dependencycheck' version '9.0.9'
-  id 'com.diffplug.spotless' version '6.23.3'
+  id 'com.diffplug.spotless' version '6.25.0'
   id 'eclipse'
   id 'jacoco'
   id 'idea'
@@ -71,7 +71,7 @@ dependencies {
   implementation 'net.datafaker:datafaker:2.1.0'
   implementation 'com.google.code.gson:gson:2.10.1'
   implementation 'commons-validator:commons-validator:1.8.0'
-  implementation 'com.github.darrachequesne:spring-data-jpa-datatables:6.0.1'
+  implementation 'com.github.darrachequesne:spring-data-jpa-datatables:6.0.2'
 
   // Documentation and API Tools
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
@@ -84,7 +84,7 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   implementation 'org.liquibase:liquibase-core'
   implementation 'org.hibernate.orm:hibernate-envers'
-  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.652'
+  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.671'
   implementation files('libs/hypersistence-optimizer-2.6.3-jakarta.jar')
 
   // MapStruct for Object Mapping
@@ -114,7 +114,7 @@ testing {
         implementation 'io.findify:s3mock_2.13:0.2.6'
         implementation 'com.icegreen:greenmail-junit5:2.0.1'
         implementation 'com.jparams:to-string-verifier:1.4.8'
-        implementation 'nl.jqno.equalsverifier:equalsverifier:3.15.6'
+        implementation 'nl.jqno.equalsverifier:equalsverifier:3.15.8'
         implementation 'org.springframework.security:spring-security-test'
         implementation 'org.springframework.boot:spring-boot-starter-test'
       }

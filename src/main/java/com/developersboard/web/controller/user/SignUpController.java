@@ -79,16 +79,11 @@ public class SignUpController {
     userDto.setVerificationToken(verificationToken);
 
     var savedUserDto = userService.createUser(userDto);
-    if (Objects.isNull(savedUserDto)) {
-      LOG.error(UserConstants.COULD_NOT_CREATE_USER);
-      model.addAttribute(ErrorConstants.ERROR, UserConstants.COULD_NOT_CREATE_USER);
-    } else {
-      var encryptedToken = encryptionService.encrypt(verificationToken);
-      var encodedToken = encryptionService.encode(encryptedToken);
+    var encryptedToken = encryptionService.encrypt(verificationToken);
+    var encodedToken = encryptionService.encode(encryptedToken);
 
-      emailService.sendAccountVerificationEmail(savedUserDto, encodedToken);
-      model.addAttribute(SignUpConstants.SIGN_UP_PENDING_KEY, true);
-    }
+    emailService.sendAccountVerificationEmail(savedUserDto, encodedToken);
+    model.addAttribute(SignUpConstants.SIGN_UP_PENDING_KEY, true);
 
     model.addAttribute(UserConstants.USER_MODEL_KEY, new SignUpRequest());
     return SignUpConstants.SIGN_UP_VIEW_NAME;
@@ -128,23 +123,31 @@ public class SignUpController {
    * @return the user dto
    */
   private UserDto validateTokenAndUpdateUser(final String token, final Model model) {
-    if (jwtService.isValidJwtToken(token)) {
-      var username = jwtService.getUsernameFromToken(token);
-      var userDto = userService.findByUsername(username);
-
-      if (Objects.nonNull(userDto) && token.equals(userDto.getVerificationToken())) {
-        if (userDto.getUsername().equals(username) && userDto.isEnabled()) {
-          LOG.debug(SignUpConstants.ACCOUNT_EXISTS);
-          model.addAttribute(ErrorConstants.ERROR, SignUpConstants.ACCOUNT_EXISTS);
-        } else if (userDto.getUsername().equals(username)) {
-          UserUtils.enableUser(userDto);
-
-          return userService.updateUser(userDto, UserHistoryType.VERIFIED);
-        }
-      }
+    if (!jwtService.isValidJwtToken(token)) {
+      LOG.debug(ErrorConstants.INVALID_TOKEN);
+      model.addAttribute(ErrorConstants.ERROR, ErrorConstants.INVALID_TOKEN);
+      return null;
     }
-    LOG.debug(ErrorConstants.INVALID_TOKEN);
-    model.addAttribute(ErrorConstants.ERROR, ErrorConstants.INVALID_TOKEN);
+
+    var username = jwtService.getUsernameFromToken(token);
+    var userDto = userService.findByUsername(username);
+
+    if (Objects.isNull(userDto) || !token.equals(userDto.getVerificationToken())) {
+      LOG.debug(ErrorConstants.INVALID_TOKEN);
+      model.addAttribute(ErrorConstants.ERROR, ErrorConstants.INVALID_TOKEN);
+      return null;
+    }
+
+    if (userDto.getUsername().equals(username) && userDto.isEnabled()) {
+      LOG.debug(SignUpConstants.ACCOUNT_EXISTS);
+      model.addAttribute(ErrorConstants.ERROR, SignUpConstants.ACCOUNT_EXISTS);
+      return null;
+    }
+
+    if (userDto.getUsername().equals(username)) {
+      UserUtils.enableUser(userDto);
+      return userService.updateUser(userDto, UserHistoryType.VERIFIED);
+    }
 
     return null;
   }

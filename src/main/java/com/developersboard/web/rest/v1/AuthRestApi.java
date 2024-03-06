@@ -67,8 +67,8 @@ public class AuthRestApi {
    * @param loginRequest the login request
    * @return the jwt token details
    */
-  @Loggable
   @SecurityRequirements
+  @Loggable(level = "debug")
   @PostMapping(value = SecurityConstants.LOGIN)
   public ResponseEntity<JwtResponseBuilder> authenticateUser(
       @CookieValue(required = false) String refreshToken,
@@ -98,8 +98,8 @@ public class AuthRestApi {
    * @param request The request
    * @return the jwt token details
    */
-  @Loggable
   @SecurityRequirements
+  @Loggable(level = "error")
   @GetMapping(value = SecurityConstants.REFRESH_TOKEN)
   public ResponseEntity<JwtResponseBuilder> refreshToken(
       @CookieValue String refreshToken, HttpServletRequest request) {
@@ -130,8 +130,8 @@ public class AuthRestApi {
    * @param response the response
    * @return response entity
    */
-  @Loggable
   @SecurityRequirements
+  @Loggable(level = "warn")
   @DeleteMapping(value = SecurityConstants.LOGOUT)
   public ResponseEntity<LogoutResponse> logout(
       HttpServletRequest request, HttpServletResponse response) {

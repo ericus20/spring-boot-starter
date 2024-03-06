@@ -14,7 +14,7 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JwtServiceTest {
 
-  private transient JwtService jwtService;
+  private JwtService jwtService;
 
   @BeforeAll
   void beforeAll() {

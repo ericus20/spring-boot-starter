@@ -113,20 +113,27 @@ public interface DateUtils {
    * @return the description
    */
   static String getTimeElapsedDescription(SeparateDateFormat separateDateFormat) {
-
     int monthsInYear = 12;
-    if (separateDateFormat.getMonths() > monthsInYear) {
-      return String.format("%d years ago", separateDateFormat.getMonths() / monthsInYear);
+    String durationFormat = "%d %s ago";
+
+    if (separateDateFormat.getMonths() >= monthsInYear) {
+      String duration = separateDateFormat.getMonths() == monthsInYear ? "year" : "years";
+      return String.format(durationFormat, separateDateFormat.getMonths() / monthsInYear, duration);
     } else if (separateDateFormat.getMonths() > 0) {
-      return String.format("%d months ago", separateDateFormat.getMonths());
+      String duration = separateDateFormat.getMonths() == 1 ? "month" : "months";
+      return String.format(durationFormat, separateDateFormat.getMonths(), duration);
     } else if (separateDateFormat.getWeeks() > 0) {
-      return String.format("%d weeks ago", separateDateFormat.getWeeks());
+      String duration = separateDateFormat.getWeeks() == 1 ? "week" : "weeks";
+      return String.format(durationFormat, separateDateFormat.getWeeks(), duration);
     } else if (separateDateFormat.getDays() > 0) {
-      return String.format("%d days ago", separateDateFormat.getDays());
+      String duration = separateDateFormat.getDays() == 1 ? "day" : "days";
+      return String.format(durationFormat, separateDateFormat.getDays(), duration);
     } else if (separateDateFormat.getHours() > 0) {
-      return String.format("%d hours ago", separateDateFormat.getHours());
+      String duration = separateDateFormat.getHours() == 1 ? "hour" : "hours";
+      return String.format(durationFormat, separateDateFormat.getHours(), duration);
     } else if (separateDateFormat.getMinutes() > 0) {
-      return String.format("%d minutes ago", separateDateFormat.getMinutes());
+      String duration = separateDateFormat.getMinutes() == 1 ? "minute" : "minutes";
+      return String.format(durationFormat, separateDateFormat.getMinutes(), duration);
     } else {
       int seconds = 5;
       if (separateDateFormat.getSeconds() > seconds) {

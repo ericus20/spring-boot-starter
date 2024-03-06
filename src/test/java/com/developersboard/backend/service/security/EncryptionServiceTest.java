@@ -17,8 +17,8 @@ import org.mockito.Mockito;
 
 class EncryptionServiceTest {
 
-  private transient EncryptionService encryptionService;
-  private transient String uri;
+  private EncryptionService encryptionService;
+  private String uri;
 
   @BeforeEach
   void setUp() {
