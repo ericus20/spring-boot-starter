@@ -1,7 +1,7 @@
 plugins {
-  id 'org.springframework.boot' version '3.2.4'
-  id 'io.spring.dependency-management' version '1.1.4'
-  id 'org.owasp.dependencycheck' version '9.0.9'
+  id 'org.springframework.boot' version '3.3.4'
+  id 'io.spring.dependency-management' version '1.1.5'
+  id 'org.owasp.dependencycheck' version '10.0.0'
   id 'com.diffplug.spotless' version '6.25.0'
   id 'eclipse'
   id 'jacoco'
@@ -37,7 +37,7 @@ repositories {
 
 ext {
   set('jjwtVersion', '0.12.5')
-  set('springDocVersion', '2.4.0')
+  set('springDocVersion', '2.6.0')
   set('javadocScribeVersion', '0.15.0')
   set('mapstructVersion', '1.5.5.Final')
 }
@@ -63,15 +63,15 @@ dependencies {
   implementation 'org.ehcache:ehcache-transactions:3.10.8'
 
   // Utilities
-  implementation 'org.jsoup:jsoup:1.17.2'
+  implementation 'org.jsoup:jsoup:1.18.1'
   implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
-  implementation 'commons-io:commons-io:2.15.1'
-  implementation 'net.datafaker:datafaker:2.1.0'
-  implementation 'com.google.code.gson:gson:2.10.1'
-  implementation 'commons-validator:commons-validator:1.8.0'
-  implementation 'com.github.darrachequesne:spring-data-jpa-datatables:6.0.3'
+  implementation 'commons-io:commons-io:2.16.1'
+  implementation 'net.datafaker:datafaker:2.3.1'
+  implementation 'com.google.code.gson:gson:2.11.0'
+  implementation 'commons-validator:commons-validator:1.9.0'
+  implementation 'com.github.darrachequesne:spring-data-jpa-datatables:6.0.4'
 
   // Documentation and API Tools
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
@@ -114,7 +114,7 @@ testing {
         implementation 'io.findify:s3mock_2.13:0.2.6'
         implementation 'com.icegreen:greenmail-junit5:2.0.1'
         implementation 'com.jparams:to-string-verifier:1.4.8'
-        implementation 'nl.jqno.equalsverifier:equalsverifier:3.16'
+        implementation 'nl.jqno.equalsverifier:equalsverifier:3.17'
         implementation 'org.springframework.security:spring-security-test'
         implementation 'org.springframework.boot:spring-boot-starter-test'
       }
@@ -216,5 +216,5 @@ pmd {
 }
 
 jacoco {
-  toolVersion = "0.8.11"
+  toolVersion = "0.8.12"
 }
