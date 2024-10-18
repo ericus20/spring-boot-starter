@@ -1,7 +1,7 @@
 plugins {
-  id 'org.springframework.boot' version '3.3.4'
-  id 'io.spring.dependency-management' version '1.1.5'
-  id 'org.owasp.dependencycheck' version '10.0.0'
+  id 'org.springframework.boot' version '3.3.5'
+  id 'io.spring.dependency-management' version '1.1.6'
+  id 'org.owasp.dependencycheck' version '11.1.0'
   id 'com.diffplug.spotless' version '6.25.0'
   id 'eclipse'
   id 'jacoco'
@@ -15,7 +15,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
   // You can uncomment this to include javadoc jar generation
   //  withJavadocJar()
@@ -36,10 +36,10 @@ repositories {
 }
 
 ext {
-  set('jjwtVersion', '0.12.5')
+  set('jjwtVersion', '0.12.6')
   set('springDocVersion', '2.6.0')
   set('javadocScribeVersion', '0.15.0')
-  set('mapstructVersion', '1.5.5.Final')
+  set('mapstructVersion', '1.6.2')
 }
 
 dependencies {
@@ -67,8 +67,8 @@ dependencies {
   implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
-  implementation 'commons-io:commons-io:2.16.1'
-  implementation 'net.datafaker:datafaker:2.3.1'
+  implementation 'commons-io:commons-io:2.17.0'
+  implementation 'net.datafaker:datafaker:2.4.0'
   implementation 'com.google.code.gson:gson:2.11.0'
   implementation 'commons-validator:commons-validator:1.9.0'
   implementation 'com.github.darrachequesne:spring-data-jpa-datatables:6.0.4'
@@ -84,7 +84,7 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   implementation 'org.liquibase:liquibase-core'
   implementation 'org.hibernate.orm:hibernate-envers'
-  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.686'
+  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.765'
   implementation files('libs/hypersistence-optimizer-2.6.3-jakarta.jar')
 
   // MapStruct for Object Mapping
@@ -95,9 +95,9 @@ dependencies {
   implementation 'org.webjars:jquery:3.7.1'
   implementation 'org.webjars:bootstrap:5.3.3'
   implementation 'org.webjars:popper.js:2.11.7'
-  implementation 'org.webjars:jquery-ui:1.13.2'
-  implementation 'org.webjars:datatables:1.13.5'
-  implementation 'org.webjars:font-awesome:6.5.1'
+  implementation 'org.webjars:jquery-ui:1.14.0'
+  implementation 'org.webjars:datatables:2.0.3'
+  implementation 'org.webjars:font-awesome:6.5.2'
   implementation 'org.webjars:webjars-locator:0.52'
 }
 
@@ -110,11 +110,11 @@ testing {
       dependencies {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-        implementation 'org.mockito:mockito-inline:5.2.0'
+        implementation 'org.mockito:mockito-core:5.14.2'
         implementation 'io.findify:s3mock_2.13:0.2.6'
-        implementation 'com.icegreen:greenmail-junit5:2.0.1'
+        implementation 'com.icegreen:greenmail-junit5:2.1.0'
         implementation 'com.jparams:to-string-verifier:1.4.8'
-        implementation 'nl.jqno.equalsverifier:equalsverifier:3.17'
+        implementation 'nl.jqno.equalsverifier:equalsverifier:3.17.1'
         implementation 'org.springframework.security:spring-security-test'
         implementation 'org.springframework.boot:spring-boot-starter-test'
       }
@@ -128,6 +128,7 @@ testing {
         implementation sourceSets.test.output
 
         implementation 'org.springframework.boot:spring-boot-testcontainers'
+        implementation 'com.amazonaws:aws-java-sdk-core:1.12.765'
         implementation 'org.testcontainers:junit-jupiter'
         implementation 'org.testcontainers:postgresql'
       }

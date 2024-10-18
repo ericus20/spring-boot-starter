@@ -2,7 +2,6 @@ package com.developersboard.config.core;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.developersboard.config.properties.AwsProperties;
@@ -31,11 +30,11 @@ public class ProdConfig {
    */
   @Bean
   public AmazonS3 amazonS3(AwsProperties props) {
-    // Create the credentials provider
+    // Create the credential provider
     var credentials = new BasicAWSCredentials(props.getAccessKeyId(), props.getSecretAccessKey());
 
     return AmazonS3ClientBuilder.standard()
-        .withRegion(Regions.fromName(props.getRegion()))
+        .withRegion(props.getRegion())
         .withCredentials(new AWSStaticCredentialsProvider(credentials))
         .build();
   }

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -16,8 +17,6 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -39,22 +38,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class BaseEntity<T extends Serializable> {
 
   private static final String SEQUENCE_NAME = "SpringBootStarterSequence";
-  private static final String SEQUENCE_INITIAL_VALUE = "1";
   private static final String SEQUENCE_GENERATOR_NAME = "SpringBootStarterSequenceGenerator";
 
-  /**
-   * Sequence Style Generator to auto generate ID based on the choices in the parameters.
-   *
-   * @see AssignedSequenceStyleGenerator
-   */
-  @GenericGenerator(
+  /** Sequence Generator to auto generate IDs. */
+  @SequenceGenerator(
       name = SEQUENCE_GENERATOR_NAME,
-      type = AssignedSequenceStyleGenerator.class,
-      parameters = {
-        @Parameter(name = "sequence_name", value = SEQUENCE_NAME),
-        @Parameter(name = "initial_value", value = SEQUENCE_INITIAL_VALUE),
-        @Parameter(name = "increment_size", value = SEQUENCE_INITIAL_VALUE)
-      })
+      sequenceName = SEQUENCE_NAME,
+      allocationSize = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_GENERATOR_NAME)
   private T id;
