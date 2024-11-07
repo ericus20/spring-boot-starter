@@ -30,7 +30,7 @@ public class ProdConfig {
    */
   @Bean
   public AmazonS3 amazonS3(AwsProperties props) {
-    // Create the credentials provider
+    // Create the credential provider
     var credentials = new BasicAWSCredentials(props.getAccessKeyId(), props.getSecretAccessKey());
 
     return AmazonS3ClientBuilder.standard()

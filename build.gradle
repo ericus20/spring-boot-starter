@@ -1,7 +1,7 @@
 plugins {
-  id 'org.springframework.boot' version '3.3.4'
+  id 'org.springframework.boot' version '3.3.5'
   id 'io.spring.dependency-management' version '1.1.6'
-  id 'org.owasp.dependencycheck' version '10.0.0'
+  id 'org.owasp.dependencycheck' version '11.1.0'
   id 'com.diffplug.spotless' version '6.25.0'
   id 'eclipse'
   id 'jacoco'
@@ -15,7 +15,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
   // You can uncomment this to include javadoc jar generation
   //  withJavadocJar()
@@ -96,7 +96,7 @@ dependencies {
   implementation 'org.webjars:bootstrap:5.3.3'
   implementation 'org.webjars:popper.js:2.11.7'
   implementation 'org.webjars:jquery-ui:1.14.0'
-  implementation 'org.webjars:datatables:1.13.5'
+  implementation 'org.webjars:datatables:2.0.3'
   implementation 'org.webjars:font-awesome:6.5.2'
   implementation 'org.webjars:webjars-locator:0.52'
 }
