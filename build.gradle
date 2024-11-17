@@ -114,7 +114,7 @@ testing {
         implementation 'io.findify:s3mock_2.13:0.2.6'
         implementation 'com.icegreen:greenmail-junit5:2.1.0'
         implementation 'com.jparams:to-string-verifier:1.4.8'
-        implementation 'nl.jqno.equalsverifier:equalsverifier:3.17.1'
+        implementation 'nl.jqno.equalsverifier:equalsverifier:3.17.3'
         implementation 'org.springframework.security:spring-security-test'
         implementation 'org.springframework.boot:spring-boot-starter-test'
       }
@@ -128,7 +128,7 @@ testing {
         implementation sourceSets.test.output
 
         implementation 'org.springframework.boot:spring-boot-testcontainers'
-        implementation 'com.amazonaws:aws-java-sdk-core:1.12.765'
+        implementation 'com.amazonaws:aws-java-sdk-core:1.12.778'
         implementation 'org.testcontainers:junit-jupiter'
         implementation 'org.testcontainers:postgresql'
       }
