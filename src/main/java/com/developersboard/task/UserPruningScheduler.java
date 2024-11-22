@@ -4,6 +4,7 @@ import com.developersboard.annotation.Loggable;
 import com.developersboard.backend.service.user.UserService;
 import com.developersboard.shared.dto.UserDto;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -47,6 +48,12 @@ public class UserPruningScheduler {
     LOG.debug("Found {} user(s) to be removed", usersToDelete.size());
 
     // Delete all users that are not enabled after a certain time
-    usersToDelete.parallelStream().map(UserDto::getPublicId).forEach(userService::deleteUser);
+    int PRUNE_THRESHOLD = 5000;
+    Stream<UserDto> userStream =
+        usersToDelete.size() > PRUNE_THRESHOLD
+            ? usersToDelete.parallelStream()
+            : usersToDelete.stream();
+
+    userStream.map(UserDto::getPublicId).forEach(userService::deleteUser);
   }
 }
