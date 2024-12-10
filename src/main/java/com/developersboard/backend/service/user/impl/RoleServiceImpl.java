@@ -1,9 +1,10 @@
 package com.developersboard.backend.service.user.impl;
 
 import com.developersboard.backend.persistent.domain.user.Role;
-import com.developersboard.backend.persistent.repository.RoleRepository;
+import com.developersboard.backend.persistent.repository.impl.RoleRepositoryImplV2;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.constant.CacheConstants;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService {
 
-  private final transient RoleRepository roleRepository;
+  private final transient RoleRepositoryImplV2 roleRepository;
 
   /**
    * Create the roleEntity with the roleEntity instance given.
@@ -37,7 +38,7 @@ public class RoleServiceImpl implements RoleService {
   public Role save(Role roleEntity) {
     Validate.notNull(roleEntity, "The roleEntity cannot be null");
 
-    var persistedRole = roleRepository.merge(roleEntity);
+    var persistedRole = roleRepository.save(roleEntity);
     LOG.info("Role merged successfully {}", persistedRole);
 
     return persistedRole;
@@ -53,7 +54,7 @@ public class RoleServiceImpl implements RoleService {
   @Cacheable(CacheConstants.ROLES)
   public Role findByName(String name) {
     Validate.notNull(name, "The name cannot be null");
-
-    return roleRepository.findByName(name);
+    Optional<Role> roleOptional = roleRepository.findFirstByName(name);
+    return roleOptional.orElse(null);
   }
 }
