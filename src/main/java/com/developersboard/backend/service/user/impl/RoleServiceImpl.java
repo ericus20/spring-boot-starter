@@ -1,7 +1,7 @@
 package com.developersboard.backend.service.user.impl;
 
 import com.developersboard.backend.persistent.domain.user.Role;
-import com.developersboard.backend.persistent.repository.impl.RoleRepositoryImplV2;
+import com.developersboard.backend.persistent.repository.impl.RoleRepository;
 import com.developersboard.backend.service.user.RoleService;
 import com.developersboard.constant.CacheConstants;
 import java.util.Optional;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService {
 
-  private final transient RoleRepositoryImplV2 roleRepository;
+  private final transient RoleRepository roleRepository;
 
   /**
    * Create the roleEntity with the roleEntity instance given.
