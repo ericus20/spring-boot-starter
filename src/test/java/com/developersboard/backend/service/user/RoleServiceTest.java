@@ -1,7 +1,7 @@
 package com.developersboard.backend.service.user;
 
 import com.developersboard.backend.persistent.domain.user.Role;
-import com.developersboard.backend.persistent.repository.impl.RoleRepositoryImplV2;
+import com.developersboard.backend.persistent.repository.impl.RoleRepository;
 import com.developersboard.backend.service.user.impl.RoleServiceImpl;
 import com.developersboard.enums.RoleType;
 import java.util.Optional;
@@ -19,7 +19,7 @@ class RoleServiceTest {
 
   @InjectMocks private transient RoleServiceImpl roleService;
 
-  @Mock private transient RoleRepositoryImplV2 roleEntityRepository;
+  @Mock private transient RoleRepository roleEntityRepository;
 
   private transient Role roleEntity;
 

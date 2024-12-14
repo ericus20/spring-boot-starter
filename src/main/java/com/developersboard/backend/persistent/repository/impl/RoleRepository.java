@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * The RoleRepositoryImplV2 class exposes implementation from JpaRepository on Role entity .
+ * The RoleRepository class exposes implementation from JpaRepository on Role entity .
  *
  * @author George Anguah
  * @version 1.0
  * @since 1.0
  */
 @Repository
-public interface RoleRepositoryImplV2 extends JpaRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 
   Optional<Role> findFirstByName(String name);
 }
