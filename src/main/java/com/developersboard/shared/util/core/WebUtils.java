@@ -4,10 +4,8 @@ import com.developersboard.constant.ContactConstants;
 import com.developersboard.constant.EmailConstants;
 import com.developersboard.constant.ErrorConstants;
 import com.developersboard.constant.HomeConstants;
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
@@ -49,39 +47,6 @@ public final class WebUtils {
    */
   public static String getGenericUri(String path) {
     return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
-  }
-
-  /**
-   * Generates a URI dynamically by constructing url from the request.
-   *
-   * <p>For instance a request from origin <a href="http://localhost:30000">...</a> will be
-   * retrieved this way.
-   *
-   * @param request the request
-   * @param path the custom path
-   * @param publicUserId the publicUserId
-   * @return a dynamically formulated uri
-   */
-  public static String getUri(HttpServletRequest request, String path, String publicUserId) {
-    return ServletUriComponentsBuilder.fromOriginHeader(request.getHeader(HttpHeaders.ORIGIN))
-        .path(path)
-        .queryParam(TOKEN, publicUserId)
-        .build()
-        .toUriString();
-  }
-
-  /**
-   * Generates a URI dynamically by constructing url from the request.
-   *
-   * <p>For instance a request from origin <a href="http://localhost:30000">...</a> will be
-   * retrieved this way.
-   *
-   * @param request the request
-   * @return a dynamically formulated uri
-   */
-  public static String getUri(HttpServletRequest request) {
-    return ServletUriComponentsBuilder.fromOriginHeader(request.getHeader(HttpHeaders.ORIGIN))
-        .toUriString();
   }
 
   /**

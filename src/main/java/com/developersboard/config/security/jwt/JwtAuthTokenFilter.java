@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * This is a filter base class that is used to guarantee a single execution per request dispatch.
+ * This is a filter base class used to guarantee a single execution per request dispatch.
  *
  * @author Eric Opoku
  * @version 1.0

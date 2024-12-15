@@ -44,7 +44,7 @@ public class SecurityBean {
   }
 
   /**
-   * Making use of persistent option instead of in-memory for maximum security.
+   * Making use of a persistent option instead of in-memory for maximum security.
    *
    * @param dataSource DataSource
    * @return persistentTokenRepository
@@ -116,7 +116,7 @@ public class SecurityBean {
    * <p>The special value {@code "*"} allows all headers to be exposed for non-credentialed
    * requests.
    *
-   * <p>By default this is not set.
+   * <p>By default, this is not set.
    *
    * @param props CorsConfigProperties
    * @param corsConfig CorsConfiguration
@@ -138,7 +138,7 @@ public class SecurityBean {
    * <p>A header name is not required to be listed if it is one of: {@code Cache-Control}, {@code
    * Content-Language}, {@code Expires}, {@code Last-Modified}, or {@code Pragma}.
    *
-   * <p>By default this is not set.
+   * <p>By default, this is not set.
    *
    * @param props CorsConfigProperties
    * @param corsConfig CorsConfiguration
@@ -158,7 +158,7 @@ public class SecurityBean {
    *
    * <p>If not set, only {@code "GET"} and {@code "HEAD"} are allowed.
    *
-   * <p>By default this is not set.
+   * <p>By default, this is not set.
    *
    * <p><strong>Note:</strong> CORS checks use values from "Forwarded"
    *

@@ -22,10 +22,9 @@ public final class SecurityConstants {
   public static final String API_V1_AUTH_ROOT_URL = "/api/v1/auth";
   public static final String API_V1_AUTH_URL_MAPPING = "/api/v1/auth/**";
   public static final String API_ROOT_URL_MAPPING = "/api/**";
+  public static final String ERROR_URL_MAPPING = "/error/**";
   public static final String BEARER = "Bearer";
   public static final String BEARER_PREFIX = "Bearer ";
-  public static final String X_XSRF_TOKEN = "x-xsrf-token";
-  public static final String H2_CONSOLE_URL_MAPPING = "/console/*";
   public static final String JSESSIONID = "JSESSIONID";
   public static final String LOGIN_LOGOUT = "/login?logout";
   public static final String LOGOUT = "/logout";
@@ -54,6 +53,7 @@ public final class SecurityConstants {
   private static final String[] PUBLIC_MATCHERS = {
     "/css/**",
     "/js/**",
+    "/error/**",
     "/images/**",
     "/fonts/**",
     "/webjars/**",

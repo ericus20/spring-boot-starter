@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -32,10 +32,10 @@ public class ApiWebSecurityConfig {
 
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
-  private final AuthenticationManager authenticationManager;
+  private final DaoAuthenticationProvider authenticationManager;
 
   /**
-   * Configure the {@link HttpSecurity}. Typically, subclasses should not call super as it may
+   * Configure the {@link HttpSecurity}. Typically, subclasses should not call supper as it may
    * override their configuration.
    *
    * @param http the {@link HttpSecurity} to modify.
@@ -45,7 +45,7 @@ public class ApiWebSecurityConfig {
   @Order(1)
   public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
-    // Match any incoming request targeting the /api/** to use this security filter chain
+    // Match any incoming request focusing on the /api/** to use this security filter chain
     http.securityMatcher(SecurityConstants.API_ROOT_URL_MAPPING);
 
     // Use a custom exception handler when authentication fails
@@ -60,6 +60,8 @@ public class ApiWebSecurityConfig {
             requests -> {
               // Allow public access to POST /api/v1/users: Used to register new users
               requests
+                  .requestMatchers(SecurityConstants.ERROR_URL_MAPPING)
+                  .permitAll()
                   .requestMatchers(
                       new AntPathRequestMatcher(
                           AdminConstants.API_V1_USERS_ROOT_URL, HttpMethod.POST.name()))
@@ -78,7 +80,7 @@ public class ApiWebSecurityConfig {
         // then the browser can't automatically authenticate the requests,
         // and CSRF isn't possible.
         .csrf(AbstractHttpConfigurer::disable)
-        .authenticationManager(authenticationManager)
+        .authenticationProvider(authenticationManager)
         .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

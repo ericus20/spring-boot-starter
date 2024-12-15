@@ -52,10 +52,8 @@ public class Role implements Serializable {
     if (this == other) {
       return true;
     }
-    if (!(other instanceof Role that)) {
-      return false;
-    }
-    return Objects.equals(name, that.name);
+
+    return (other instanceof Role that) && Objects.equals(name, that.name);
   }
 
   /**

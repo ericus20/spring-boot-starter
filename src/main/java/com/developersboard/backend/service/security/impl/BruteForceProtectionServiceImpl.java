@@ -42,7 +42,7 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
 
   private final UserRepository userRepository;
 
-  private final ConcurrentHashMap<String, FailedLogin> cache;
+  private final Map<String, FailedLogin> cache;
 
   @Autowired
   public BruteForceProtectionServiceImpl(UserRepository userRepository) {

@@ -13,7 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The PersistentLogins class supports and allows user to use remember-me with persistent option.
+ * The PersistentLogins class supports and allows user to use remember-me with a persistent option.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -45,10 +45,8 @@ public class PersistentLogin implements Serializable {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof PersistentLogin that)) {
-      return false;
-    }
-    return Objects.equals(getUsername(), that.getUsername());
+
+    return (o instanceof PersistentLogin that) && Objects.equals(getUsername(), that.getUsername());
   }
 
   @Override

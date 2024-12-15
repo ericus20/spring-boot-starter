@@ -24,8 +24,9 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +56,7 @@ public class AuthRestApi {
   private final CookieService cookieService;
   private final EncryptionService encryptionService;
   private final UserDetailsService userDetailsService;
-  private final AuthenticationManager authenticationManager;
+  private final DaoAuthenticationProvider authenticationManager;
 
   /**
    * Attempts to authenticate with the provided credentials. If successful, a JWT token is returned
@@ -151,14 +152,16 @@ public class AuthRestApi {
    * @param isRefreshValid if the refresh token is valid
    * @param headers the http headers
    */
-  private String updateCookies(String username, boolean isRefreshValid, HttpHeaders headers) {
+  private String updateCookies(
+      String username, boolean isRefreshValid, MultiValueMap<String, String> headers) {
 
     if (!isRefreshValid) {
       var token = jwtService.generateJwtToken(username);
       var refreshDuration = Duration.ofDays(SecurityConstants.DEFAULT_TOKEN_DURATION);
 
       var encryptedToken = encryptionService.encrypt(token);
-      cookieService.addCookieToHeaders(headers, TokenType.REFRESH, encryptedToken, refreshDuration);
+      cookieService.addCookieToHeaders(
+          (HttpHeaders) headers, TokenType.REFRESH, encryptedToken, refreshDuration);
     }
 
     var accessTokenExpiration = DateUtils.addMinutes(new Date(), accessTokenExpirationInMinutes);

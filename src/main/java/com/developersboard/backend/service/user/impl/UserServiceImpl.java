@@ -385,13 +385,13 @@ public class UserServiceImpl implements UserService {
   public void deleteUser(final String publicId) {
     ValidationUtils.validateInputsWithMessage(UserConstants.BLANK_PUBLIC_ID, publicId);
 
-    // Number of rows deleted is expected to be 1 since publicId is unique
+    // The Number of rows deleted is expected to be 1 since publicId is unique
     int numberOfRowsDeleted = userRepository.deleteByPublicId(publicId);
     LOG.debug("Deleted {} user(s) with publicId {}", numberOfRowsDeleted, publicId);
   }
 
   /**
-   * Transfers user details to a user object then persist to database.
+   * Transfers user details to a user object then persist to a database.
    *
    * @param userDto the userDto
    * @param roleTypes the roleTypes

@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Class UserHistory captures activities happening to user such as profile update, password reset
+ * Class UserHistory captures activities happening to user such as profile update, password reset,
  * etc.
  *
  * @author George Anguah

@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '3.3.5'
+  id 'org.springframework.boot' version '3.4.0'
   id 'io.spring.dependency-management' version '1.1.6'
   id 'org.owasp.dependencycheck' version '11.1.0'
   id 'com.diffplug.spotless' version '6.25.0'
@@ -7,7 +7,6 @@ plugins {
   id 'jacoco'
   id 'idea'
   id 'java'
-  id 'pmd'
 }
 
 group = 'com.developersboard'
@@ -37,9 +36,9 @@ repositories {
 
 ext {
   set('jjwtVersion', '0.12.6')
-  set('springDocVersion', '2.6.0')
+  set('springDocVersion', '2.7.0')
   set('javadocScribeVersion', '0.15.0')
-  set('mapstructVersion', '1.6.2')
+  set('mapstructVersion', '1.6.3')
 }
 
 dependencies {
@@ -63,12 +62,12 @@ dependencies {
   implementation 'org.ehcache:ehcache-transactions:3.10.8'
 
   // Utilities
-  implementation 'org.jsoup:jsoup:1.18.1'
+  implementation 'org.jsoup:jsoup:1.18.3'
   implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
-  implementation 'commons-io:commons-io:2.17.0'
-  implementation 'net.datafaker:datafaker:2.4.0'
+  implementation 'commons-io:commons-io:2.18.0'
+  implementation 'net.datafaker:datafaker:2.4.2'
   implementation 'com.google.code.gson:gson:2.11.0'
   implementation 'commons-validator:commons-validator:1.9.0'
   implementation 'com.github.darrachequesne:spring-data-jpa-datatables:6.0.4'
@@ -84,7 +83,7 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   implementation 'org.liquibase:liquibase-core'
   implementation 'org.hibernate.orm:hibernate-envers'
-  implementation 'com.amazonaws:aws-java-sdk-s3:1.12.765'
+  implementation 'software.amazon.awssdk:s3:2.29.34'
   implementation files('libs/hypersistence-optimizer-2.6.3-jakarta.jar')
 
   // MapStruct for Object Mapping
@@ -96,8 +95,8 @@ dependencies {
   implementation 'org.webjars:bootstrap:5.3.3'
   implementation 'org.webjars:popper.js:2.11.7'
   implementation 'org.webjars:jquery-ui:1.14.0'
-  implementation 'org.webjars:datatables:2.0.3'
-  implementation 'org.webjars:font-awesome:6.5.2'
+  implementation 'org.webjars:datatables:2.1.8'
+  implementation 'org.webjars:font-awesome:6.7.1'
   implementation 'org.webjars:webjars-locator:0.52'
 }
 
@@ -112,11 +111,12 @@ testing {
         annotationProcessor 'org.projectlombok:lombok'
         implementation 'org.mockito:mockito-core:5.14.2'
         implementation 'io.findify:s3mock_2.13:0.2.6'
-        implementation 'com.icegreen:greenmail-junit5:2.1.0'
+        implementation 'com.icegreen:greenmail-junit5:2.1.2'
         implementation 'com.jparams:to-string-verifier:1.4.8'
-        implementation 'nl.jqno.equalsverifier:equalsverifier:3.17.3'
+        implementation 'nl.jqno.equalsverifier:equalsverifier:3.17.5'
         implementation 'org.springframework.security:spring-security-test'
         implementation 'org.springframework.boot:spring-boot-starter-test'
+        runtimeOnly 'org.junit.platform:junit-platform-launcher'
       }
     }
     //noinspection GroovyAssignabilityCheck
@@ -128,7 +128,7 @@ testing {
         implementation sourceSets.test.output
 
         implementation 'org.springframework.boot:spring-boot-testcontainers'
-        implementation 'com.amazonaws:aws-java-sdk-core:1.12.778'
+        implementation 'software.amazon.awssdk:s3:2.29.34'
         implementation 'org.testcontainers:junit-jupiter'
         implementation 'org.testcontainers:postgresql'
       }
@@ -208,12 +208,6 @@ spotless {
     removeUnusedImports()
     googleJavaFormat()
   }
-}
-
-pmd {
-  consoleOutput = true
-  ruleSetFiles = files("${project.rootDir}/config/pmd-ruleset.xml")
-  ruleSets = []
 }
 
 jacoco {
