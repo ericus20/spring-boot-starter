@@ -1,10 +1,13 @@
 package com.developersboard.config;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Locale;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -79,5 +82,13 @@ public class I18NConfig implements WebMvcConfigurer {
   @Override
   public void addInterceptors(final InterceptorRegistry registry) {
     registry.addInterceptor(localeChangeInterceptor());
+  }
+
+  @Bean
+  public StringHttpMessageConverter stringHttpMessageConverter() {
+    StringHttpMessageConverter messageConverter = new StringHttpMessageConverter();
+    messageConverter.setSupportedMediaTypes(
+        List.of(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.ALL));
+    return messageConverter;
   }
 }

@@ -1,9 +1,5 @@
 package com.developersboard.backend.service.storage.impl;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
-import com.amazonaws.services.s3.transfer.Upload;
 import com.developersboard.backend.service.storage.AmazonS3Service;
 import com.developersboard.config.properties.AwsProperties;
 import com.developersboard.constant.StorageConstants;
@@ -16,12 +12,15 @@ import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
 
 /**
  * This abstract class provides some operations available to Amazon S3 already implemented.
  *
  * @author Eric Opoku
- * @version 1.0
+ * @version 2.0
  * @since 1.0
  */
 @Slf4j
@@ -33,8 +32,8 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
    * @param uploadedFile The multipart file uploaded by the user
    * @param username The username for which to upload this file
    * @return The URL of the uploaded image
-   * @throws IOException if any error comes up dealing with i/o operations
-   * @throws InterruptedException if there is any interruptions
+   * @throws IOException if any error comes up dealing with I/O operations
+   * @throws InterruptedException if there are any interruptions
    */
   @Override
   public String storeProfileImage(final MultipartFile uploadedFile, final String username)
@@ -45,11 +44,10 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
   }
 
   /**
-   * Retrieve file content from multipart file.
+   * Converts a multipart file to a regular file.
    *
    * @param multipart the multipart file
-   * @return the file
-   * @throws IllegalStateException if something goes wrong with the internal conversion
+   * @return the converted file
    * @throws IOException if there is an error with inputs/outputs
    */
   protected File multipartToFile(final MultipartFile multipart) throws IOException {
@@ -59,8 +57,7 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
     Objects.requireNonNull(path, StorageConstants.A_NULL_WITHIN_METHOD);
 
     var file = new File(path);
-    var newFile = file.createNewFile();
-    if (newFile) {
+    if (file.createNewFile()) {
       LOG.debug(StorageConstants.FILE_CREATED_SUCCESSFULLY);
     }
 
@@ -72,77 +69,68 @@ public abstract class AbstractAmazonS3Service implements AmazonS3Service {
   }
 
   /**
-   * Asynchronously upload object to s3.
-   *
-   * @param resource the resource to upload
-   * @param key the key
-   * @param s3Client the amazonS3 object
-   * @param properties the AWS properties
-   * @throws InterruptedException if there is any interruption during upload
-   */
-  protected void processObjectTransfer(
-      final File resource,
-      final String key,
-      final AmazonS3 s3Client,
-      final AwsProperties properties)
-      throws InterruptedException {
-
-    var transferManager = TransferManagerBuilder.standard().withS3Client(s3Client).build();
-    // TransferManager processes all transfers asynchronously,
-    // so this call returns immediately.
-    Upload upload = transferManager.upload(properties.getS3BucketName(), key, resource);
-    LOG.debug("Object upload started asynchronously...");
-
-    // Optionally, wait for the upload to finish before continuing.
-    upload.waitForCompletion();
-    LOG.debug("Object upload completed successfully");
-  }
-
-  /**
-   * Returns the root URL where the bucket name is located.
-   *
-   * <p>Please note that the URL does not contain the bucket name
+   * Ensures the bucket exists, creating it if necessary.
    *
    * @param bucketName The bucket name
-   * @return the root URL where the bucket name is located.
-   * @throws AmazonS3Exception If something goes wrong.
+   * @param s3Client The S3 client
+   * @return The bucket's region
    */
-  private String ensureBucketExists(final String bucketName, final AmazonS3 s3Client) {
-    if (!s3Client.doesBucketExistV2(bucketName)) {
-      LOG.debug("Bucket {} doesn't exists... Creating one", bucketName);
-      s3Client.createBucket(bucketName);
+  private String ensureBucketExists(final String bucketName, final S3Client s3Client) {
+    try {
+      s3Client.headBucket(HeadBucketRequest.builder().bucket(bucketName).build());
+      LOG.debug("Bucket {} exists", bucketName);
+    } catch (NoSuchBucketException e) {
+      LOG.debug("Bucket {} doesn't exist. Creating one...", bucketName);
+      s3Client.createBucket(CreateBucketRequest.builder().bucket(bucketName).build());
       LOG.debug("Created bucket: {}", bucketName);
     }
 
-    return s3Client.getBucketLocation(bucketName) + bucketName;
+    return s3Client
+        .getBucketLocation(GetBucketLocationRequest.builder().bucket(bucketName).build())
+        .locationConstraintAsString();
   }
 
   /**
-   * It stores the given file name in S3 and returns the key under which the file has been stored.
+   * Stores a file in S3 and returns the key under which the file has been stored.
    *
    * @param resource The file resource to upload to S3
    * @param path The folder within which this file will be placed
-   * @param fileName The file name e.g. fileName.png
-   * @param s3Client the amazonS3 object
-   * @param properties the AWS properties
-   * @return The URL of the uploaded resource or null if a problem occurred
-   * @throws AmazonS3Exception If something goes wrong.
-   * @throws InterruptedException if there is any interruption during upload
+   * @param fileName The file name (e.g., fileName.png)
+   * @param s3Client The S3 client
+   * @param properties The AWS properties
+   * @return The S3 object key
    */
   protected String storeFileToS3(
       final File resource,
       final String path,
       final String fileName,
-      final AmazonS3 s3Client,
-      final AwsProperties properties)
-      throws InterruptedException {
+      final S3Client s3Client,
+      final AwsProperties properties) {
 
-    String rootBucketUrl = ensureBucketExists(properties.getS3BucketName(), s3Client);
-    LOG.info("Root bucket URL: {}", rootBucketUrl);
+    String bucketLocation = ensureBucketExists(properties.getS3BucketName(), s3Client);
+    LOG.info("Bucket location: {}", bucketLocation);
 
     String key = path + "/" + fileName + "." + FilenameUtils.getExtension(resource.getName());
-    processObjectTransfer(resource, key, s3Client, properties);
+    uploadFileToS3(resource, key, s3Client, properties);
 
     return key;
+  }
+
+  /**
+   * Uploads a file to S3.
+   *
+   * @param resource The file resource to upload
+   * @param key The key for the file
+   * @param s3Client The S3 client
+   * @param properties The AWS properties
+   */
+  private void uploadFileToS3(
+      File resource, String key, S3Client s3Client, AwsProperties properties) {
+    PutObjectRequest putObjectRequest =
+        PutObjectRequest.builder().bucket(properties.getS3BucketName()).key(key).build();
+
+    LOG.debug("Starting file upload...");
+    s3Client.putObject(putObjectRequest, RequestBody.fromFile(resource));
+    LOG.debug("File uploaded successfully: {}", key);
   }
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
@@ -18,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 /**
  * This configuration handles form login requests with session. This configuration is considered
@@ -33,10 +35,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class FormLoginSecurityConfig {
 
   private final Environment environment;
+  private final DaoAuthenticationProvider authenticationProvider;
   private final PersistentTokenRepository persistentRepository;
 
   /**
-   * Configure the {@link HttpSecurity}. Typically, subclasses should not call super as it may
+   * Configure the {@link HttpSecurity}. Typically, subclasses should not call supper as it may
    * override their configuration.
    *
    * @param http the {@link HttpSecurity} to modify.
@@ -62,16 +65,17 @@ public class FormLoginSecurityConfig {
           .cors(AbstractHttpConfigurer::disable);
     }
 
-    http.authorizeHttpRequests(
-            (requests) ->
+    http.securityMatcher(
+            new NegatedRequestMatcher(
+                new AntPathRequestMatcher(SecurityConstants.API_ROOT_URL_MAPPING)))
+        .authorizeHttpRequests(
+            requests ->
                 requests
-                    //
-                    // .requestMatchers(SecurityConstants.getPublicMatchers().toArray(new
-                    // String[0]))
                     .requestMatchers(SecurityConstants.getPublicMatchers(mvc))
                     .permitAll()
                     .anyRequest()
                     .authenticated())
+        .authenticationProvider(authenticationProvider) // Register the provider
         .formLogin(
             (form) ->
                 form.loginPage(SecurityConstants.LOGIN)

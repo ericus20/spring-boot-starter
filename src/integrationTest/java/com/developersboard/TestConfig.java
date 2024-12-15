@@ -1,10 +1,5 @@
 package com.developersboard;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.AnonymousAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.developersboard.config.properties.AwsProperties;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.util.GreenMail;
@@ -15,6 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 
 /**
  * This class provides every bean, and other configurations needed to be used in the testing phase.
@@ -71,18 +70,17 @@ public class TestConfig {
    * A bean to be used by AmazonS3 Service.
    *
    * @param props the aws properties
-   * @return instance of AmazonS3Client
+   * @return instance of S3Client
    */
   @Bean
-  public AmazonS3 amazonS3(AwsProperties props) {
-    var endpoint = new EndpointConfiguration(props.getServiceEndpoint(), props.getRegion());
+  public S3Client s3Client(AwsProperties props) {
     // Create the credential provider
-    var credentials = new AnonymousAWSCredentials();
+    var credentials =
+        AwsBasicCredentials.create(props.getAccessKeyId(), props.getSecretAccessKey());
 
-    return AmazonS3ClientBuilder.standard()
-        .withPathStyleAccessEnabled(true)
-        .withEndpointConfiguration(endpoint)
-        .withCredentials(new AWSStaticCredentialsProvider(credentials))
+    return S3Client.builder()
+        .region(Region.of(props.getRegion()))
+        .credentialsProvider(StaticCredentialsProvider.create(credentials))
         .build();
   }
 }

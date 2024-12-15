@@ -11,7 +11,7 @@ import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -117,15 +117,15 @@ public final class SecurityUtils {
    * Creates an authentication object with the credentials then set authentication to
    * SecurityContextHolder.
    *
-   * @param authenticationManager the authentication manager
+   * @param authenticationProvider the authentication manager
    * @param username the username
    * @param password the password
    */
   public static void authenticateUser(
-      AuthenticationManager authenticationManager, String username, String password) {
+      AuthenticationProvider authenticationProvider, String username, String password) {
 
     var authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-    var authentication = authenticationManager.authenticate(authenticationToken);
+    var authentication = authenticationProvider.authenticate(authenticationToken);
 
     setAuthentication(authentication);
   }

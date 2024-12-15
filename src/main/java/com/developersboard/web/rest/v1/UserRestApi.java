@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -60,13 +61,14 @@ public class UserRestApi {
    * @param page Allows for pagination of the search results.
    * @return The ResponseEntity containing the search results as a Page of users
    */
+  @PageableAsQueryParam
   @PreAuthorize(AUTHORIZE)
   @Loggable(ignoreResponseData = true)
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Page<UserResponse>> getUsers(final Pageable page) {
 
-    Page<UserResponse> vehicles = userService.findAll(page);
-    return ResponseEntity.ok(vehicles);
+    Page<UserResponse> users = userService.findAll(page);
+    return ResponseEntity.ok(users);
   }
 
   /**

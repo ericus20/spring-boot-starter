@@ -26,7 +26,7 @@ public class MockAmazonS3ServiceImpl extends AbstractAmazonS3Service {
    *
    * @param multipartFile The multipart file uploaded by the user
    * @param path The folder within which this file will be placed
-   * @param fileName The file name e.g. fileName.png
+   * @param fileName The file name e.g., fileName.png
    * @return The profile image key
    */
   @Override
@@ -60,9 +60,9 @@ public class MockAmazonS3ServiceImpl extends AbstractAmazonS3Service {
   }
 
   /**
-   * Pre-signed URLs allows formation of a signed URL for an Amazon S3 resource.
+   * Pre-signed URLs allow formation of a signed URL for an Amazon S3 resource.
    *
-   * @param key the key of the user as path to image file
+   * @param key the key of the user as a path to image file
    * @return the pre-signed url
    */
   @Override
@@ -87,7 +87,7 @@ public class MockAmazonS3ServiceImpl extends AbstractAmazonS3Service {
   /**
    * Deletes the folder hosted on amazon s3 assigned to user.
    *
-   * @param key the key of the user as path to image file
+   * @param key the key of the user as a path to image file
    */
   @Override
   public void delete(String key) {

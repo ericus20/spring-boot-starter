@@ -31,13 +31,13 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -70,9 +70,9 @@ public abstract class IntegrationTestUtils {
   @Mock protected MockMultipartFile multipartFile;
 
   // We are mocking the entire dateTimeProvider since there is only one method in it.
-  @MockBean protected DateTimeProvider dateTimeProvider;
+  @MockitoBean protected DateTimeProvider dateTimeProvider;
   // We want to mock just the dateTimeProvider method within the auditHandler
-  @SpyBean protected AuditingHandler auditingHandler;
+  @MockitoSpyBean protected AuditingHandler auditingHandler;
 
   /**
    * Creates and verify user with flexible field creation.
