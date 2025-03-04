@@ -106,8 +106,17 @@ public class UserServiceImpl implements UserService {
     if (Objects.nonNull(localUser)) {
       // If the user exists but has not been verified, then treat this as a new sign-up.
       if (!localUser.isEnabled()) {
-        LOG.debug(UserConstants.USER_EXIST_BUT_NOT_ENABLED, userDto.getEmail(), localUser);
-        return UserUtils.convertToUserDto(localUser);
+        // check if the email in the localUser is the same as the email ini userDto,
+        // then it's the same account creation being recreated.
+        if (localUser.getUsername().equals(userDto.getUsername()) && localUser.getEmail().equals(userDto.getEmail())) {
+          LOG.debug(UserConstants.USER_EXIST_BUT_NOT_ENABLED, userDto.getEmail(), localUser);
+          return UserUtils.convertToUserDto(localUser);
+        }
+
+        // user signed up
+        // and could not verify and attempting sign up with either email or username but not both.
+        LOG.warn("Username or email already exists and either user is using different credentials.");
+        throw new UserAlreadyExistsException(UserConstants.USERNAME_OR_EMAIL_EXISTS);
       }
 
       LOG.warn(UserConstants.USER_ALREADY_EXIST, userDto.getEmail());
