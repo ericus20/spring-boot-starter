@@ -21,6 +21,7 @@ public class SpringBootStarterApplication {
    * @param args an array of command-line arguments for the application
    */
   public static void main(final String[] args) {
+    String name;
     SpringApplication.run(SpringBootStarterApplication.class, args);
   }
 }
