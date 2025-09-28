@@ -11,16 +11,13 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
  * This class defines the beans needed for the security operation of the application.
@@ -90,22 +87,6 @@ public class SecurityBean {
     return tomcatServletWebServerFactory ->
         tomcatServletWebServerFactory.addContextCustomizers(
             context -> context.setCookieProcessor(new Rfc6265CookieProcessor()));
-  }
-
-  /**
-   * Factory method to create a new instance of the {@link MvcRequestMatcher.Builder} class. The
-   * builder is used to construct a {@link MvcRequestMatcher} instance that can match requests based
-   * on various criteria within a Spring MVC environment.
-   *
-   * @param introspector The {@link HandlerMappingIntrospector} to be used for introspection and
-   *     analyzing handler mappings in the Spring MVC environment.
-   * @return A new instance of {@link MvcRequestMatcher.Builder} initialized with the provided
-   *     introspector.
-   */
-  @Bean
-  @Scope("prototype")
-  MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-    return new MvcRequestMatcher.Builder(introspector);
   }
 
   /**

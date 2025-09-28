@@ -130,7 +130,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
   }
 
   /**
-   * Prepares the html request object with the appropriate details given.
+   * Prepares the HTML request object with the appropriate details given.
    *
    * @param userDto the userDto
    * @param token the token
@@ -187,7 +187,7 @@ public abstract class AbstractEmailServiceImpl implements EmailService {
   }
 
   /**
-   * Masks the email address with the senders name.
+   * Masks the email address with the sender name.
    *
    * @param feedback the feedback
    * @param mailMessage the mailMessage

@@ -108,7 +108,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   @Test
   void enableUserWithAuthorization() throws Exception {
     // Create a new user and assert that the response is successful (201)
-    String username = FAKER.internet().username();
+    String username = FAKER.credentials().username();
     String email = FAKER.internet().emailAddress();
     MvcResult mvcResult = createAndAssertUser(username, email);
 
@@ -163,7 +163,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   /** Disabling user with authorization should return 200. */
   @Test
   void disableUserWithAuthorization() throws Exception {
-    String username = FAKER.internet().username();
+    String username = FAKER.credentials().username();
     String email = FAKER.internet().emailAddress();
     MvcResult mvcResult = createAndConfirmUserAccount(username, email);
 
@@ -305,7 +305,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   void createUserThrowsExceptionWithExistingUser() throws Exception {
     // Endpoint: POST /api/v1/users/{publicId}/enable
 
-    String username = FAKER.internet().username();
+    String username = FAKER.credentials().username();
     createAndConfirmUserAccount(username);
 
     mockMvc
@@ -319,7 +319,7 @@ class UserRestApiIntegrationTest extends IntegrationTestUtils {
   }
 
   private void createAndConfirmUserAccount() throws Exception {
-    createAndConfirmUserAccount(FAKER.internet().username(), FAKER.internet().emailAddress());
+    createAndConfirmUserAccount(FAKER.credentials().username(), FAKER.internet().emailAddress());
   }
 
   private void createAndConfirmUserAccount(String username) throws Exception {

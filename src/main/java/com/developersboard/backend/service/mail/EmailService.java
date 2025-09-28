@@ -33,7 +33,7 @@ public interface EmailService {
   void sendHtmlEmail(HtmlEmailRequest emailRequest);
 
   /**
-   * Sends an email with the provided details and template for html with an attachment.
+   * Sends an email with the provided details and template for HTML with an attachment.
    *
    * @param emailRequest the email format
    * @throws InvalidServiceRequestException if the email request is invalid
@@ -41,7 +41,7 @@ public interface EmailService {
   void sendHtmlEmailWithAttachment(HtmlEmailRequest emailRequest);
 
   /**
-   * Sends an email given a feedback Pojo.
+   * Sends an email given feedback Pojo.
    *
    * @param feedbackRequestBuilder the feedback pojo.
    * @see FeedbackRequest
@@ -50,7 +50,7 @@ public interface EmailService {
   void sendMailWithFeedback(FeedbackRequest feedbackRequestBuilder);
 
   /**
-   * Sends an email to the provided user to verify account.
+   * Sends an email to the provided user to verify an account.
    *
    * @param userDto the user
    * @param token the token
@@ -67,7 +67,7 @@ public interface EmailService {
   void sendAccountConfirmationEmail(UserDto userDto);
 
   /**
-   * Sends an email to the provided user to reset password.
+   * Sends an email to the provided user to reset the password.
    *
    * @param userDto the user
    * @param token the password token
@@ -76,7 +76,7 @@ public interface EmailService {
   void sendPasswordResetEmail(UserDto userDto, String token);
 
   /**
-   * Send password reset confirmation email to user.
+   * Send password-reset confirmation email to user.
    *
    * @param userDto the user
    * @throws InvalidServiceRequestException if the email request is invalid

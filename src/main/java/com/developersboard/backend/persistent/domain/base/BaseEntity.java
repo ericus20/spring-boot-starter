@@ -53,7 +53,7 @@ public class BaseEntity<T extends Serializable> {
   @NotBlank(message = "Public facing id is needed for all entities")
   private String publicId;
 
-  /** Manages the version of Entities to measure the amount of modifications made to this entity. */
+  /** Manages the version of Entities to measure the number of modifications made to this entity. */
   @Version private short version;
 
   @CreatedDate

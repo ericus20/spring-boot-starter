@@ -1,8 +1,8 @@
 plugins {
-  id 'org.springframework.boot' version '3.4.5'
+  id 'org.springframework.boot' version '3.5.5'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.owasp.dependencycheck' version '12.1.1'
-  id 'com.diffplug.spotless' version '7.0.3'
+  id 'org.owasp.dependencycheck' version '12.1.6'
+  id 'com.diffplug.spotless' version '8.0.0'
   id 'eclipse'
   id 'jacoco'
   id 'idea'
@@ -35,8 +35,8 @@ repositories {
 }
 
 ext {
-  set('jjwtVersion', '0.12.6')
-  set('springDocVersion', '2.8.8')
+  set('jjwtVersion', '0.13.0')
+  set('springDocVersion', '2.8.13')
   set('javadocScribeVersion', '0.15.0')
   set('mapstructVersion', '1.6.3')
   set('awsSdkS3Version', '2.31.45')
@@ -63,15 +63,15 @@ dependencies {
   implementation 'org.ehcache:ehcache-transactions:3.10.8'
 
   // Utilities
-  implementation 'org.jsoup:jsoup:1.20.1'
+  implementation 'org.jsoup:jsoup:1.21.2'
   implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
-  implementation 'commons-io:commons-io:2.19.0'
-  implementation 'net.datafaker:datafaker:2.4.3'
-  implementation 'com.google.code.gson:gson:2.13.1'
-  implementation 'commons-validator:commons-validator:1.9.0'
-  implementation 'com.github.darrachequesne:spring-data-jpa-datatables:7.0.1'
+  implementation 'commons-io:commons-io:2.20.0'
+  implementation 'net.datafaker:datafaker:2.5.1'
+  implementation 'com.google.code.gson:gson:2.13.2'
+  implementation 'commons-validator:commons-validator:1.10.0'
+  implementation 'com.github.darrachequesne:spring-data-jpa-datatables:7.1.0'
 
   // Documentation and API Tools
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"

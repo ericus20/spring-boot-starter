@@ -31,12 +31,12 @@ public class I18NServiceImpl implements I18NService {
   }
 
   /**
-   * Try to resolve the message. Return default message if no message was found.
+   * Try to resolve the message. Return a default message if no message was found.
    *
-   * @param code he code to lookup up, such as 'calculator.noRateSet'. Users of this class are
+   * @param code he codes to look up, such as 'calculator.noRateSet'. Users of this class are
    *     encouraged to base message names on the relevant fully qualified class name, thus avoiding
    *     conflict and ensuring maximum clarity.
-   * @return the resolved message if the lookup was successful; otherwise the default message passed
+   * @return the resolved message if the lookup was successful; otherwise, the default message passed
    *     as a parameter.
    */
   @Override

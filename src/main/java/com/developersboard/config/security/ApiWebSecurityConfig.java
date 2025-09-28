@@ -17,7 +17,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 /**
  * This configuration handles api web requests with stateless session.
@@ -63,14 +63,14 @@ public class ApiWebSecurityConfig {
                   .requestMatchers(SecurityConstants.ERROR_URL_MAPPING)
                   .permitAll()
                   .requestMatchers(
-                      new AntPathRequestMatcher(
-                          AdminConstants.API_V1_USERS_ROOT_URL, HttpMethod.POST.name()))
+                      PathPatternRequestMatcher.withDefaults().matcher(
+                          HttpMethod.POST, AdminConstants.API_V1_USERS_ROOT_URL))
                   .permitAll();
 
               // Allow access for users to authenticate after registration and refresh tokens
               requests
                   .requestMatchers(
-                      new AntPathRequestMatcher(SecurityConstants.API_V1_AUTH_URL_MAPPING))
+                      PathPatternRequestMatcher.withDefaults().matcher(SecurityConstants.API_V1_AUTH_URL_MAPPING))
                   .permitAll();
               requests.anyRequest().authenticated();
             })
