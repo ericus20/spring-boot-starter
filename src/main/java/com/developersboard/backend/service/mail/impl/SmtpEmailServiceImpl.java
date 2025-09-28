@@ -25,7 +25,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 /**
- * SmtpEmailServiceImpl Class has the operation of email sending in a real time.
+ * SmtpEmailServiceImpl Class has the operation of email sending in real time.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -84,7 +84,7 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
   }
 
   /**
-   * Prepares a MimeMessage with provided EmailFormat.
+   * Prepares a MimeMessage with the provided EmailFormat.
    *
    * @param emailFormat the emailFormat
    * @return MimeMessage the MimeMessage
@@ -120,7 +120,7 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
   }
 
   /**
-   * Setup the senders address using Internet Address.
+   * Set up the sender address using Internet Address.
    *
    * @param emailFormat the email format
    * @param helper the mime message helper

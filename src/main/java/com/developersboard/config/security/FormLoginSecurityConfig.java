@@ -17,8 +17,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 /**
@@ -43,11 +42,10 @@ public class FormLoginSecurityConfig {
    * override their configuration.
    *
    * @param http the {@link HttpSecurity} to modify.
-   * @param mvc the {@link MvcRequestMatcher.Builder}
    * @throws Exception thrown when error happens during authentication.
    */
   @Bean
-  public SecurityFilterChain formLoginFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc)
+  public SecurityFilterChain formLoginFilterChain(HttpSecurity http)
       throws Exception {
 
     // if we are running with dev profile, disable csrf and frame options to enable h2 to work.
@@ -67,11 +65,11 @@ public class FormLoginSecurityConfig {
 
     http.securityMatcher(
             new NegatedRequestMatcher(
-                new AntPathRequestMatcher(SecurityConstants.API_ROOT_URL_MAPPING)))
+                PathPatternRequestMatcher.withDefaults().matcher(SecurityConstants.API_ROOT_URL_MAPPING)))
         .authorizeHttpRequests(
             requests ->
                 requests
-                    .requestMatchers(SecurityConstants.getPublicMatchers(mvc))
+                    .requestMatchers(SecurityConstants.getPublicMatchers().toArray(new String[0]))
                     .permitAll()
                     .anyRequest()
                     .authenticated())
@@ -84,7 +82,7 @@ public class FormLoginSecurityConfig {
         .logout(
             (logout) ->
                 logout
-                    .logoutRequestMatcher(new AntPathRequestMatcher(SecurityConstants.LOGOUT))
+                    .logoutRequestMatcher(PathPatternRequestMatcher.withDefaults().matcher(SecurityConstants.LOGOUT))
                     .logoutSuccessUrl(SecurityConstants.LOGIN_LOGOUT)
                     .invalidateHttpSession(true)
                     .deleteCookies(SecurityConstants.JSESSIONID, SecurityConstants.REMEMBER_ME)

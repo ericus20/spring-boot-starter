@@ -31,7 +31,7 @@ public interface UserRepository
   Optional<User> findById(@NonNull Long id);
 
   /**
-   * Find user by email.
+   * Find a user by email.
    *
    * @param email email used to search for user.
    * @return User found.
@@ -39,7 +39,7 @@ public interface UserRepository
   User findByEmail(String email);
 
   /**
-   * Find user by username.
+   * Find a user by username.
    *
    * @param username username used to search for user.
    * @return User found.
@@ -50,30 +50,30 @@ public interface UserRepository
   User findByUsername(String username);
 
   /**
-   * Check if user exists by username.
+   * Check if a user exists by username.
    *
-   * @param username username to check if user exists.
-   * @return True if user exists or false otherwise.
+   * @param username username to check if the user exists.
+   * @return True if a user exists or false otherwise.
    */
   Boolean existsByUsernameOrderById(String username);
 
   /**
-   * Check if user exists by username or email.
+   * Check if a user exists by username or email.
    *
-   * @param username username to check if user exists.
-   * @param email email to check if user exists.
-   * @return True if user exists or false otherwise.
+   * @param username username to check if the user exists.
+   * @param email email to check if the user exists.
+   * @return True if a user exists or false otherwise.
    */
   @RestResource(exported = false)
   Boolean existsByUsernameAndEnabledTrueOrEmailAndEnabledTrueOrderById(
       String username, String email);
 
   /**
-   * Check if user exists by username and verificationToken.
+   * Check if a user exists by username and verificationToken.
    *
    * @param username the username
    * @param verificationToken the verification token
-   * @return if user exists with the given verification token
+   * @return if a user exists with the given verification token
    */
   Boolean existsByUsernameAndVerificationTokenOrderById(String username, String verificationToken);
 

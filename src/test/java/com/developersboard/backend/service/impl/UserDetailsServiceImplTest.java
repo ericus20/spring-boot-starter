@@ -28,7 +28,7 @@ class UserDetailsServiceImplTest extends TestUtils {
 
       email = FAKER.internet().emailAddress();
       var user =
-          UserUtils.createUser(testInfo.getDisplayName(), FAKER.internet().password(), email);
+          UserUtils.createUser(testInfo.getDisplayName(), FAKER.credentials().password(), email);
 
       Mockito.when(userRepository.findByUsername(testInfo.getDisplayName())).thenReturn(user);
       Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
@@ -51,7 +51,7 @@ class UserDetailsServiceImplTest extends TestUtils {
   void testShouldThrowExceptionForNonExistingUsername() {
     Assertions.assertThrows(
         UsernameNotFoundException.class,
-        () -> userDetailsService.loadUserByUsername(FAKER.internet().username()));
+        () -> userDetailsService.loadUserByUsername(FAKER.credentials().username()));
   }
 
   @Test

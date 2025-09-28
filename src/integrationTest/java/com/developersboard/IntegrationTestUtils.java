@@ -137,7 +137,7 @@ public abstract class IntegrationTestUtils {
    * @throws Exception if anything goes wrong
    */
   protected MvcResult createAndAssertUser() throws Exception {
-    return createAndAssertUser(FAKER.internet().username(), FAKER.internet().emailAddress());
+    return createAndAssertUser(FAKER.credentials().username(), FAKER.internet().emailAddress());
   }
 
   /**

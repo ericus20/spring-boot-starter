@@ -54,7 +54,7 @@ public final class UserUtils {
    * @return a user
    */
   public static User createUser() {
-    return createUser(FAKER.internet().username());
+    return createUser(FAKER.credentials().username());
   }
 
   /**
@@ -65,8 +65,8 @@ public final class UserUtils {
    */
   public static User createUser(final boolean enabled) {
     return createUser(
-        FAKER.internet().username(),
-        FAKER.internet().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH),
+        FAKER.credentials().username(),
+        FAKER.credentials().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH),
         FAKER.internet().emailAddress(),
         enabled);
   }
@@ -93,7 +93,7 @@ public final class UserUtils {
   public static User createUser(String username) {
     return createUser(
         username,
-        FAKER.internet().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH),
+        FAKER.credentials().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH),
         FAKER.internet().emailAddress());
   }
 
@@ -157,7 +157,7 @@ public final class UserUtils {
    * @return the userDto
    */
   public static UserDto createUserDto(final boolean enabled) {
-    return createUserDto(FAKER.internet().username(), enabled);
+    return createUserDto(FAKER.credentials().username(), enabled);
   }
 
   /**
