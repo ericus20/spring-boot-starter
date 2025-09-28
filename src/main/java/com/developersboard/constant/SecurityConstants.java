@@ -2,13 +2,11 @@ package com.developersboard.constant;
 
 import com.developersboard.constant.user.PasswordConstants;
 import com.developersboard.constant.user.SignUpConstants;
-import com.developersboard.shared.util.core.ValidationUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 
 /**
  * This class holds all security-related URL mappings constants.
@@ -82,11 +80,5 @@ public final class SecurityConstants {
    */
   public static Collection<String> getPublicMatchers() {
     return Collections.unmodifiableCollection(Arrays.asList(PUBLIC_MATCHERS));
-  }
-
-  public static MvcRequestMatcher[] getPublicMatchers(final MvcRequestMatcher.Builder mvc) {
-    ValidationUtils.validateInputs(mvc);
-
-    return getPublicMatchers().stream().map(mvc::pattern).toArray(MvcRequestMatcher[]::new);
   }
 }

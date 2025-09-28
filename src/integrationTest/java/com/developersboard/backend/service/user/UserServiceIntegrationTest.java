@@ -64,7 +64,7 @@ class UserServiceIntegrationTest extends IntegrationTestUtils {
   void createUserAlreadyExistingAndNotEnabledChangedUsername() {
     assertThrows(UserAlreadyExistsException.class, () -> {
       // Create a new user with the test name as username
-      var userDto = createAndAssertUser(FAKER.internet().username(), false);
+      var userDto = createAndAssertUser(FAKER.credentials().username(), false);
 
       userDto.setUsername("testUsername");
       // create another user using the same details from the first user "userDto"

@@ -37,7 +37,7 @@ public final class SignUpUtils {
    * @return the signUpRequest
    */
   public static SignUpRequest createSignUpRequest() {
-    return createSignUpRequest(FAKER.internet().username());
+    return createSignUpRequest(FAKER.credentials().username());
   }
 
   /**
@@ -60,7 +60,7 @@ public final class SignUpUtils {
   public static SignUpRequest createSignUpRequest(String username, String email) {
     var signUpRequest = new SignUpRequest();
     signUpRequest.setUsername(username);
-    signUpRequest.setPassword(FAKER.internet().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH));
+    signUpRequest.setPassword(FAKER.credentials().password(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH));
     signUpRequest.setEmail(email);
 
     return signUpRequest;

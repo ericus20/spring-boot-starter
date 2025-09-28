@@ -24,7 +24,7 @@ public class ApplicationDateTimeProvider implements DateTimeProvider {
   private final Clock clock;
 
   /**
-   * Returns the current time to be used as modification or creation date.
+   * Returns the current time to be used as a modification or creation date.
    *
    * @return the current time
    */

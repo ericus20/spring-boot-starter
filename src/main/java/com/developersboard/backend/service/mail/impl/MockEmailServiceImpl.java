@@ -10,7 +10,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 /**
- * Class simulates the operation of email sending without a real time call.
+ * Class simulates the operation of email sending without a real-time call.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -47,7 +47,7 @@ public class MockEmailServiceImpl extends AbstractEmailServiceImpl {
   }
 
   /**
-   * Sends an email with the provided details and template for html with an attachment.
+   * Sends an email with the provided details and template for HTML with an attachment.
    *
    * @param emailRequest the email format
    */

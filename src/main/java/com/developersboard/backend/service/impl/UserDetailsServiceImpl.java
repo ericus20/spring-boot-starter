@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * The implementation of service used to query user details during login.
+ * The implementation of the service used to query user details during login.
  *
  * @author Eric Opoku
  * @version 1.0
@@ -33,9 +33,9 @@ class UserDetailsServiceImpl implements UserDetailsService {
 
   /**
    * Locates the user based on the usernameOrEmail. In the actual implementation, the search may be
-   * case-sensitive, or case-insensitive depending on how the implementation instance is configured.
+   * case-sensitive or case-insensitive depending on how the implementation instance is configured.
    * In this case, the <code>UserDetails</code> object that comes back may have a usernameOrEmail
-   * that is of a different case than what was actually requested..
+   * that is of a different case than what was actually requested.
    *
    * @param usernameOrEmail the usernameOrEmail identifying the user whose data is required.
    * @return a fully populated user record (never <code>null</code>)

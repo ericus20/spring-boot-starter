@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * The RoleRepository class exposes implementation from JpaRepository on Role entity .
+ * The RoleRepository class exposes implementation from JpaRepository on Role entity.
  *
  * @author George Anguah
  * @version 1.0

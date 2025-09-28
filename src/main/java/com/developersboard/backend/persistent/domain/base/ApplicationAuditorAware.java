@@ -7,7 +7,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
 
 /**
- * This class gets the application's current auditor which is the username of the authenticated
+ * This class gets the application's current auditor, which is the username of the authenticated
  * user.
  *
  * @author Eric Opoku
