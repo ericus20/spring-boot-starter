@@ -24,13 +24,14 @@ jobs:
           distribution: 'temurin'
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        uses: gradle/actions/setup-gradle@v3
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
         env:
           SPRING_PROFILES_ACTIVE: integration-test-ci
         with:
           arguments: clean build
-          build-root-directory: .
+
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.7.2
