@@ -25,7 +25,7 @@ jobs:
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v3
         env:
           SPRING_PROFILES_ACTIVE: integration-test-ci
         with:
