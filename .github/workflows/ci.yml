@@ -29,8 +29,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
         env:
           SPRING_PROFILES_ACTIVE: integration-test-ci
-        with:
-          arguments: clean build
+
+      - name: Run build in a root
+        working-directory: .
+        run: ./gradlew clean build
 
       - name: Add coverage to PR
         id: jacoco
