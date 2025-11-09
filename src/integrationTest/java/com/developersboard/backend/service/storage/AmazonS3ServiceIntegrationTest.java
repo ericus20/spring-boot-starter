@@ -1,6 +1,5 @@
 package com.developersboard.backend.service.storage;
 
-import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.developersboard.IntegrationTestUtils;
 import com.developersboard.constant.StorageConstants;
 import com.developersboard.exception.InvalidFileFormatException;
@@ -13,37 +12,51 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
-@Disabled("S3 Mocking needs to be refactored to use v2 AWS. S3Mock won't support v2")
+/**
+ * This annotation tells JUnit to reuse the same test instance for the entire test class.
+ * Then @BeforeAll does NOT need to be static anymore.
+ * <p>
+ * To use awsProperties inside @BeforeAll,
+ * you need to avoid the static requirement that JUnit puts on @BeforeAll
+ * with @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+ */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
 
   /*
   S3Mock.create(8001, "/tmp/s3");
   */
-  private transient S3Mock api;
+  private S3Mock api;
 
-  @BeforeEach
-  void setUp(TestInfo testInfo) {
-    multipartFile = getMultipartFile(testInfo.getDisplayName(), false);
-
+  @BeforeAll
+  void beforeAll() {
     api =
         new S3Mock.Builder()
             .withPort(Integer.parseInt(awsProperties.getServicePort()))
             .withInMemoryBackend()
             .build();
+
     api.start();
   }
 
-  @AfterEach
-  void tearDown() {
-    api.shutdown(); // kills the underlying actor system. Use api.stop() to just unbind the port.
+  @AfterAll
+  void afterAll() {
+    api.stop();
+  }
+
+  @BeforeEach
+  void setUp(TestInfo testInfo) {
+    multipartFile = getMultipartFile(testInfo.getDisplayName(), false);
   }
 
   @Test
@@ -114,14 +127,15 @@ class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
     var imageUrl = amazonS3Service.storeProfileImage(multipartFile, testInfo.getDisplayName());
 
     var preSignedUrl = amazonS3Service.generatePreSignedUrl(imageUrl);
-    var expectedUrl =
+    var expectedUrlPrefix =
         String.format(
-            "%s/%s/profileImages/%s/profileImage.png",
+            "%s/profileImages/%s/profileImage.png",
             awsProperties.getServiceEndpoint(),
-            awsProperties.getS3BucketName(),
             URLEncoder.encode(testInfo.getDisplayName(), StandardCharsets.UTF_8));
 
-    Assertions.assertEquals(expectedUrl, preSignedUrl);
+    Assertions.assertTrue(preSignedUrl.startsWith(expectedUrlPrefix));
+    Assertions.assertTrue(preSignedUrl.contains("X-Amz-Expires"));
+    Assertions.assertTrue(preSignedUrl.contains("X-Amz-Signature"));
   }
 
   @Test
@@ -135,7 +149,7 @@ class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
     amazonS3Service.delete(imageUrl);
 
     // We will get a AmazonS3Exception 404 error if the key doesn't exist.
-    Assertions.assertThrows(AmazonS3Exception.class, () -> amazonS3Service.getFile(imageUrl));
+    Assertions.assertThrows(NoSuchKeyException.class, () -> amazonS3Service.getFile(imageUrl));
   }
 
   @Test
@@ -148,7 +162,7 @@ class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
     Assertions.assertEquals(newKey, renameFile);
 
     // We will get a AmazonS3Exception 404 error if the key doesn't exist.
-    Assertions.assertThrows(AmazonS3Exception.class, () -> amazonS3Service.getFile(imageUrl));
+    Assertions.assertThrows(NoSuchKeyException.class, () -> amazonS3Service.getFile(imageUrl));
 
     try (InputStream storedImageUrl = amazonS3Service.getFile(newKey)) {
       Assertions.assertNotNull(storedImageUrl);

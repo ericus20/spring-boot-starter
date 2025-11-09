@@ -1,7 +1,7 @@
 plugins {
-  id 'org.springframework.boot' version '3.5.5'
+  id 'org.springframework.boot' version '3.5.7'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.owasp.dependencycheck' version '12.1.6'
+  id 'org.owasp.dependencycheck' version '12.1.8'
   id 'com.diffplug.spotless' version '8.0.0'
   id 'eclipse'
   id 'jacoco'
@@ -39,7 +39,13 @@ ext {
   set('springDocVersion', '2.8.13')
   set('javadocScribeVersion', '0.15.0')
   set('mapstructVersion', '1.6.3')
-  set('awsSdkS3Version', '2.31.45')
+  set('awsSdkS3Version', '2.38.2')
+  set('jsoupVersion', '1.21.2')
+  set('commonsIoVersion', '2.21.0')
+  set('datafakerVersion', '2.5.3')
+  set('gsonVersion', '2.13.2')
+  set('commonsValidatorVersion', '1.10.0')
+  set('springDataJpaDataTablesVersion', '7.1.0')
 }
 
 dependencies {
@@ -63,15 +69,15 @@ dependencies {
   implementation 'org.ehcache:ehcache-transactions:3.10.8'
 
   // Utilities
-  implementation 'org.jsoup:jsoup:1.21.2'
+  implementation "org.jsoup:jsoup:${jsoupVersion}"
   implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
-  implementation 'commons-io:commons-io:2.20.0'
-  implementation 'net.datafaker:datafaker:2.5.1'
-  implementation 'com.google.code.gson:gson:2.13.2'
-  implementation 'commons-validator:commons-validator:1.10.0'
-  implementation 'com.github.darrachequesne:spring-data-jpa-datatables:7.1.0'
+  implementation "commons-io:commons-io:${commonsIoVersion}"
+  implementation "net.datafaker:datafaker:${datafakerVersion}"
+  implementation "com.google.code.gson:gson:${gsonVersion}"
+  implementation "commons-validator:commons-validator:${commonsValidatorVersion}"
+  implementation "com.github.darrachequesne:spring-data-jpa-datatables:${springDataJpaDataTablesVersion}"
 
   // Documentation and API Tools
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
@@ -110,7 +116,7 @@ testing {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         implementation 'io.findify:s3mock_2.13:0.2.6'
-        implementation 'com.icegreen:greenmail-junit5:2.1.3'
+        implementation 'com.icegreen:greenmail-junit5:2.1.7'
         implementation 'com.jparams:to-string-verifier:1.4.8'
         implementation 'nl.jqno.equalsverifier:equalsverifier:4.0'
         implementation 'org.springframework.security:spring-security-test'
