@@ -14,7 +14,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
+    languageVersion = JavaLanguageVersion.of(25)
   }
   // You can uncomment this to include javadoc jar generation
   //  withJavadocJar()
