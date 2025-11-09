@@ -14,6 +14,9 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Configuration;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import java.net.URI;
 
 /**
  * This class provides every bean, and other configurations needed to be used in the testing phase.
@@ -79,6 +82,24 @@ public class TestConfig {
         AwsBasicCredentials.create(props.getAccessKeyId(), props.getSecretAccessKey());
 
     return S3Client.builder()
+        .endpointOverride(URI.create("http://localhost:8001")) // match your S3Mock port
+        .region(Region.of(props.getRegion()))
+        .credentialsProvider(StaticCredentialsProvider.create(credentials))
+        .serviceConfiguration(
+            S3Configuration.builder()
+                .pathStyleAccessEnabled(true) // must be true for S3Mock
+                .build()
+        )
+        .build();
+  }
+
+  @Bean
+  public S3Presigner s3Presigner(AwsProperties props) {
+    AwsBasicCredentials credentials =
+        AwsBasicCredentials.create(props.getAccessKeyId(), props.getSecretAccessKey());
+
+    return S3Presigner.builder()
+        .endpointOverride(URI.create("http://localhost:8001")) // S3Mock
         .region(Region.of(props.getRegion()))
         .credentialsProvider(StaticCredentialsProvider.create(credentials))
         .build();

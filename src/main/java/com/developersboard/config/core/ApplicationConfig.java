@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.auditing.DateTimeProvider;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
@@ -43,6 +45,13 @@ public class ApplicationConfig {
 
   @Bean
   public S3Presigner s3Presigner(AwsProperties props) {
-    return S3Presigner.builder().region(Region.of(props.getRegion())).build();
+    // Create the credential provider
+    var credentials =
+        AwsBasicCredentials.create(props.getAccessKeyId(), props.getSecretAccessKey());
+
+    return S3Presigner.builder()
+        .region(Region.of(props.getRegion()))
+        .credentialsProvider(StaticCredentialsProvider.create(credentials))
+        .build();
   }
 }

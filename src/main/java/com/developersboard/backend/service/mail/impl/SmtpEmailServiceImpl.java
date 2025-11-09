@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.context.annotation.Profile;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -78,7 +79,7 @@ public class SmtpEmailServiceImpl extends AbstractEmailServiceImpl {
       mailSender.send(prepareMimeMessage(emailRequest));
 
       LOG.info(EmailConstants.MAIL_SUCCESS_MESSAGE);
-    } catch (MessagingException | FileNotFoundException | UnsupportedEncodingException e) {
+    } catch (MailSendException | MessagingException | FileNotFoundException | UnsupportedEncodingException e) {
       throw new InvalidServiceRequestException(e);
     }
   }

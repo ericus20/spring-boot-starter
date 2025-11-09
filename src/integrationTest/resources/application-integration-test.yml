@@ -27,3 +27,7 @@ spring:
     username: ${EMAIL_USERNAME:admin}
     password: ${EMAIL_PASSWORD:admin}
     protocol: smtp
+
+aws:
+  access-key-id: accessKey
+  secret-access-key: secretKey
