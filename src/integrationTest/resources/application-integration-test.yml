@@ -31,4 +31,3 @@ spring:
 aws:
   access-key-id: accessKey
   secret-access-key: secretKey
-  service-endpoint: https://spring-boot-starter.s3.amazonaws.com

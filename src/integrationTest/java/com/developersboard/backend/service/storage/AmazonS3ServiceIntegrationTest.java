@@ -9,8 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
 import javax.imageio.ImageIO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -127,13 +126,14 @@ class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
     var imageUrl = amazonS3Service.storeProfileImage(multipartFile, testInfo.getDisplayName());
 
     var preSignedUrl = amazonS3Service.generatePreSignedUrl(imageUrl);
-    var expectedUrlPrefix =
-        String.format(
-            "%s/profileImages/%s/profileImage.png",
-            awsProperties.getServiceEndpoint(),
-            URLEncoder.encode(testInfo.getDisplayName(), StandardCharsets.UTF_8));
+    URI uri = URI.create(preSignedUrl);
 
-    Assertions.assertTrue(preSignedUrl.startsWith(expectedUrlPrefix));
+    var expectedPath = String.format(
+        "/profileImages/%s/profileImage.png",
+        testInfo.getDisplayName()
+    );
+
+    Assertions.assertEquals(expectedPath, uri.getPath());
     Assertions.assertTrue(preSignedUrl.contains("X-Amz-Expires"));
     Assertions.assertTrue(preSignedUrl.contains("X-Amz-Signature"));
   }
