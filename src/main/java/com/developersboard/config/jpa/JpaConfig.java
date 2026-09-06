@@ -3,7 +3,7 @@ package com.developersboard.config.jpa;
 import com.developersboard.backend.persistent.domain.base.ApplicationAuditorAware;
 import com.developersboard.constant.CacheConstants;
 import java.util.List;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;

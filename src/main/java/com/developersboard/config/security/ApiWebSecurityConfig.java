@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -32,7 +32,7 @@ public class ApiWebSecurityConfig {
 
   private final JwtAuthTokenFilter jwtAuthTokenFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
-  private final DaoAuthenticationProvider authenticationManager;
+  private final AuthenticationManager authenticationManager;
 
   /**
    * Configure the {@link HttpSecurity}. Typically, subclasses should not call supper as it may
@@ -80,7 +80,7 @@ public class ApiWebSecurityConfig {
         // then the browser can't automatically authenticate the requests,
         // and CSRF isn't possible.
         .csrf(AbstractHttpConfigurer::disable)
-        .authenticationProvider(authenticationManager)
+        .authenticationManager(authenticationManager)
         .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

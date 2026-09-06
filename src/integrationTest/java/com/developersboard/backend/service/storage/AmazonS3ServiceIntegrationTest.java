@@ -4,7 +4,7 @@ import com.developersboard.IntegrationTestUtils;
 import com.developersboard.constant.StorageConstants;
 import com.developersboard.exception.InvalidFileFormatException;
 import com.developersboard.shared.util.core.FileUtils;
-import io.findify.s3mock.S3Mock;
+import com.adobe.testing.s3mock.S3MockApplication;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,25 +32,33 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AmazonS3ServiceIntegrationTest extends IntegrationTestUtils {
 
-  /*
-  S3Mock.create(8001, "/tmp/s3");
-  */
-  private S3Mock api;
+  private S3MockApplication api;
 
   @BeforeAll
   void beforeAll() {
-    api =
-        new S3Mock.Builder()
-            .withPort(Integer.parseInt(awsProperties.getServicePort()))
-            .withInMemoryBackend()
-            .build();
-
-    api.start();
+    var mockConfig = "jar:" + S3MockApplication.class.getProtectionDomain()
+        .getCodeSource().getLocation() + "!/application.properties";
+    api = S3MockApplication.start(
+        "--spring.config.location=" + mockConfig,
+        "--spring.profiles.active=s3mock",
+        "--http.port=" + awsProperties.getServicePort(),
+        "--server.port=0",
+        "--springdoc.api-docs.enabled=false",
+        "--springdoc.swagger-ui.enabled=false",
+        "--spring.autoconfigure.exclude=" + String.join(",",
+            "org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration",
+            "org.springframework.boot.liquibase.autoconfigure.LiquibaseAutoConfiguration",
+            "org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration",
+            "org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration",
+            "org.springframework.boot.security.autoconfigure.web.servlet.ServletWebSecurityAutoConfiguration",
+            "org.springframework.boot.security.autoconfigure.actuate.web.servlet.ManagementWebSecurityAutoConfiguration"));
   }
 
   @AfterAll
   void afterAll() {
-    api.stop();
+    if (api != null) {
+      api.stop();
+    }
   }
 
   @BeforeEach

@@ -124,7 +124,7 @@ class CookieServiceTest {
   }
 
   private void assertAddCookieToHeader(HttpHeaders httpHeaders, String token, Duration duration) {
-    Assertions.assertTrue(httpHeaders.containsKey(HttpHeaders.SET_COOKIE));
+    Assertions.assertTrue(httpHeaders.containsHeader(HttpHeaders.SET_COOKIE));
 
     var httpCookie = httpHeaders.getFirst(HttpHeaders.SET_COOKIE);
     assertCookie(TokenType.REFRESH.getName(), httpCookie, token, duration);
