@@ -22,7 +22,7 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 
 ## Built With
 
-* [Spring Boot 3.5.7](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
+* [Spring Boot 4.1.1](https://projects.spring.io/spring-boot/) - Inversion of Control Framework
 * [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) - HTML, CSS, and
   JavaScript framework
 * [Thymeleaf](https://www.thymeleaf.org/) - Modern server-side Java template engine
@@ -45,6 +45,32 @@ A highly opinionated and complete starter for Spring Boot production ready proje
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.7/reference/htmlsingle/#using-boot-devtools)
 * [Spring Data Jpa DataTables](https://github.com/darrachequesne/spring-data-jpa-datatables)
 * [Test Containers](https://java.testcontainers.org/)
+
+## Building and profiling
+
+Use JDK 26 and the checked-in Gradle 9.7.1 wrapper:
+
+```sh
+./gradlew clean build --refresh-dependencies --warning-mode all
+```
+
+The build runs unit and integration tests. Hibernate's local second-level cache uses
+Caffeine through JCache. The test JVMs load Mockito as an explicit Java agent and
+turn off class-data sharing because Mockito instruments bootstrap classes. They also
+allow the final-field mutation used by Spring Security's CSRF test helper.
+These JVM options apply only to tests. S3 tests use Adobe S3Mock 5 in an isolated
+Spring context.
+
+The build checks formatting without rewriting source files. Run `./gradlew spotlessApply`
+to apply formatting fixes.
+
+Hypersistence Optimizer is optional. The bundled 2.6.3 JAR targets older Hibernate
+APIs and is incompatible with this application's Hibernate 7 version. To enable
+profiling, supply a licensed JAR compatible with the resolved Hibernate version:
+
+```sh
+./gradlew bootRun -PhypersistenceOptimizerJar=/absolute/path/to/compatible-optimizer.jar
+```
 
 ## Features
 

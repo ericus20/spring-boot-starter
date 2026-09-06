@@ -1,59 +1,61 @@
 #### Stage 1: Build the application
-FROM amazoncorretto:25 AS BUILD_IMAGE
+FROM amazoncorretto:26 AS build_image
 
-# Set the current working directory inside the image
 WORKDIR /app
 
-# Copy gradle executable to the image
+# Install utilities required by Gradle wrapper and shell scripts.
+# findutils provides xargs.
+RUN yum clean all && \
+    yum -y update && \
+    yum -y install dos2unix findutils && \
+    yum clean all
+
+# Copy Gradle wrapper/configuration first to improve Docker layer caching
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 
-# Set permission to execute file
-RUN chmod +x gradlew
+# Normalize line endings and make Gradle wrapper executable
+RUN dos2unix gradlew && \
+    chmod +x gradlew
 
-# Prepare and install dos2unix to make gradlew file accessible
-RUN yum clean all && \
-    yum -y update && \
-    yum -y install dos2unix
-
-#RUN yum update
-#RUN yum install dos2unix
-RUN dos2unix gradlew
-
-# Copy the project source
+# Copy application source and supporting files
 COPY src src
 COPY libs/newrelic newrelic
 
+# Prepare startup scripts
 COPY src/main/scripts/wait-for-it.sh wait-for-it.sh
-RUN chmod +x wait-for-it.sh && dos2unix wait-for-it.sh
-
 COPY src/main/scripts/start.sh start.sh
-RUN chmod +x start.sh && dos2unix start.sh
 
-# Package the application
-RUN ./gradlew bootJar
+RUN dos2unix wait-for-it.sh start.sh && \
+    chmod +x wait-for-it.sh start.sh
 
+# Build the Spring Boot application
+RUN ./gradlew bootJar --no-daemon
+
+# Extract the Spring Boot executable JAR into layers
 WORKDIR /app/build
-RUN mkdir -p dependency  \
-    && (cd dependency || return; jar -xf ../libs/*.jar)
 
-#### Stage 2: A minimal docker image with command to run the app
-FROM --platform=linux/amd64 amazoncorretto:25 AS RUNNER
+RUN mkdir -p dependency && \
+    cd dependency && \
+    jar -xf ../libs/*.jar
 
-# Set the current working directory inside the image
+
+#### Stage 2: Runtime image
+FROM amazoncorretto:26 AS runner
+
 WORKDIR /app
 
 ARG DEPENDENCY=/app/build/dependency
 
-# Copy project dependencies from the build stage
-COPY --from=BUILD_IMAGE ${DEPENDENCY}/BOOT-INF/lib ./lib
-COPY --from=BUILD_IMAGE ${DEPENDENCY}/META-INF ./META-INF
-COPY --from=BUILD_IMAGE ${DEPENDENCY}/BOOT-INF/classes .
-COPY --from=BUILD_IMAGE /app/newrelic ./newrelic
+# Copy only what is needed to run the application
+COPY --from=build_image ${DEPENDENCY}/BOOT-INF/lib ./lib
+COPY --from=build_image ${DEPENDENCY}/META-INF ./META-INF
+COPY --from=build_image ${DEPENDENCY}/BOOT-INF/classes ./
 
-COPY --from=BUILD_IMAGE /app/wait-for-it.sh ./wait-for-it.sh
-COPY --from=BUILD_IMAGE /app/start.sh ./start.sh
+COPY --from=build_image /app/newrelic ./newrelic
+COPY --from=build_image /app/wait-for-it.sh ./wait-for-it.sh
+COPY --from=build_image /app/start.sh ./start.sh
 
 EXPOSE 8080
 

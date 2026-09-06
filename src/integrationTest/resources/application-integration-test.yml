@@ -12,7 +12,6 @@ spring:
   ## = JPA / HIBERNATE
   ## ===============================
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     properties:
       hibernate:

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import org.joda.time.DateTime;
+import java.time.ZoneId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -72,7 +72,7 @@ class DateUtilsTest {
   void testDateDifferenceInDays() {
     int numberOfDays = 1;
     Date now = new Date();
-    Date yesterday = new DateTime(now).minusDays(numberOfDays).toDate();
+    Date yesterday = Date.from(now.toInstant().atZone(ZoneId.systemDefault()).minusDays(numberOfDays).toInstant());
 
     long differenceInDays = DateUtils.getDifferenceInDays(now, yesterday);
     Assertions.assertEquals(numberOfDays, differenceInDays);

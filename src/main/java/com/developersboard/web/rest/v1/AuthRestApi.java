@@ -24,9 +24,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +55,7 @@ public class AuthRestApi {
   private final CookieService cookieService;
   private final EncryptionService encryptionService;
   private final UserDetailsService userDetailsService;
-  private final DaoAuthenticationProvider authenticationManager;
+  private final AuthenticationManager authenticationManager;
 
   /**
    * Attempts to authenticate with the provided credentials. If successful, a JWT token is returned
@@ -153,7 +152,7 @@ public class AuthRestApi {
    * @param headers the http headers
    */
   private String updateCookies(
-      String username, boolean isRefreshValid, MultiValueMap<String, String> headers) {
+      String username, boolean isRefreshValid, HttpHeaders headers) {
 
     if (!isRefreshValid) {
       var token = jwtService.generateJwtToken(username);
@@ -161,7 +160,7 @@ public class AuthRestApi {
 
       var encryptedToken = encryptionService.encrypt(token);
       cookieService.addCookieToHeaders(
-          (HttpHeaders) headers, TokenType.REFRESH, encryptedToken, refreshDuration);
+          headers, TokenType.REFRESH, encryptedToken, refreshDuration);
     }
 
     var accessTokenExpiration = DateUtils.addMinutes(new Date(), accessTokenExpirationInMinutes);

@@ -1,8 +1,20 @@
+import org.gradle.process.CommandLineArgumentProvider
+
+abstract class MockitoAgentArgumentProvider implements CommandLineArgumentProvider {
+  @Classpath
+  abstract ConfigurableFileCollection getAgentClasspath()
+
+  @Override
+  Iterable<String> asArguments() {
+    ["-javaagent:${agentClasspath.singleFile.absolutePath}"]
+  }
+}
+
 plugins {
-  id 'org.springframework.boot' version '3.5.7'
+  id 'org.springframework.boot' version '4.1.1'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.owasp.dependencycheck' version '12.1.8'
-  id 'com.diffplug.spotless' version '8.0.0'
+  id 'org.owasp.dependencycheck' version '13.0.0'
+  id 'com.diffplug.spotless' version '8.10.2'
   id 'eclipse'
   id 'jacoco'
   id 'idea'
@@ -14,7 +26,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(25)
+    languageVersion = JavaLanguageVersion.of(26)
   }
   // You can uncomment this to include javadoc jar generation
   //  withJavadocJar()
@@ -23,8 +35,11 @@ java {
   withSourcesJar()
 }
 
-
 configurations {
+  mockitoAgent {
+    canBeConsumed = false
+    transitive = false
+  }
   compileOnly {
     extendsFrom annotationProcessor
   }
@@ -36,19 +51,22 @@ repositories {
 
 ext {
   set('jjwtVersion', '0.13.0')
-  set('springDocVersion', '2.8.13')
+  set('springDocVersion', '3.1.0')
   set('javadocScribeVersion', '0.15.0')
   set('mapstructVersion', '1.6.3')
-  set('awsSdkS3Version', '2.38.2')
+  set('awsSdkS3Version', '2.54.9')
   set('jsoupVersion', '1.21.2')
-  set('commonsIoVersion', '2.21.0')
-  set('datafakerVersion', '2.5.3')
-  set('gsonVersion', '2.13.2')
-  set('commonsValidatorVersion', '1.10.0')
-  set('springDataJpaDataTablesVersion', '7.1.0')
+  set('commonsIoVersion', '2.22.0')
+  set('datafakerVersion', '2.7.0')
+  set('gsonVersion', '2.14.0')
+  set('commonsValidatorVersion', '1.11.0')
+  set('springDataJpaDataTablesVersion', '8.0.0')
 }
 
 dependencies {
+  mockitoAgent 'org.mockito:mockito-core'
+
+  implementation 'org.springframework.boot:spring-boot-h2console'
   implementation 'org.springframework.boot:spring-boot-starter-mail'
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
   implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -64,11 +82,11 @@ dependencies {
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-  implementation 'org.ehcache:ehcache'
+  implementation 'com.github.ben-manes.caffeine:jcache'
   implementation 'org.hibernate.orm:hibernate-jcache'
-  implementation 'org.ehcache:ehcache-transactions:3.10.8'
 
   // Utilities
+  implementation 'org.jspecify:jspecify'
   implementation "org.jsoup:jsoup:${jsoupVersion}"
   implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
@@ -81,17 +99,19 @@ dependencies {
 
   // Documentation and API Tools
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
-  implementation "org.springdoc:springdoc-openapi-starter-common:${springDocVersion}"
   annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${javadocScribeVersion}"
   runtimeOnly "com.github.therapi:therapi-runtime-javadoc:${javadocScribeVersion}"
 
   // Database and File Storage Tools
   implementation 'com.h2database:h2'
   runtimeOnly 'org.postgresql:postgresql'
-  implementation 'org.liquibase:liquibase-core'
+  implementation 'org.springframework.boot:spring-boot-starter-liquibase'
   implementation 'org.hibernate.orm:hibernate-envers'
   implementation "software.amazon.awssdk:s3:${awsSdkS3Version}"
-  implementation files('libs/hypersistence-optimizer-2.6.3-jakarta.jar')
+  // Supply a Hibernate 7-compatible licensed optimizer JAR when profiling is needed.
+  if (providers.gradleProperty('hypersistenceOptimizerJar').isPresent()) {
+    runtimeOnly files(providers.gradleProperty('hypersistenceOptimizerJar').get())
+  }
 
   // MapStruct for Object Mapping
   implementation "org.mapstruct:mapstruct:${mapstructVersion}"
@@ -115,7 +135,6 @@ testing {
       dependencies {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-        implementation 'io.findify:s3mock_2.13:0.2.6'
         implementation 'com.icegreen:greenmail-junit5:2.1.7'
         implementation 'com.jparams:to-string-verifier:1.4.8'
         implementation 'nl.jqno.equalsverifier:equalsverifier:4.0'
@@ -132,19 +151,19 @@ testing {
         implementation project()
         implementation sourceSets.test.output
 
+        implementation 'com.adobe.testing:s3mock:5.0.0'
         implementation 'org.springframework.boot:spring-boot-testcontainers'
+        implementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
         implementation "software.amazon.awssdk:s3:${awsSdkS3Version}"
-        implementation 'org.testcontainers:junit-jupiter'
-        implementation 'org.testcontainers:postgresql'
+        implementation 'org.testcontainers:testcontainers-junit-jupiter'
+        implementation 'org.testcontainers:testcontainers-postgresql'
       }
       targets {
         configureEach {
           testTask.configure {
             shouldRunAfter(test)
             finalizedBy 'jacocoTestReport'
-            // Fail the 'test' task on the first test failure
-            failFast = true
-            // If no active profile is set, use integration-test is the active profile
+            // Default to the local integration-test profile.
             environment 'SPRING_PROFILES_ACTIVE', System.getenv("SPRING_PROFILES_ACTIVE") ?: "integration-test"
           }
         }
@@ -158,16 +177,25 @@ configurations {
 }
 
 tasks.named('check') {
-  dependsOn(testing.suites.integrationTest)
+  dependsOn(testing.suites.integrationTest, tasks.named('spotlessCheck'))
 }
 
 tasks.named('bootBuildImage') {
   builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
 
+tasks.withType(Test).configureEach {
+  jvmArgumentProviders.add(objects.newInstance(MockitoAgentArgumentProvider).tap {
+    agentClasspath.from(configurations.mockitoAgent)
+  })
+  // Mockito instruments bootstrap classes; CDS cannot be used by these test JVMs.
+  jvmArgs '-Xshare:off'
+  // Spring Security's CSRF test helper replaces a final field on its filter.
+  jvmArgs '--enable-final-field-mutation=ALL-UNNAMED'
+}
+
 tasks.withType(JavaCompile).configureEach {
   options.compilerArgs += ['-Xlint:deprecation']
-  dependsOn 'spotlessApply'
 }
 
 jacocoTestReport {

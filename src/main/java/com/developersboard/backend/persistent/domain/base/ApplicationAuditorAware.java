@@ -4,7 +4,7 @@ import com.developersboard.shared.util.core.SecurityUtils;
 import java.util.Optional;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * This class gets the application's current auditor, which is the username of the authenticated

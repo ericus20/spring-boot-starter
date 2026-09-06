@@ -7,11 +7,11 @@ import com.developersboard.constant.HomeConstants;
 import com.developersboard.constant.SecurityConstants;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
@@ -34,7 +34,7 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 public class FormLoginSecurityConfig {
 
   private final Environment environment;
-  private final DaoAuthenticationProvider authenticationProvider;
+  private final AuthenticationManager authenticationManager;
   private final PersistentTokenRepository persistentRepository;
 
   /**
@@ -73,7 +73,7 @@ public class FormLoginSecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated())
-        .authenticationProvider(authenticationProvider) // Register the provider
+        .authenticationManager(authenticationManager)
         .formLogin(
             (form) ->
                 form.loginPage(SecurityConstants.LOGIN)

@@ -13,8 +13,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.auditing.AuditingHandler;
+import org.springframework.data.auditing.DateTimeProvider;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 class UserPruningSchedulerIntegrationTest extends IntegrationTestUtils {
+
+  @MockitoBean private DateTimeProvider dateTimeProvider;
+  @MockitoSpyBean private AuditingHandler auditingHandler;
 
   @BeforeEach
   void setUp() {
