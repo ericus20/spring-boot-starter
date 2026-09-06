@@ -13,12 +13,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: Set up JDK 25
-        uses: actions/setup-java@v5
+      - name: Set up JDK 26
+        uses: actions/setup-java@v6
         with:
           java-version: '26'
           distribution: 'temurin'
@@ -26,7 +26,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
         env:
           SPRING_PROFILES_ACTIVE: integration-test-ci
 
@@ -36,7 +36,7 @@ jobs:
 
       - name: Add coverage to PR
         id: jacoco
-        uses: madrapps/jacoco-report@v1.7.2
+        uses: madrapps/jacoco-report@v1.8.0
         with:
           paths: ${{github.workspace}}/build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{secrets.GITHUB_TOKEN}}
@@ -52,7 +52,7 @@ jobs:
           echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
           echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
       - name: Commit and push the badge (if it changed)
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v11
         with:
           default_author: github_actions
           message: 'commit badge'
@@ -62,11 +62,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{secrets.DOCKERHUB_USERNAME}}
           password: ${{secrets.DOCKERHUB_TOKEN}}
