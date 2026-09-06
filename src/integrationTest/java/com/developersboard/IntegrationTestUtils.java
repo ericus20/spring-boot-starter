@@ -29,15 +29,11 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.auditing.AuditingHandler;
-import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -68,11 +64,6 @@ public abstract class IntegrationTestUtils {
   @Autowired protected PasswordController passwordController;
 
   @Mock protected MockMultipartFile multipartFile;
-
-  // We are mocking the entire dateTimeProvider since there is only one method in it.
-  @MockitoBean protected DateTimeProvider dateTimeProvider;
-  // We want to mock just the dateTimeProvider method within the auditHandler
-  @MockitoSpyBean protected AuditingHandler auditingHandler;
 
   /**
    * Creates and verify user with flexible field creation.

@@ -21,6 +21,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -98,8 +100,14 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
     assertEmailResponse(false);
   }
 
-  @Test
-  void sendHtmlEmail() {
+  @ParameterizedTest
+  @ValueSource(strings = {
+      EmailConstants.EMAIL_WELCOME_TEMPLATE,
+      EmailConstants.EMAIL_VERIFY_TEMPLATE,
+      EmailConstants.PASSWORD_RESET_TEMPLATE,
+      EmailConstants.PASSWORD_UPDATE_TEMPLATE
+  })
+  void sendHtmlEmail(String template) {
 
     var userDto = UserUtils.createUserDto(false);
     var links = WebUtils.getDefaultEmailUrls();
@@ -112,7 +120,7 @@ class EmailServiceIntegrationTest extends IntegrationTestUtils {
     emailRequest.setTo(userDto.getEmail());
     emailRequest.setFrom(userDto.getEmail());
     emailRequest.getRecipients().add(FAKER.internet().emailAddress());
-    emailRequest.setTemplate(EmailConstants.EMAIL_WELCOME_TEMPLATE);
+    emailRequest.setTemplate(template);
 
     sender = emailRequest.getFrom();
     recipient = emailRequest.getTo();
