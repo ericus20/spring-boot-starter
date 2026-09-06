@@ -20,7 +20,7 @@ jobs:
       - name: Set up JDK 26
         uses: actions/setup-java@v6
         with:
-          java-version: '25'
+          java-version: '26'
           distribution: 'temurin'
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
