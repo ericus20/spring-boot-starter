@@ -1,5 +1,0 @@
-projects: ['SBS']
-check_title: false
-check_branch: false
-check_commits: false
-ignore_case: true
